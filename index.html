@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Climate Change</title>
+<meta name="description" content="The Climate Change: animated live-weather wallpapers for world climates and Brunei's districts and beaches, with a Home Assistant-style dashboard and an exploded view of each place's climate.">
+<meta name="theme-color" content="#0b1214">
+<meta property="og:title" content="The Climate Change">
+<meta property="og:description" content="Live climate wallpapers for the world and Brunei, with an exploded view of today's weather.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="preview.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3l9 4.5-9 4.5-9-4.5z' fill='%23ff5a3c'/%3E%3Cpath d='M3 12.5l9 4.5 9-4.5M3 17l9 4.5 9-4.5' fill='none' stroke='%23ff5a3c' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: calm and full of wonder, a window onto world climates and Brunei's districts and beaches for Brunei secondary students.
+   IDEA: a living wallpaper gallery where each wallpaper is a real place showing that place's weather now.
+   PICTURE: full-screen animated scenes (sakura Kyoto, Kampong Ayer rain, Riyadh dunes...) drawn in parallax layers.
+   COLOUR and TYPE: every scene brings its own palette; frosted glass panels; Sora for figures, Inter for text.
+   LAYOUT: wallpaper fills the screen; climate card on the left, layered wallpaper slider along the bottom, full-screen mode. */
+:root{color-scheme:light dark;--glass:light-dark(rgba(255,255,255,.74),rgba(8,12,18,.6));--ink:light-dark(#0f1a1c,#f2f6f7);--mut:light-dark(#43525a,#b8c4c9);--line:light-dark(rgba(0,0,0,.12),rgba(255,255,255,.16));--acc:#ff5a3c}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{height:100%}
+body{margin:0;background:#0b1214;color:var(--ink);font:16px/1.5 Inter,system-ui,sans-serif;overflow:hidden}
+button{font:inherit}
+#wall{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:pan-y}
+.ui{position:fixed;inset:0;display:grid;grid-template-rows:auto minmax(0,1fr) auto;pointer-events:none;transition:opacity .5s}
+.ui>*{pointer-events:auto}
+.top{display:flex;align-items:center;gap:8px 16px;flex-wrap:wrap;padding:12px max(3vw,14px);background:linear-gradient(rgba(0,0,0,.42),rgba(0,0,0,0));color:#fff}
+.logo{display:flex;align-items:center;gap:10px;font:800 17px Sora,sans-serif;white-space:nowrap}
+.stat{font-size:13px;display:flex;align-items:center;gap:6px;opacity:.92}
+.stat i{width:8px;height:8px;border-radius:50%;background:#7cffb2;flex:none}.stat.off i{background:#ffb35c}
+.ctl{margin-left:auto;display:flex;gap:8px}
+.ib{min-width:44px;min-height:44px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(10,14,20,.38);color:#fff;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 12px;font-weight:600;font-size:14px;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.ib svg{width:18px;height:18px;flex:none}
+.ib:focus-visible,.wp:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.stage{display:flex;align-items:flex-start;padding:4px max(3vw,14px);min-height:0}
+.card{width:min(420px,100%);max-height:100%;overflow:auto;background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border:1px solid var(--line);border-radius:24px;padding:20px 22px;box-shadow:0 30px 60px -30px rgba(0,0,0,.6);scrollbar-width:thin}
+.kick{font-size:13px;color:var(--mut);font-weight:600}
+h1{font:800 clamp(30px,4vw,44px)/1.05 Sora,sans-serif;margin:6px 0 2px;letter-spacing:-.01em;text-wrap:balance}
+.sub{font-size:14px;color:var(--mut)}
+.kop{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:14px;font-weight:600}
+.kop b{font:800 13px Sora,sans-serif;padding:3px 8px;border-radius:8px;background:var(--acc);color:#fff}
+.now{display:flex;align-items:center;gap:14px;margin-top:10px}
+.tmp{font:800 clamp(46px,6.5vw,66px)/1 Sora,sans-serif;white-space:nowrap}
+.cond{font-weight:600}
+.pill{display:inline-flex;margin-top:6px;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:#1f9d63;color:#fff}.pill.off{background:#a8660f}
+#more{display:none;margin-top:12px;min-height:44px;width:100%;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--ink);font-weight:600;cursor:pointer}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}
+.stats div{border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.stats span{display:block;font-size:12px;color:var(--mut)}.stats b{font:700 15px Sora,sans-serif;white-space:nowrap}
+.mh{display:flex;justify-content:space-between;gap:4px 10px;font-size:13px;color:var(--mut);flex-wrap:wrap;margin-top:16px}
+.mh b{color:var(--ink)}
+.bars{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;height:96px;margin-top:8px}
+.bars div{display:flex;flex-direction:column;justify-content:flex-end}
+.bars i{display:block;border-radius:5px 5px 2px 2px;background:var(--c);min-height:4px}
+.bars span{font-size:13px;text-align:center;color:var(--mut);margin-top:3px;line-height:1.2}
+.bars .on i{outline:2px solid var(--ink);outline-offset:1px}.bars .on span{color:var(--ink);font-weight:800}
+.why{margin-top:14px;font-size:15px}
+.seas{margin-top:12px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--acc) 16%,transparent);font-weight:600;font-size:15px}
+.cmp{margin-top:12px;font-size:14px;color:var(--mut)}
+.note{margin-top:10px;font-size:13px;color:var(--mut)}
+.dock{background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.5));padding-bottom:12px}
+.slider{display:flex;overflow-x:auto;padding:24px max(3vw,14px) 8px;scrollbar-width:none;scroll-behavior:smooth}
+.slider::-webkit-scrollbar{display:none}
+.wp{position:relative;flex:0 0 auto;width:178px;height:112px;margin-left:-34px;border-radius:16px;overflow:hidden;border:2px solid rgba(255,255,255,.35);padding:0;cursor:pointer;background:#000;transition:transform .55s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .3s;transform:translateY(calc(var(--d,0)*5px)) scale(calc(1 - var(--d,0)*.05)) rotate(calc(var(--r,0)*1deg));box-shadow:0 14px 30px -14px #000}
+.wp:first-child{margin-left:0}
+.wp img{width:100%;height:100%;object-fit:cover;display:block}
+.wl{position:absolute;left:0;right:0;bottom:0;padding:18px 10px 8px;background:linear-gradient(transparent,rgba(0,0,0,.72));color:#fff;text-align:left;font-size:13px;line-height:1.2}
+.wl b{display:block;font:700 13px Sora,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.wl em{display:block;font-style:normal;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wt{position:absolute;top:7px;right:7px;font:700 13px Sora,sans-serif;color:#fff;background:rgba(0,0,0,.45);padding:2px 8px;border-radius:999px;white-space:nowrap}
+.pg{position:absolute;left:0;bottom:0;height:3px;width:100%;background:#fff;transform-origin:left;transform:scaleX(0)}
+.wp:hover{transform:translateY(-6px) scale(calc(1.02 - var(--d,0)*.05))}
+.wp.on{border-color:#fff;transform:translateY(-12px) scale(1.12);box-shadow:0 22px 40px -14px #000}
+.hint{color:#fff;font-size:13px;padding:0 max(3vw,14px);opacity:.85}
+.tabs{display:flex;background:rgba(10,14,20,.38);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:3px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.tab{min-height:38px;padding:0 14px;border-radius:999px;border:0;background:transparent;color:#fff;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap}
+.tab[aria-selected=true]{background:#fff;color:#10201f}
+.tab:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.about{margin-top:14px;font-size:15px;padding-left:12px;border-left:3px solid #f2c234}
+.board{position:fixed;inset:max(2vh,10px) max(3vw,10px);z-index:40;background:var(--glass);-webkit-backdrop-filter:blur(24px) saturate(1.3);backdrop-filter:blur(24px) saturate(1.3);border:1px solid var(--line);border-radius:24px;padding:clamp(16px,2.5vw,28px);overflow:auto;box-shadow:0 40px 80px -30px rgba(0,0,0,.7)}
+.board[hidden]{display:none}
+.bhead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.bhead h2{font:800 clamp(26px,3.2vw,38px)/1.05 Sora,sans-serif;margin:0}
+.bhead p{margin:6px 0 0;font-size:14px;color:var(--mut)}
+.board .ib{background:var(--ink);color:var(--glass);border-color:transparent}
+.bstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:18px}
+.bstats div{border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.bstats span{display:block;font-size:13px;color:var(--mut)}.bstats b{font:700 16px Sora,sans-serif}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:16px}
+.tile{position:relative;display:flex;flex-direction:column;justify-content:flex-start;text-align:left;padding:0;border-radius:18px;overflow:hidden;border:2px solid var(--line);background:color-mix(in srgb,var(--glass) 60%,transparent);color:var(--ink);cursor:pointer;transition:transform .2s}
+.tile:hover{transform:translateY(-3px)}.tile.on{border-color:var(--acc)}
+.tile:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.tile img{display:block;width:100%;height:96px;object-fit:cover}
+.tbad{position:absolute;top:8px;left:8px;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;background:#1f9d63;color:#fff}.tbad.off{background:#a8660f}
+.tb{display:block;padding:10px 12px 12px}.tb>b{display:block;font:700 16px/1.2 Sora,sans-serif}
+.tco{display:block;font-size:13px;color:var(--mut)}
+.tt{display:block;font:800 32px/1.1 Sora,sans-serif;margin-top:6px;white-space:nowrap}
+.tc{display:block;font-weight:600;font-size:14px}
+.tm{display:flex;flex-wrap:wrap;gap:2px 12px;font-size:13px;color:var(--mut);margin-top:4px}.tm span{white-space:nowrap}
+.fsui{position:fixed;inset:0;pointer-events:none;opacity:0;transition:opacity .5s}
+body.fs .ui{opacity:0}body.fs .ui,body.fs .ui *{pointer-events:none}
+body.fs .fsui{opacity:1}body.fs .fsui>*{pointer-events:auto}
+.mini{position:absolute;left:max(3vw,14px);bottom:max(3vh,14px);display:flex;gap:14px;align-items:center;background:var(--glass);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:20px;padding:12px 18px;max-width:calc(100vw - 28px)}
+.mini b{font:800 36px/1 Sora,sans-serif;white-space:nowrap}
+.mini strong{display:block;font:700 16px Sora,sans-serif}.mini span{font-size:14px;color:var(--mut)}
+.fx{position:absolute;top:14px;right:14px}
+.fa{position:absolute;top:50%;transform:translateY(-50%)}.fa.l{left:12px}.fa.r{right:12px}
+@media(max-width:700px){
+ .stage{align-items:flex-end}.card{max-height:54vh;padding:16px 18px;border-radius:20px}
+ .card:not(.open) .ext{display:none}#more{display:block}
+ .ib span{display:none}.logo span{display:none}.ctl{margin-left:auto}.stat{order:5;width:100%}.tab{padding:0 11px}
+ .wp{width:132px;height:86px;margin-left:-28px}.slider{padding-top:18px}.hint{display:none}
+ .mini b{font-size:28px}
+}
+@media(max-width:400px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){.wp,.ui,.fsui{transition:none}.slider{scroll-behavior:auto}}
+
+.today{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:10px;font-size:13px;color:var(--mut)}.today b{color:var(--ink)}
+.xvb{margin-top:12px;min-height:44px;width:100%;border-radius:12px;border:0;background:var(--acc);color:#fff;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.xvb svg{width:20px;height:20px}.xvb:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.card{cursor:pointer}
+.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.stats b{white-space:normal;font-size:14px;line-height:1.25}
+.h24{margin-top:14px;color:var(--mut)}
+.lg{display:flex;gap:10px;font-size:12px}.lg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+.ch{display:block;width:100%;height:auto;margin-top:4px}.ch text{fill:currentColor}.ch .cv{font:700 11px Inter,sans-serif}.ch .cl{font:10px Inter,sans-serif;opacity:.8}
+.na{font-size:13px;color:var(--mut);margin:6px 0}
+/* exploded view */
+.xv{position:fixed;inset:0;z-index:60;color-scheme:dark;background:radial-gradient(ellipse at 45% 45%,#20232d,#121317 70%);color:#fff;display:grid;grid-template-rows:auto minmax(0,1fr) auto;overflow:hidden}
+.xv[hidden]{display:none}
+.xvhead{display:flex;justify-content:space-between;gap:12px;padding:16px max(3vw,16px) 4px}
+.xve{font:700 12px Inter,sans-serif;letter-spacing:.14em;color:#9aa0ad}
+.xv h2{font:800 clamp(28px,4vw,54px)/1.02 Sora,sans-serif;margin:6px 0 0;letter-spacing:-.01em}
+.xvhead p{margin:8px 0 0;color:#b8bcc6;font-size:14px;max-width:62ch;padding-top:8px;border-top:2px solid #ff5a3c}
+.xvc{display:flex;gap:8px;align-items:flex-start;flex:none}
+.xv .ib{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.22)}
+.xvbody{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,390px);gap:16px;min-height:0;padding:6px max(3vw,16px)}
+.xvstage{position:relative;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 340px minmax(0,1fr)}
+.xvl{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:20}
+.xvl g{transition:opacity .3s}.xvl g.dim{opacity:.2}
+.xvcol{position:relative;min-width:0}
+.xvst{position:relative}
+.xvst:before{content:'';position:absolute;left:50%;top:4%;bottom:4%;width:3px;transform:translateX(-50%);background:linear-gradient(transparent,#4fb3ff 20%,#9b7bff 80%,transparent);filter:blur(1.5px);opacity:.75}
+.xpl{position:absolute;left:50%;top:50%;display:block;width:250px;height:158px;padding:0;border-radius:14px;border:1.5px solid var(--a);background:color-mix(in srgb,var(--a) 9%,rgba(18,20,28,.55));transform:translate(-50%,-50%) rotateX(58deg) rotateZ(-40deg);box-shadow:0 8px 0 -1px color-mix(in srgb,var(--a) 40%,#000),0 0 34px -8px var(--a);cursor:pointer;transition:top .9s cubic-bezier(.2,.8,.2,1),opacity .3s,filter .3s}
+.xpl canvas{display:block;width:100%;height:100%;border-radius:13px}
+.xpl .dt{position:absolute;width:2px;height:2px;margin:-1px}
+.xpl.dim{opacity:.28}.xpl.sel{filter:brightness(1.18) drop-shadow(0 0 14px var(--a))}
+.xpl:focus-visible{outline:3px solid #fff;outline-offset:4px}
+.xco{position:absolute;left:0;right:0;top:0;display:flex;gap:10px;align-items:flex-start;background:none;border:0;color:#fff;text-align:left;cursor:pointer;padding:4px;border-radius:12px;transition:opacity .3s}
+.xvcol.l .xco{flex-direction:row-reverse;text-align:right}
+.xco i{flex:none;width:34px;height:34px;border-radius:50%;background:var(--a);color:#121317;font:800 15px Sora,sans-serif;display:grid;place-items:center;font-style:normal}
+.xco b{display:block;font:700 12.5px Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--a)}
+.xco em{display:block;font:700 15px/1.25 Sora,sans-serif;font-style:normal}
+.xco small{display:block;font-size:13px;color:#b8bcc6;margin-top:2px}
+.xco:hover em{text-decoration:underline}.xco:focus-visible{outline:2px solid var(--a)}
+.xco.dim{opacity:.3}
+.xvd{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:16px 18px;overflow:auto;min-height:0;color:#e9ecf2;scrollbar-width:thin}
+.xvd .ch,.xvd .na{color:#b8bcc6}
+.xdh{display:flex;gap:12px;align-items:center}
+.xdh i{width:46px;height:46px;border-radius:50%;background:var(--a);color:#121317;display:grid;place-items:center;font:800 18px Sora,sans-serif;font-style:normal;flex:none}.xdh i svg{width:22px;height:22px}
+.xdh b{display:block;font:700 12.5px Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--a)}
+.xdh strong{display:block;font:800 30px/1.08 Sora,sans-serif}.xdh span{font-size:14px;color:#b8bcc6}
+.xg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:14px}
+.xg div{border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:8px 10px}
+.xg span{display:block;font-size:12px;color:#9aa0ad}.xg b{font:700 14.5px/1.3 Sora,sans-serif}
+.xct{margin:16px 0 2px;font-size:13px;font-weight:700;color:#b8bcc6}
+.xm{font-size:14.5px;line-height:1.55;color:#d6dae2;margin:12px 0 0}
+.xwk{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin-top:6px}
+.xwk div{border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:6px 2px;text-align:center}
+.xwk span{display:block;font-size:12px;color:#9aa0ad}.xwk b{display:block;font:700 16px Sora,sans-serif}.xwk em{display:block;font-style:normal;font-size:13px;color:#9aa0ad}
+.xwk small{display:block;font-size:11px;color:#7cc4ff;white-space:nowrap}
+.xvd .bars span{color:#9aa0ad}.xvd .bars .on span{color:#fff}.xvd .bars .on i{outline-color:#fff}
+.xvf{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:8px max(3vw,16px) 16px}
+.xvf>div{border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:10px 14px;display:flex;gap:10px}
+.xvf i{width:10px;height:10px;border-radius:50%;background:var(--a);margin-top:5px;flex:none}
+.xvf b{display:block;font:700 12px Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--a)}.xvf p{margin:3px 0 0;font-size:13px;color:#b8bcc6}
+@media(max-width:900px){
+ .xv{overflow:auto;grid-template-rows:auto auto auto;align-content:start}.xvbody{grid-template-columns:minmax(0,1fr);min-height:auto}
+ .xvstage{height:min(66vh,560px);grid-template-columns:minmax(0,1fr) 220px minmax(0,1fr)}
+ .xpl{width:180px;height:114px}.xvd{overflow:visible}.xvf{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:600px){
+ .xco small{display:none}.xco em{font-size:12px}.xco b{font-size:10.5px;letter-spacing:.03em}.xco i{width:26px;height:26px;font-size:12px}.xco{gap:6px}
+ .xvstage{grid-template-columns:minmax(0,1fr) 160px minmax(0,1fr)}.xpl{width:136px;height:86px}
+ .xvhead p{font-size:13px}.xvc .ib span{display:none}.xwk b{font-size:14px}
+}
+@media(prefers-reduced-motion:reduce){.xpl{transition:none}}
+/* Home Assistant style dashboard card */
+.card.ha{--gt:.22;--hb:linear-gradient(135deg,rgba(255,255,255,.2),rgba(255,255,255,.04)),rgba(12,18,28,var(--gt));--ht:#fff;--hs:rgba(255,255,255,.8);--hd:rgba(255,255,255,.3);--ink:#fff;--mut:rgba(255,255,255,.82);text-shadow:0 1px 3px rgba(0,0,0,.35);--hp:#03a9f4;width:min(400px,100%);background:none;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0 4px 4px 0;border-radius:0;display:flex;flex-direction:column;gap:10px;font-family:Roboto,Inter,system-ui,sans-serif;color:var(--ht);scrollbar-color:rgba(255,255,255,.4) transparent}
+.card.ha .ext,.card.ha .hcol{display:flex;flex-direction:column;gap:10px;min-width:0}
+.hc{background:var(--hb);border:1px solid var(--hd);border-radius:14px;padding:12px 14px;-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 8px 24px -14px rgba(0,0,0,.5);transition:background-color .8s;color:var(--ht);font:inherit;text-align:left}
+button.hc{cursor:pointer;width:100%}
+.hc[data-x]:hover{border-color:rgba(255,255,255,.7)}
+.hc:focus-visible,.xvb:focus-visible,.hwtabs button:focus-visible{outline:2px solid var(--hp);outline-offset:2px}
+.hh .kn{font-size:12px;color:var(--hs);font-weight:500}
+.card.ha h1{font:500 26px/1.15 Roboto,Inter,sans-serif;margin:2px 0 0;letter-spacing:0}
+.hh .sub{font-size:13px;color:var(--hs)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 11px 0 4px;border-radius:15px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);font-size:12.5px;font-weight:500;white-space:nowrap}
+.chip i,.ht i,.hsh i,.hct i,.xvb i{flex:none;display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--c) 32%,rgba(255,255,255,.08));color:color-mix(in srgb,var(--c) 55%,#fff)}
+.chip i{width:22px;height:22px}.chip svg{width:14px;height:14px}
+.hwt{display:flex;align-items:center;gap:12px}.hwi{width:62px;height:62px;flex:none}.hwi svg{width:100%;height:100%}
+.hwn{flex:1;min-width:0}.hwn b{display:block;font-size:17px;font-weight:500}.hwn span{font-size:13px;color:var(--hs)}
+.hwv{text-align:right}.hwv b{display:block;font-weight:400;font-size:36px;line-height:1;white-space:nowrap}.hwv small{font-size:16px;color:var(--hs);margin-left:2px;vertical-align:top}.hwv span{display:block;font-size:13px;color:var(--hs);margin-top:4px}
+.hwa{display:flex;justify-content:space-between;gap:6px 10px;flex-wrap:wrap;margin-top:12px;padding-top:10px;border-top:1px solid var(--hd);font-size:13px;color:var(--hs)}.hwa span{display:inline-flex;gap:4px;align-items:center;white-space:nowrap}.hwa svg{width:16px;height:16px}
+.hwtabs{display:inline-flex;margin-top:12px;background:rgba(255,255,255,.14);border-radius:16px;padding:2px}
+.hwtabs button{border:0;background:none;color:var(--hs);font:500 12.5px Roboto,Inter,sans-serif;padding:0 14px;border-radius:14px;cursor:pointer;min-height:30px}.hwtabs button[aria-selected=true]{background:var(--hp);color:#fff}
+.hwl{margin-top:12px;font-size:12.5px;color:var(--hs);font-weight:500}
+.hwf{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:2px;margin-top:8px;text-align:center}.hwf.d{grid-template-columns:repeat(7,minmax(0,1fr))}
+.hwf div{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:11.5px;color:var(--hs)}.hwf svg{width:28px;height:28px}.hwf b{color:var(--ht);font-weight:500;font-size:13px}.hwf em{font-style:normal;font-size:11px;color:#9fdcff;font-weight:500}
+.hg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.hgc{display:flex;flex-direction:column;align-items:center;padding:10px 6px 9px;text-align:center}
+.hgc svg{width:100%;max-width:104px;display:block}.gt{fill:none;stroke:var(--hd);stroke-width:9}.gv{fill:none;stroke-width:9}
+.hgc b{font-size:18px;font-weight:500;margin-top:-20px;line-height:1.1}.hgc b small{font-size:12px;color:var(--hs);font-weight:400}.hgc em{font-style:normal;font-size:11.5px;color:var(--hs);min-height:14px}.hgc span{font-size:12.5px;font-weight:500;margin-top:3px}
+.hts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ht{display:flex;align-items:center;gap:10px;padding:10px;min-height:58px}
+.ht i,.hsh i,.hct i{width:36px;height:36px}.ht svg,.hsh svg,.hct svg{width:20px;height:20px}
+.ht span{min-width:0}.ht small{display:block;font-size:12px;color:var(--hs);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ht b{display:block;font-size:14px;font-weight:500;line-height:1.3}
+.hsh,.hct{display:flex;align-items:center;gap:10px}.hsh span,.hct span{flex:1;min-width:0;font-weight:500;font-size:14.5px}.hsh small,.hct small{display:block;font-size:12px;color:var(--hs);font-weight:400}
+.hsh b{font-weight:400;font-size:22px;white-space:nowrap}.hct b{font:700 13px Roboto,sans-serif;padding:3px 8px;border-radius:8px;background:#9c27b0;color:#fff}
+.hsg{display:block;width:100%;height:72px;margin-top:10px}
+.hsx{display:flex;justify-content:space-between;font-size:11px;color:var(--hs);margin-top:2px}
+.hcl .mh{margin-top:12px;color:var(--hs)}.hcl .seas{background:rgba(255,90,60,.28)}.hcl .bars i{box-shadow:0 0 0 1px rgba(255,255,255,.25)}.hcl .why{font-size:14px}.hcl .cmp,.hcl .note{color:var(--hs)}
+.card.ha .xvb{margin:0;min-height:60px;justify-content:flex-start;gap:12px;padding:10px 14px;border-radius:14px;background:linear-gradient(135deg,rgba(3,169,244,.75),rgba(3,169,244,.45));border:1px solid rgba(255,255,255,.35);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);text-align:left;box-shadow:0 4px 18px -10px rgba(0,0,0,.5)}
+.card.ha .xvb i{width:38px;height:38px;--c:#fff;background:rgba(255,255,255,.22);color:#fff}.card.ha .xvb svg{width:22px;height:22px}
+.card.ha .xvb b{display:block;font-size:15px;font-weight:500}.card.ha .xvb small{display:block;font-size:12.5px;font-weight:400;opacity:.9}
+.card.ha #more{margin:0;background:var(--hb);border-radius:14px;border:1px solid var(--hd);color:var(--ht);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);font-family:inherit}
+@media(min-width:701px){
+ .card.ha{width:min(75vw,1500px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;align-content:start}
+ .card.ha .ext{display:flex}
+}
+@media(min-width:701px) and (max-width:1100px){.card.ha{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.card.ha .ext{display:flex}}
+@media(max-width:700px){.card.ha:not(.open) .c1 .hcl{display:none}.card.ha{max-height:56vh;width:100%}.card.ha:not(.open) .ext{display:none}.hwv b{font-size:30px}.hwi{width:50px;height:50px}}
+@media(max-width:400px){.hwf div:nth-child(n+7){display:none}.hwf{grid-template-columns:repeat(6,minmax(0,1fr))}.hwf.d{grid-template-columns:repeat(7,minmax(0,1fr))}.hwf.d div{display:flex}}
+.dists{display:flex;gap:6px;overflow-x:auto;padding:0 max(3vw,14px) 8px;scrollbar-width:none}
+.dists[hidden]{display:none}
+.dist{flex:none;min-height:36px;padding:0 8px 0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.14);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:#fff;font:600 13px Inter,sans-serif;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:8px;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+.dist small{font-weight:700;font-size:11px;background:rgba(255,255,255,.22);border-radius:999px;padding:2px 7px;text-shadow:none}
+.dist[aria-pressed=true]{background:#fff;color:#10201f;text-shadow:none}.dist[aria-pressed=true] small{background:#10201f;color:#fff}
+.dist:hover{border-color:#fff}.dist:focus-visible{outline:3px solid #fff;outline-offset:2px}
+</style>
+</head>
+<body>
+<canvas id="wall" aria-label="Animated climate wallpaper"></canvas>
+
+<div class="ui">
+ <header class="top">
+  <div class="logo"><svg width="28" height="28" viewBox="0 0 30 30" aria-hidden="true"><path d="M15 3 27 10 15 17 3 10z" fill="#ff5a3c"/><path d="M3 14l12 7 12-7M3 19l12 7 12-7" fill="none" stroke="#fff" stroke-width="3"/></svg><span>The Climate Change</span></div>
+  <div class="tabs" role="tablist" aria-label="Category"><button class="tab" role="tab" data-c="world" aria-selected="false">World climates</button><button class="tab" role="tab" data-c="brunei" aria-selected="true">Brunei</button></div>
+  <div class="stat off" id="stat"><i></i><span id="statt">Connecting to live weather…</span></div>
+  <div class="ctl">
+   <button class="ib" id="prev" aria-label="Previous wallpaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+   <button class="ib" id="play" aria-label="Pause slideshow" aria-pressed="true"><svg viewBox="0 0 24 24" fill="currentColor" id="pico"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button>
+   <button class="ib" id="next" aria-label="Next wallpaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button>
+   <button class="ib" id="bdb" aria-haspopup="dialog" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg><span>Live board</span></button>
+   <button class="ib" id="fsb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span>Full screen</span></button>
+  </div>
+ </header>
+
+ <div class="stage">
+  <section class="card ha" id="card" aria-live="polite">
+   <div class="hcol c1">
+    <div class="hc hh"><div class="kn" id="kn"></div><h1 id="city">Kyoto</h1><div class="sub" id="ctry"></div><div class="chips" id="chips"></div></div>
+    <div class="hc hw" id="wxc" data-x="1"></div>
+    <button class="xvb" id="xvb" aria-haspopup="dialog"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l9 4.5-9 4.5-9-4.5z"/><path d="M3 12.5l9 4.5 9-4.5M3 17l9 4.5 9-4.5" opacity=".75"/></svg></i><span><b>Exploded view</b><small>Pull today's climate apart, layer by layer</small></span></button>
+    <button id="more" aria-expanded="false">Show climate details</button>
+    <div class="hc hcl" data-x="5">
+     <div class="hct"><i style="--c:#9c27b0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg></i><span>Climate<small id="kt"></small></span><b id="kc"></b></div>
+     <div class="mh"><span>Average temperature by month</span><span id="rainyr"></span></div>
+     <div class="bars" id="bars"></div>
+     <p class="about" id="about" hidden></p>
+     <p class="why" id="why"></p>
+     <p class="seas" id="seas"></p>
+     <p class="cmp" id="cmp"></p>
+     <p class="note" id="note"></p>
+    </div>
+   </div>
+   <div class="ext">
+    <div class="hcol c2">
+     <div class="hg" id="gauges"></div>
+     <div class="hts" id="stats"></div>
+     <div class="hc hs" id="h24" data-x="4"></div>
+    </div>
+   </div>
+  </section>
+ </div>
+
+ <div class="dock">
+  <div class="dists" id="dists" role="group" aria-label="Filter Brunei places by district"></div>
+  <p class="hint">Tap a wallpaper to switch. Tap the selected one again for full screen. Click the climate card (or press E) for the exploded view. On the Brunei tab, filter by district or beaches. Weather data: <a href="https://open-meteo.com/" target="_blank" rel="noopener" style="color:inherit">Open-Meteo</a>.</p>
+  <div class="slider" id="slider" role="listbox" aria-label="Climate wallpapers"></div>
+ </div>
+</div>
+
+<section class="board" id="board" hidden role="dialog" aria-modal="true" aria-labelledby="bt">
+ <div class="bhead"><div><h2 id="bt">Brunei live board</h2><p id="bsub"></p></div><button class="ib" id="bx" aria-label="Close board"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span>Close</span></button></div>
+ <div class="bstats" id="bstats"></div>
+ <div class="tiles" id="tiles"></div>
+ <p class="note" id="bnote"></p>
+</section>
+<section class="xv" id="xv" hidden role="dialog" aria-modal="true" aria-labelledby="xvt">
+ <header class="xvhead">
+  <div><div class="xve">EXPLODED VIEW · <span id="xvsrc">LIVE</span></div><h2 id="xvt">Place</h2><p id="xvi"></p></div>
+  <div class="xvc">
+   <button class="ib" id="xvp" aria-label="Previous place"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+   <button class="ib" id="xvn" aria-label="Next place"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button>
+   <button class="ib" id="xvx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span>Close</span></button>
+  </div>
+ </header>
+ <div class="xvbody">
+  <div class="xvstage" id="xvstage"><svg class="xvl" id="xvl" aria-hidden="true"></svg><div class="xvcol l" id="xvcl"></div><div class="xvst" id="xvst"></div><div class="xvcol r" id="xvcr"></div></div>
+  <aside class="xvd" id="xvd" aria-live="polite"></aside>
+ </div>
+ <div class="xvf" id="xvf"></div>
+</section>
+
+<div class="fsui" aria-hidden="true" id="fsui">
+ <button class="ib fx" id="fsx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg><span>Exit full screen</span></button>
+ <button class="ib fa l" id="fsp" aria-label="Previous wallpaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+ <button class="ib fa r" id="fsn" aria-label="Next wallpaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button>
+ <div class="mini"><b id="mt">--</b><div><strong id="mc"></strong><span id="ms"></span></div></div>
+</div>
+
+<script>
+{
+const $=id=>document.getElementById(id);
+const TAU=Math.PI*2,R=Math.random;
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let NOSKY=false;
+function rng(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+
+/* ---------- drawing helpers ---------- */
+function vg(g,y0,y1,cs){const gr=g.createLinearGradient(0,y0,0,y1);cs.forEach((c,i)=>gr.addColorStop(i/(cs.length-1),c));return gr}
+function sky(g,W,H,cs){if(NOSKY)return;g.fillStyle=vg(g,0,H,cs);g.fillRect(0,0,W,H)}
+function glow(g,x,y,r,c){const z=c.replace(/[\d.]+\)$/,'0)'),h=c.replace(/[\d.]+\)$/,'.32)');const gr=g.createRadialGradient(x,y,0,x,y,r*4);gr.addColorStop(0,c);gr.addColorStop(.25,h);gr.addColorStop(1,z);g.fillStyle=gr;g.fillRect(x-r*4,y-r*4,r*8,r*8);g.fillStyle=c;g.beginPath();g.arc(x,y,r,0,TAU);g.fill()}
+function ridge(g,W,H,y,amp,fr,sd,col,smooth){g.fillStyle=col;g.beginPath();g.moveTo(-W*.5,H+2);for(let x=-W*.5;x<=W*1.5;x+=W/120){const u=x/W*fr*TAU;let v=Math.sin(u+sd)*.55+Math.sin(u*2.3+sd*1.7)*.3;if(!smooth)v+=Math.sin(u*5.1+sd*.6)*.15;g.lineTo(x,y-v*amp)}g.lineTo(W*1.5,H+2);g.closePath();g.fill()}
+function dune(g,W,H,y,amp,fr,sd,c1,c2){g.fillStyle=vg(g,y-amp,H,[c1,c2]);g.beginPath();g.moveTo(-W*.5,H+2);for(let x=-W*.5;x<=W*1.5;x+=W/120){const u=x/W*fr*TAU+sd;g.lineTo(x,y-(Math.sin(u)+.35*Math.sin(u*2+1))*amp)}g.lineTo(W*1.5,H+2);g.closePath();g.fill()}
+function canopy(g,W,H,y,r,sd,col){const q=rng(sd);g.fillStyle=col;g.beginPath();for(let x=-W*.5;x<W*1.5;x+=r*.8){const rr=r*(.7+q()*.6),yy=y-q()*r*.6;g.moveTo(x+rr,yy);g.arc(x,yy,rr,0,TAU)}g.fill();g.fillRect(-W*.5,y,W*2,H-y)}
+function mist(g,W,H,y,h,t,c){const z=c.replace(/[\d.]+\)$/,'0)');g.fillStyle=vg(g,y-h,y+h,[z,c,z]);g.fillRect(-W*.5+Math.sin(t*.12)*W*.05,y-h,W*2,h*2)}
+function water(g,W,H,y,c1,c2,t,sd,rc){g.fillStyle=vg(g,y,H,[c1,c2]);g.fillRect(-W*.5,y,W*2,H-y);const q=rng(sd);g.fillStyle=rc;for(let i=0;i<46;i++){const k=Math.pow(q(),1.5),yy=y+(H-y)*k,w=W*(.03+q()*.07)*(1+k),x=(q()*1.8-.4)*W+Math.sin(t*.6+i)*W*.012;g.fillRect(x,yy,w,1.5)}}
+const STAR=(()=>{const q=rng(5);return Array.from({length:190},()=>[q(),q()*.65,q()*1.4+.4,q()*6])})();
+function stars(g,W,H,t,a){if(NOSKY)return;g.fillStyle='#fff';STAR.forEach(([x,y,r,p])=>{g.globalAlpha=Math.min(1,a*(.4+.6*Math.sin(t*1.4+p)**2));g.fillRect(x*W,y*H,r,r)});g.globalAlpha=1}
+const CL=(()=>{const q=rng(9);return Array.from({length:7},()=>({x:q()*1.4,y:.06+q()*.28,r:.05+q()*.06,v:.004+q()*.006}))})();
+function clouds(g,W,H,t,a){const s=Math.min(W,H);g.fillStyle=`rgba(255,255,255,${a})`;CL.forEach(c=>{const x=(((c.x+t*c.v)%1.6)-.3)*W,y=c.y*H,r=c.r*s*1.6;g.beginPath();g.arc(x,y,r,0,TAU);g.arc(x+r*.9,y+r*.15,r*.8,0,TAU);g.arc(x-r*.9,y+r*.2,r*.7,0,TAU);g.arc(x+r*.2,y-r*.45,r*.75,0,TAU);g.fill()})}
+
+/* sakura */
+const BL=(()=>{const q=rng(7),a=[],P=[[-.22,.08],[.18,.02],[.46,.16],[.72,.1]],tw=[[.28,.06,.34,.2],[.5,.13,.6,.26],[.1,.06,.06,.2],[.64,.12,.8,.2]];const bz=(u,i)=>(1-u)**3*P[0][i]+3*(1-u)**2*u*P[1][i]+3*(1-u)*u*u*P[2][i]+u**3*P[3][i];
+ for(let i=0;i<80;i++){let x,y;if(i<44){const u=.2+q()*.8;x=bz(u,0);y=bz(u,1)}else{const w=tw[i%4],u=q();x=w[0]+(w[2]-w[0])*u;y=w[1]+(w[3]-w[1])*u}a.push({x:x+(q()-.5)*.07,y:y+(q()-.5)*.06,r:.008+q()*.015,c:['#ffc4d6','#ff9fbf','#ffe2ea','#f78fb3'][i%4]})}return{a,P,tw}})();
+function branch(g,W,H,t){const s=Math.min(W,H)*1.1,sw=Math.sin(t*.7)*.006,{a,P,tw}=BL;g.save();g.strokeStyle='#4b2a3d';g.lineCap='round';g.lineWidth=s*.026;g.beginPath();g.moveTo(P[0][0]*s,P[0][1]*s);g.bezierCurveTo(P[1][0]*s,(P[1][1]+sw*.5)*s,P[2][0]*s,(P[2][1]+sw)*s,P[3][0]*s,(P[3][1]+sw*1.4)*s);g.stroke();
+ g.lineWidth=s*.008;tw.forEach(w=>{g.beginPath();g.moveTo(w[0]*s,(w[1]+sw*w[0]*1.5)*s);g.lineTo(w[2]*s,(w[3]+sw*w[2]*1.8)*s);g.stroke()});
+ a.forEach(b=>{g.fillStyle=b.c;g.beginPath();g.arc(b.x*s,(b.y+sw*b.x*1.6)*s,b.r*s,0,TAU);g.fill()});g.restore()}
+function pagoda(g,x,y,h,c){g.fillStyle=c;const n=5,th=h/(n+1.2);for(let i=0;i<n;i++){const w=h*.46*(1-i*.13),yy=y-i*th;g.fillRect(x-w*.32,yy-th,w*.64,th);g.beginPath();g.moveTo(x-w*.64,yy-th*.6);g.quadraticCurveTo(x-w*.36,yy-th*.84,x-w*.22,yy-th*1.08);g.lineTo(x+w*.22,yy-th*1.08);g.quadraticCurveTo(x+w*.36,yy-th*.84,x+w*.64,yy-th*.6);g.closePath();g.fill()}g.fillRect(x-1.5,y-n*th-th*1.4,3,th*1.4)}
+/* kampong ayer */
+function stilts(g,W,H,y,s){const q=rng(21);g.strokeStyle='#3a2a20';g.lineWidth=Math.max(1.5,s*.004);g.fillStyle='#4a3626';g.fillRect(-W*.5,y-s*.014,W*2,s*.01);
+ for(let x=-W*.45;x<W*1.45;x+=s*(.15+q()*.08)){const w=s*(.09+q()*.05),h=s*(.05+q()*.025),bt=y-s*.02;
+  for(let k=0;k<4;k++){const px=x+w*k/3;g.beginPath();g.moveTo(px,bt);g.lineTo(px,y+s*.05);g.stroke()}
+  g.fillStyle=['#efe4cc','#d7e8de','#f3d9b8','#cfe0ee'][q()*4|0];g.fillRect(x,bt-h,w,h);
+  g.fillStyle=['#a5432f','#2f5f7a','#7b3b2a','#3d6e5a'][q()*4|0];g.beginPath();g.moveTo(x-w*.08,bt-h);g.lineTo(x+w/2,bt-h-s*.04);g.lineTo(x+w*1.08,bt-h);g.closePath();g.fill();
+  g.fillStyle='#2b2620';g.fillRect(x+w*.42,bt-h*.72,w*.17,h*.72);g.fillRect(x+w*.12,bt-h*.7,w*.14,h*.3)}}
+/* aurora */
+function aurora(g,W,H,t){g.save();g.globalCompositeOperation='lighter';const len=H*.34;
+ [['rgba(80,255,170,',0],['rgba(60,200,255,',1.7],['rgba(170,120,255,',3.1]].forEach(([c,k],i)=>{const gr=g.createLinearGradient(0,0,0,len);gr.addColorStop(0,c+'0)');gr.addColorStop(.55,c+(.34-i*.08)+')');gr.addColorStop(1,c+'0)');g.fillStyle=gr;
+  for(let x=-W*.3;x<W*1.3;x+=5){const y=H*(.1+i*.05)+Math.sin(x*.0035+t*.25+k)*H*.07+Math.sin(x*.009-t*.4+k)*H*.03;g.globalAlpha=.55+.45*Math.sin(x*.02+t*1.2+k);g.save();g.translate(x,y);g.fillRect(0,0,5,len);g.restore()}});g.restore()}
+function cabin(g,x,y,s,body,roof){const w=s*.09,h=s*.05;g.fillStyle=body;g.fillRect(x,y-h,w,h);g.fillStyle=roof;g.beginPath();g.moveTo(x-w*.12,y-h);g.lineTo(x+w/2,y-h-s*.035);g.lineTo(x+w*1.12,y-h);g.closePath();g.fill();glow(g,x+w*.3,y-h*.55,s*.008,'rgba(255,206,110,1)');g.fillStyle='rgba(255,206,110,1)';g.fillRect(x+w*.62,y-h*.7,w*.18,h*.32)}
+/* alps */
+function horn(g,W,H,s){const x=W*.6,y=H*.16;g.fillStyle='#eef3f9';g.beginPath();g.moveTo(x-s*.58,H*.72);g.lineTo(x-s*.05,y+s*.04);g.lineTo(x,y);g.lineTo(x+s*.03,y+s*.03);g.lineTo(x+s*.62,H*.72);g.closePath();g.fill();
+ g.fillStyle='#93a8c2';g.beginPath();g.moveTo(x,y);g.lineTo(x+s*.03,y+s*.03);g.lineTo(x+s*.62,H*.72);g.lineTo(x+s*.08,H*.72);g.closePath();g.fill();
+ g.strokeStyle='rgba(70,90,115,.5)';g.lineWidth=2;[[0,.08,-.12,.3],[.02,.1,.1,.32],[-.03,.15,-.25,.4],[.05,.2,.25,.44]].forEach(([a,b,c,d])=>{g.beginPath();g.moveTo(x+a*s,y+b*s);g.lineTo(x+c*s,y+d*s);g.stroke()})}
+function pines(g,W,H,y,s,sd,col){const q=rng(sd);g.fillStyle=col;for(let x=-W*.5;x<W*1.5;x+=s*(.02+q()*.03)){const h=s*(.06+q()*.06),w=h*.36,yy=y+q()*s*.03;g.beginPath();g.moveTo(x,yy-h);g.lineTo(x+w,yy);g.lineTo(x-w,yy);g.closePath();g.fill()}g.fillRect(-W*.5,y+s*.02,W*2,H)}
+/* santorini */
+function sea(g,W,H,t,s){g.fillStyle=vg(g,H*.56,H,['#2a86c4','#0d4a86']);g.fillRect(-W*.5,H*.56,W*2,H);const q=rng(51);g.fillStyle='#fff';for(let i=0;i<100;i++){const x=(q()*1.8-.4)*W,y=H*(.57+q()*.43),f=Math.sin(t*2.2+i*1.7)**8;g.globalAlpha=f*.9;g.fillRect(x,y,s*.012*(1+y/H),1.6)}g.globalAlpha=1}
+function boat(g,W,H,t,s){const x=((t*.012)%1.5-.25)*W,y=H*.64,w=s*.05;g.fillStyle='#f4f4f0';g.beginPath();g.moveTo(x-w,y);g.lineTo(x+w,y);g.lineTo(x+w*.7,y+w*.25);g.lineTo(x-w*.7,y+w*.25);g.closePath();g.fill();g.beginPath();g.moveTo(x,y-w*1.4);g.lineTo(x+w*.7,y-w*.1);g.lineTo(x,y-w*.1);g.closePath();g.fill()}
+function cliff(g,W,H,s){g.save();g.translate(W,0);g.scale(-1,1);const cy=x=>x<W*.05?H*.6+(x+W*.5)/(W*.55)*H*.015:H*.615+Math.pow(Math.min(1,(x-W*.05)/(W*.45)),1.6)*H*.4;
+ g.fillStyle=vg(g,H*.6,H,['#b5785a','#6e3b2a']);g.beginPath();g.moveTo(-W*.5,H+2);for(let x=-W*.5;x<=W*.52;x+=W/80)g.lineTo(x,cy(x));g.lineTo(W*.52,H+2);g.closePath();g.fill();
+ const q=rng(61),hs=[];for(let i=0;i<75;i++){const x=(q()*.85-.45)*W,w=s*(.035+q()*.035),h=s*(.025+q()*.025);hs.push([x,cy(x+w/2)+q()*H*.12+h,w,h,q()])}
+ hs.sort((a,b)=>a[1]-b[1]).forEach(([x,y,w,h,r])=>{if(y>H+h)return;g.fillStyle='#fbfaf5';g.fillRect(x,y-h,w,h);g.fillStyle='#dde3ea';g.fillRect(x+w*.75,y-h,w*.25,h);g.fillStyle=r<.5?'#1f5fbf':'#2f3a46';g.fillRect(x+w*.2,y-h*.6,w*.16,h*.38)});
+ const dx=W*.1,dy=cy(dx)+H*.05;g.fillStyle='#fbfaf5';g.fillRect(dx-s*.04,dy-s*.05,s*.08,s*.05);g.fillStyle='#1d5cc4';g.beginPath();g.arc(dx,dy-s*.05,s*.036,Math.PI,0);g.fill();g.restore()}
+/* savanna */
+function tree(g,x,y,h,c){g.fillStyle=c;g.strokeStyle=c;g.lineWidth=Math.max(1.5,h*.05);g.beginPath();g.moveTo(x,y);g.lineTo(x,y-h*.6);g.moveTo(x,y-h*.45);g.lineTo(x-h*.2,y-h*.75);g.moveTo(x,y-h*.5);g.lineTo(x+h*.22,y-h*.78);g.stroke();g.beginPath();g.ellipse(x,y-h*.82,h*.42,h*.14,0,0,TAU);g.ellipse(x-h*.24,y-h*.74,h*.2,h*.1,0,0,TAU);g.ellipse(x+h*.26,y-h*.76,h*.22,h*.1,0,0,TAU);g.fill()}
+function mound(g,x,y,w,h,c){g.fillStyle=c;g.beginPath();g.moveTo(x-w,y);g.quadraticCurveTo(x-w*.6,y-h*.5,x-w*.25,y-h);g.quadraticCurveTo(x,y-h*1.08,x+w*.3,y-h*.9);g.quadraticCurveTo(x+w*.7,y-h*.4,x+w,y);g.closePath();g.fill()}
+function grass(g,W,H,t,s){const q=rng(41);g.strokeStyle='#2b0e05';g.lineWidth=Math.max(1.2,s*.003);g.beginPath();for(let i=0;i<280;i++){const x=(q()*1.8-.4)*W,y=H*(.9+q()*.12),h=s*(.04+q()*.09),w=Math.sin(t*1.4+x*.008)*h*.25;g.moveTo(x,y);g.quadraticCurveTo(x+w*.3,y-h*.6,x+w,y-h)}g.stroke();g.fillStyle='#2b0e05';g.fillRect(-W*.5,H*.97,W*2,H)}
+function birds(g,W,H,t){const s=Math.min(W,H);g.strokeStyle='rgba(60,20,10,.8)';g.lineWidth=2;for(let i=0;i<7;i++){const x=((t*.018+i*.11)%1.4-.2)*W,y=H*(.22+(i%3)*.05)+Math.sin(t+i)*H*.01,w=s*.014,f=Math.sin(t*6+i)*w*.6;g.beginPath();g.moveTo(x-w,y-f);g.quadraticCurveTo(x-w*.4,y-w*.3,x,y);g.quadraticCurveTo(x+w*.4,y-w*.3,x+w,y-f);g.stroke()}}
+/* antarctica */
+function erebus(g,W,H,s,t){const x=W*.66,y=H*.36;g.fillStyle='#c4d5e7';g.beginPath();g.moveTo(x-s*.42,H*.6);g.lineTo(x-s*.05,y);g.lineTo(x+s*.05,y);g.lineTo(x+s*.44,H*.6);g.closePath();g.fill();g.fillStyle='#a9bfd6';g.beginPath();g.moveTo(x+s*.05,y);g.lineTo(x+s*.44,H*.6);g.lineTo(x+s*.1,H*.6);g.closePath();g.fill();
+ for(let i=0;i<5;i++){const k=(t*.03+i*.2)%1;g.fillStyle=`rgba(255,255,255,${.5*(1-k)})`;g.beginPath();g.arc(x+k*s*.12,y-k*s*.16,s*(.02+k*.04),0,TAU);g.fill()}}
+function berg(g,x,y,w,h){g.fillStyle='#f6fbff';g.beginPath();g.moveTo(x-w,y);g.lineTo(x-w*.7,y-h*.7);g.lineTo(x-w*.2,y-h);g.lineTo(x+w*.4,y-h*.85);g.lineTo(x+w,y);g.closePath();g.fill();g.fillStyle='#b3d0e8';g.beginPath();g.moveTo(x-w*.2,y-h);g.lineTo(x+w*.4,y-h*.85);g.lineTo(x+w,y);g.lineTo(x+w*.1,y);g.closePath();g.fill()}
+function peng(g,x,y,h,t,i){const b=Math.sin(t*3+i)*h*.03;g.fillStyle='#14181f';g.beginPath();g.ellipse(x,y-h*.45+b,h*.2,h*.45,0,0,TAU);g.fill();g.beginPath();g.arc(x,y-h*.92+b,h*.13,0,TAU);g.fill();g.fillStyle='#f4f6f8';g.beginPath();g.ellipse(x+h*.05,y-h*.4+b,h*.12,h*.32,0,0,TAU);g.fill();g.fillStyle='#f0a030';g.beginPath();g.moveTo(x+h*.1,y-h*.95+b);g.lineTo(x+h*.24,y-h*.91+b);g.lineTo(x+h*.1,y-h*.87+b);g.fill()}
+
+/* ---------- the eight wallpapers ---------- */
+const S=[
+ {name:'Sakura zen',city:'Kyoto',co:'Japan',tz:'Asia/Tokyo',la:35.01,lo:135.77,k:'Cfa',kt:'Humid subtropical',m:[4.8,5.4,8.8,14.4,19.5,23.3,27.3,28.5,24.4,18.4,12.5,7.2],rain:1520,hum:66,wind:7,amp:4.5,wx:1,sig:'petal',
+  why:'Kyoto sits in a basin ringed by hills, so summer heat and winter cold both get trapped. East Asian monsoon winds bring humid, rainy summers and drier, crisp winters.',
+  sm:'WWSSSRHHTAAW',ss:{W:'Winter: cold, crisp and mostly dry, with the odd light snowfall.',S:'Spring: mild and fresh. Cherry blossoms usually peak in early April.',R:'Tsuyu: the early-summer rainy season, grey and damp for weeks.',H:'High summer: hot and very humid, often above 33°C by day.',T:'Late summer: typhoon season can bring heavy rain and wind.',A:'Autumn: cool, clear days and red maple leaves.'},
+  draw(g,W,H,t,L){const s=Math.min(W,H);sky(g,W,H,['#f1b2c6','#f9cfd8','#ffe9df']);
+   L(.04,()=>glow(g,W*.7,H*.3,s*.06,'rgba(255,248,238,1)'));L(.12,()=>ridge(g,W,H,H*.56,H*.07,1,1,'#dcaec6'));
+   L(.24,()=>{ridge(g,W,H,H*.64,H*.07,1.5,4,'#b98aac');pagoda(g,W*.68,H*.64,s*.26,'#6d4566')});L(.34,()=>mist(g,W,H,H*.66,H*.05,t,'rgba(255,236,242,.75)'));
+   L(.45,()=>canopy(g,W,H,H*.77,s*.03,13,'#e79ab8'));L(.6,()=>water(g,W,H,H*.8,'#9a6a8f','#5b3658',t,17,'rgba(255,220,235,.35)'));L(.9,()=>branch(g,W,H,t))}},
+ {name:'Desert dunes',city:'Riyadh',co:'Saudi Arabia',tz:'Asia/Riyadh',la:24.71,lo:46.68,k:'BWh',kt:'Hot desert',m:[14.4,17,21.3,26.3,32.5,35.4,36.6,36.2,33.2,27.7,20.8,15.8],rain:110,hum:25,wind:13,amp:7,wx:0,sig:'sand',
+  why:'Riyadh sits under the subtropical high-pressure belt, where sinking air stops clouds from forming. Far from the sea, it swings from very hot days to cool nights.',
+  sm:'WWSSHHHHHAAW',ss:{W:'Winter: mild days and chilly nights. Most of the year\'s little rain falls now.',S:'Spring: warming fast, with dust storms.',H:'Summer: extreme dry heat, often above 43°C by day.',A:'Autumn: still hot by day, but nights cool quickly.'},
+  draw(g,W,H,t,L){const s=Math.min(W,H);sky(g,W,H,['#ee8a4c','#f6b469','#fbd99c','#fdeccb']);
+   L(.05,()=>glow(g,W*.3,H*.34,s*.065,'rgba(255,248,222,1)'));L(.12,()=>ridge(g,W,H,H*.6,H*.025,.7,2,'#d99560'));
+   L(.25,()=>dune(g,W,H,H*.68,H*.05,.6,1,'#eaa564','#d38443'));L(.42,()=>dune(g,W,H,H*.78,H*.06,.45,2.5,'#d8843f','#b5622a'));L(.65,()=>dune(g,W,H,H*.9,H*.06,.35,4,'#bf6a2f','#8c4420'))}},
+ {name:'Aurora night',city:'Tromsø',co:'Norway',tz:'Europe/Oslo',la:69.65,lo:18.96,k:'Dfc',kt:'Subarctic',m:[-4.4,-4.5,-3.2,0,4.6,9,12.4,11.3,7.1,2.5,-1.1,-3.3],rain:1030,hum:77,wind:18,amp:1.5,wx:0,sig:null,night:1,
+  why:'At almost 70°N, Tromsø has weeks of darkness in winter and weeks of midnight sun in summer. The warm North Atlantic Current keeps its coast far milder than other places this far north.',
+  sm:'DLLLMMMAAADD',ss:{D:'Dark season: the sun barely rises. The best time to see the northern lights.',L:'Late winter: deep snow, with daylight returning fast.',M:'Midnight sun: daylight around the clock.',A:'Autumn: cool and wet, with aurora nights returning.'},
+  draw(g,W,H,t,L){const s=Math.min(W,H);sky(g,W,H,['#030716','#0a1735','#16305a']);stars(g,W,H,t,1);
+   L(.05,()=>aurora(g,W,H,t));L(.2,()=>{ridge(g,W,H,H*.62,H*.15,1.1,3,vg(g,H*.45,H*.66,['#e6eef9','#8ea2c6','#26395f']))});
+   L(.35,()=>{g.fillStyle=vg(g,H*.7,H,['#0b1a38','#040a1a']);g.fillRect(-W*.5,H*.7,W*2,H);g.fillStyle='rgba(80,255,170,.08)';for(let i=0;i<10;i++)g.fillRect(-W*.5+Math.sin(t*.3+i)*W*.02,H*(.72+i*.012),W*2,H*.005)});
+   L(.6,()=>{ridge(g,W,H,H*.88,H*.03,.8,1,'#cdd9ea',true);cabin(g,W*.72,H*.875,s,'#4a2420','#e8eff8')})}},
+ {name:'Alpine snow',city:'Zermatt',co:'Switzerland',tz:'Europe/Zurich',la:46.02,lo:7.75,k:'Dfc',kt:'Subarctic (mountain)',m:[-5.6,-4.6,-1.4,2.3,6.6,10.3,12.7,12.3,8.9,4.9,-.6,-4.4],rain:690,hum:70,wind:6,amp:5,wx:71,sig:null,
+  why:'Zermatt is about 1,600 m above sea level, and air cools roughly 6.5°C for every 1,000 m you climb. High peaks all around block rain clouds, so it is sunnier and drier than much of the Alps.',
+  sm:'WWWSSUUUUAAW',ss:{W:'Winter: deep snow, cold and clear mountain air.',S:'Spring: snowmelt, and the lower slopes turn green.',U:'Summer: mild days, cool nights and afternoon storms.',A:'Autumn: larch trees turn gold and the first snows arrive.'},
+  draw(g,W,H,t,L){const s=Math.min(W,H);sky(g,W,H,['#4d97dc','#9ccbf0','#e6f3ff']);
+   L(.04,()=>glow(g,W*.2,H*.2,s*.035,'rgba(255,255,240,1)'));L(.1,()=>{ridge(g,W,H,H*.6,H*.08,1.4,6,'#c2d3e6');horn(g,W,H,s)});
+   L(.25,()=>ridge(g,W,H,H*.7,H*.05,1.3,2,'#dbe6f1',true));L(.42,()=>pines(g,W,H,H*.76,s,9,'#24493f'));
+   L(.7,()=>{ridge(g,W,H,H*.9,H*.025,.7,5,'#f4f8fc',true);cabin(g,W*.22,H*.885,s,'#6b3f22','#f1f5fa')})}},
+ {name:'Aegean blue',city:'Santorini',co:'Greece',tz:'Europe/Athens',la:36.42,lo:25.43,k:'BSh',kt:'Semi-arid, Mediterranean pattern',m:[12,12,13.5,16.5,20.5,24.5,26.5,26.5,23.5,20,16.5,13.5],rain:370,hum:68,wind:20,amp:3,wx:0,sig:null,
+  why:'Santorini follows the Mediterranean pattern: dry, sunny summers under high pressure and mild winters when westerly winds bring rain. So little rain falls overall that it counts as semi-arid.',
+  sm:'WWSSSHHHHAAW',ss:{W:'Winter: mild and windy, the rainiest time of year.',S:'Spring: warm and sunny, with wildflowers on the cliffs.',H:'Summer: hot, dry and cloudless, cooled by the strong meltemi wind.',A:'Autumn: the sea is still warm and the first rains return.'},
+  draw(g,W,H,t,L){const s=Math.min(W,H);sky(g,W,H,['#2a86d0','#79c1ec','#d8f1ff']);
+   L(.04,()=>glow(g,W*.62,H*.2,s*.045,'rgba(255,253,236,1)'));L(.1,()=>ridge(g,W,H,H*.555,H*.025,.6,4,'#8eaec6',true));
+   L(.2,()=>sea(g,W,H,t,s));L(.3,()=>boat(g,W,H,t,s));L(.6,()=>cliff(g,W,H,s))}},
+ {name:'Savanna sunset',city:'Darwin',co:'Australia',tz:'Australia/Darwin',la:-12.46,lo:130.84,k:'Aw',kt:'Tropical savanna',m:[28.6,28.4,28.5,28.4,27.3,25.6,25.1,26,27.8,29.1,29.3,29.1],rain:1730,hum:70,wind:12,amp:4.5,wx:2,sig:null,
+  why:'Darwin is in the tropics, so it has two seasons instead of four. When monsoon winds blow in from the sea it pours; when dry winds blow from inland, it hardly rains for months. Giant termite mounds rise from the grass.',
+  sm:'WWWTDDDDDBBW',ss:{W:'Wet season: monsoon rain and storms almost every day.',T:'End of the wet: rains stop and tall grasses flatten.',D:'Dry season: warm sunny days, cooler nights, almost no rain.',B:'Build-up: hot and sticky, with lightning storms building.'},
+  draw(g,W,H,t,L){const s=Math.min(W,H);sky(g,W,H,['#ff5a36','#ff8a45','#ffc067','#ffe1a2']);
+   L(.05,()=>glow(g,W*.5,H*.6,s*.075,'rgba(255,238,196,1)'));L(.12,()=>birds(g,W,H,t));
+   L(.18,()=>{g.fillStyle='#a3452a';g.fillRect(-W*.5,H*.62,W*2,H);const q=rng(31);for(let x=-W*.5;x<W*1.5;x+=s*(.03+q()*.06))tree(g,x,H*.625,s*(.03+q()*.03),'#6b2614')});
+   L(.35,()=>{g.fillStyle=vg(g,H*.68,H,['#7a2c14','#3e1408']);g.fillRect(-W*.5,H*.68,W*2,H);const q=rng(33);for(let x=-W*.4;x<W*1.4;x+=s*(.18+q()*.25))tree(g,x,H*.69+q()*s*.02,s*(.08+q()*.06),'#3f1307')});
+   L(.55,()=>{const q=rng(35);for(let i=0;i<7;i++)mound(g,(q()*1.6-.3)*W,H*(.8+q()*.07),s*(.02+q()*.02),s*(.06+q()*.08),'#5c2410')});L(.85,()=>grass(g,W,H,t,s))}},
+ {name:'Polar ice',city:'McMurdo Station',co:'Antarctica',tz:'Antarctica/McMurdo',la:-77.85,lo:166.67,k:'EF',kt:'Ice cap',m:[-3,-9,-18,-21,-23,-23,-26,-27,-25,-19,-10,-3],rain:200,hum:70,wind:20,amp:2,wx:1,sig:'blow',
+  why:'Antarctica is the coldest, windiest and driest continent. The sun stays low and bright snow reflects most of its energy back to space, while cold, heavy air pours off the ice sheet as fierce winds.',
+  sm:'SSAANNNNPPSS',ss:{S:'Summer: 24-hour daylight, with temperatures near freezing.',A:'Autumn: the sun sinks fast and the cold returns.',N:'Polar night: months of darkness and fierce cold.',P:'Spring: the sun returns, but blizzards are still common.'},
+  draw(g,W,H,t,L){const s=Math.min(W,H);sky(g,W,H,['#98c6e8','#cbe5f5','#f2fbff']);
+   L(.04,()=>glow(g,W*.22,H*.47,s*.035,'rgba(255,250,232,1)'));L(.1,()=>{erebus(g,W,H,s,t);ridge(g,W,H,H*.58,H*.03,.9,1,'#bccee2',true)});
+   L(.22,()=>{g.fillStyle='#eef6fb';g.fillRect(-W*.5,H*.6,W*2,H*.07);g.fillStyle=vg(g,H*.665,H*.7,['#b5d3ea','#7fa9cc']);g.fillRect(-W*.5,H*.665,W*2,H*.036)});
+   L(.32,()=>{g.fillStyle=vg(g,H*.7,H,['#2f6690','#12324f']);g.fillRect(-W*.5,H*.7,W*2,H);const q=rng(71);g.fillStyle='rgba(245,251,255,.9)';for(let i=0;i<32;i++){const x=((q()*1.8-.4)+t*.002*(1+q()))%1.6*W-W*.3,y=H*(.72+q()*.18);g.beginPath();g.ellipse(x,y,s*(.01+q()*.03),s*.006,0,0,TAU);g.fill()}});
+   L(.45,()=>{berg(g,W*.14,H*.78,s*.12,s*.09);berg(g,W*.55,H*.75,s*.07,s*.05);berg(g,W*.92,H*.82,s*.16,s*.11)});
+   L(.75,()=>{ridge(g,W,H,H*.92,H*.02,.6,3,'#f7fbfe',true);[.58,.63,.66,.72,.8].forEach((x,i)=>peng(g,W*x,H*.925-(i%2)*s*.01,s*(.05+(i%3)*.01),t,i))})}}
+];
+S.forEach(s=>s.cat='world');
+
+/* ---------- Brunei scene helpers ---------- */
+function palm(g,x,y,h,t,c){const sw=Math.sin(t*.8+x*.01)*h*.03,tx=x+h*.08+sw,ty=y-h;g.strokeStyle=c;g.lineCap='round';g.lineWidth=h*.045;g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(x+h*.12,y-h*.5,tx,ty);g.stroke();g.lineWidth=h*.022;
+ for(let i=0;i<8;i++){const a=Math.PI*(1.05+i*.13)+Math.sin(t+i)*.04,l=h*.36,ex=tx+Math.cos(a)*l,ey=ty+Math.sin(a)*l*.6+h*.12;g.beginPath();g.moveTo(tx,ty);g.quadraticCurveTo(tx+Math.cos(a)*l*.5,ty+Math.sin(a)*l*.6-h*.06,ex,ey);g.stroke()}}
+function mosque(g,x,y,s){const w=s*.5,h=s*.1,dg=g.createLinearGradient(x-s*.1,0,x+s*.1,0);dg.addColorStop(0,'#fff0a8');dg.addColorStop(.45,'#f2c234');dg.addColorStop(1,'#a8740c');
+ g.fillStyle='#f6f3ea';g.fillRect(x-w/2,y-h,w,h);g.fillStyle='#c9c3b2';for(let i=0;i<9;i++){const ax=x-w/2+w*(i+.5)/9;g.beginPath();g.moveTo(ax-w*.025,y);g.lineTo(ax-w*.025,y-h*.5);g.arc(ax,y-h*.5,w*.025,Math.PI,0);g.lineTo(ax+w*.025,y);g.fill()}
+ const dy=y-h-s*.06;g.fillStyle='#f6f3ea';g.fillRect(x-s*.08,dy,s*.16,s*.06);g.fillStyle=dg;g.beginPath();g.moveTo(x-s*.095,dy);g.bezierCurveTo(x-s*.11,dy-s*.12,x-s*.02,dy-s*.15,x,dy-s*.2);g.bezierCurveTo(x+s*.02,dy-s*.15,x+s*.11,dy-s*.12,x+s*.095,dy);g.closePath();g.fill();g.fillRect(x-1.5,dy-s*.24,3,s*.05);
+ [-1,1].forEach(k=>{const cx=x+k*w*.44;g.fillStyle='#f6f3ea';g.fillRect(cx-s*.02,y-h-s*.03,s*.04,s*.03);g.fillStyle=dg;g.beginPath();g.arc(cx,y-h-s*.03,s*.022,Math.PI,0);g.fill()});
+ const mx=x+w*.62;g.fillStyle='#f6f3ea';g.fillRect(mx-s*.015,y-s*.42,s*.03,s*.42);g.fillRect(mx-s*.025,y-s*.3,s*.05,s*.012);g.fillRect(mx-s*.025,y-s*.4,s*.05,s*.012);g.fillStyle=dg;g.beginPath();g.moveTo(mx-s*.02,y-s*.42);g.quadraticCurveTo(mx,y-s*.49,mx,y-s*.52);g.quadraticCurveTo(mx,y-s*.49,mx+s*.02,y-s*.42);g.fill()}
+function barge(g,x,y,s){const w=s*.2;g.fillStyle='#e9e2cf';g.beginPath();g.moveTo(x-w*1.15,y-s*.06);g.lineTo(x-w*.9,y+s*.012);g.lineTo(x+w*.9,y+s*.012);g.lineTo(x+w*1.12,y-s*.05);g.lineTo(x+w,y-s*.02);g.lineTo(x-w,y-s*.02);g.closePath();g.fill();g.fillStyle='#e0b23a';g.fillRect(x-w*.3,y-s*.055,w*.6,s*.035);g.beginPath();g.moveTo(x-w*.36,y-s*.055);g.lineTo(x,y-s*.1);g.lineTo(x+w*.36,y-s*.055);g.fill()}
+function tower(g,x,y,s){const h=s*.42;g.strokeStyle='#3a3a30';g.lineWidth=Math.max(1.5,s*.004);g.beginPath();g.moveTo(x-s*.03,y);g.lineTo(x-s*.014,y-h);g.moveTo(x+s*.03,y);g.lineTo(x+s*.014,y-h);for(let i=0;i<8;i++){const a=y-h*i/8,b=y-h*(i+1)/8,wa=s*(.03-.016*i/8),wb=s*(.03-.016*(i+1)/8);g.moveTo(x-wa,a);g.lineTo(x+wb,b);g.moveTo(x+wa,a);g.lineTo(x-wb,b)}g.stroke();
+ g.fillStyle='#2c2f28';g.fillRect(x-s*.03,y-h-s*.008,s*.06,s*.008);const tx=x+s*.3,ty=y-h*.78;g.beginPath();g.moveTo(x+s*.02,y-h);g.quadraticCurveTo((x+tx)/2,ty+s*.03,tx,ty);g.moveTo(x+s*.02,y-h-s*.012);g.quadraticCurveTo((x+tx)/2,ty+s*.018,tx,ty-s*.012);g.stroke();
+ g.strokeStyle='#3b3528';g.lineWidth=s*.012;g.beginPath();g.moveTo(tx,y+s*.02);g.lineTo(tx,ty-s*.04);g.stroke();g.fillStyle='#2f5d45';[[0,-.09,.07],[-.05,-.06,.05],[.05,-.06,.055]].forEach(([a,b,r])=>{g.beginPath();g.arc(tx+a*s,ty+b*s,r*s,0,TAU);g.fill()})}
+function longboat(g,W,H,t,s){const x=((t*.02)%1.5-.25)*W,y=H*.87,w=s*.09;g.strokeStyle='rgba(235,240,225,.45)';g.lineWidth=1.5;g.beginPath();g.moveTo(x-w,y+3);g.lineTo(x-w*2.4,y+s*.012);g.moveTo(x-w,y+2);g.lineTo(x-w*2.4,y-s*.004);g.stroke();g.fillStyle='#4a2f1c';g.beginPath();g.moveTo(x-w,y);g.lineTo(x+w*1.1,y-s*.008);g.lineTo(x+w*.9,y+s*.01);g.lineTo(x-w*.9,y+s*.01);g.closePath();g.fill();g.fillStyle='#1f2a24';[-.5,0,.4].forEach(k=>{g.beginPath();g.arc(x+k*w,y-s*.016,s*.007,0,TAU);g.fill();g.fillRect(x+k*w-s*.006,y-s*.012,s*.012,s*.012)})}
+function bridge(g,W,H,t,s){const y=H*.66;g.fillStyle='#cdc3b4';for(let x=-W*.5;x<W*1.5;x+=s*.07)g.fillRect(x,y,s*.012,H*.72-y);
+ [W*.5,W*.82].forEach(tx=>{const top=y-s*.32;g.strokeStyle='rgba(245,240,232,.85)';g.lineWidth=1;g.beginPath();for(let i=1;i<=9;i++){g.moveTo(tx,top+s*.02);g.lineTo(tx-i*s*.045,y);g.moveTo(tx,top+s*.02);g.lineTo(tx+i*s*.045,y)}g.stroke();g.fillStyle='#e9e2d6';g.beginPath();g.moveTo(tx-s*.035,y+s*.04);g.lineTo(tx-s*.006,top);g.lineTo(tx+s*.006,top);g.lineTo(tx+s*.035,y+s*.04);g.lineTo(tx+s*.02,y+s*.04);g.lineTo(tx,top+s*.08);g.lineTo(tx-s*.02,y+s*.04);g.closePath();g.fill()});
+ g.fillStyle='#efe9df';g.fillRect(-W*.5,y-s*.012,W*2,s*.014);g.fillStyle='#a99d8c';g.fillRect(-W*.5,y+s*.002,W*2,s*.006);
+ const C=['#d23b2a','#f4f4f4','#2a5fb0','#222','#f2c234','#e8e8e8'];for(let i=0;i<9;i++){const d=i%2?1:-1,x=(((t*.03*d+i*.17)%1.6+1.6)%1.6-.3)*W;g.fillStyle=C[i%6];g.fillRect(x,y-s*.02,s*.018,s*.008)}}
+function casuarina(g,x,y,h,t){const q=rng(Math.round(x)+7),tx=x-h*.04;g.strokeStyle='#2a2418';g.lineCap='round';g.lineWidth=Math.max(2,h*.02);g.beginPath();g.moveTo(x,y);g.lineTo(tx,y-h);g.stroke();
+ const cl=[];for(let i=0;i<22;i++){const k=.35+q()*.65,side=q()<.5?-1:1,cx=x+(tx-x)*k+side*q()*h*.2*(1.1-k),cy=y-h*k-q()*h*.04;cl.push([cx,cy,x+(tx-x)*k,y-h*k])}
+ g.lineWidth=Math.max(1,h*.006);g.beginPath();cl.forEach(([cx,cy,bx,by])=>{g.moveTo(bx,by+h*.03);g.lineTo(cx,cy)});g.stroke();
+ g.fillStyle='rgba(38,40,26,.92)';g.strokeStyle='rgba(38,40,26,.7)';g.lineWidth=Math.max(.8,h*.003);
+ cl.forEach(([cx,cy],i)=>{const sw=Math.sin(t*1.1+i)*h*.006,w=h*(.05+(i%3)*.012);g.beginPath();g.ellipse(cx,cy,w,w*.42,0,0,TAU);g.fill();g.beginPath();for(let k=-6;k<=6;k++){const ox=cx+k*w/7;g.moveTo(ox,cy);g.quadraticCurveTo(ox+sw*.5,cy+w*.5,ox+sw,cy+w*(.7+.25*Math.cos(k)))}g.stroke()})}
+function pump(g,x,y,h,t,ph){const a=Math.sin(t*1.3+ph)*.22,px=x,py=y-h*.55,c=Math.cos(a),sn=Math.sin(a);g.strokeStyle=g.fillStyle='#1d1a26';g.lineCap='round';g.lineWidth=Math.max(2,h*.04);g.fillRect(x-h*.55,y-h*.03,h,h*.03);
+ g.beginPath();g.moveTo(x-h*.12,y);g.lineTo(px,py);g.lineTo(x+h*.1,y);g.stroke();const lx=px-c*h*.5,ly=py-sn*h*.5,rx=px+c*h*.35,ry=py+sn*h*.35;
+ g.lineWidth=Math.max(3,h*.06);g.beginPath();g.moveTo(lx,ly);g.lineTo(rx,ry);g.stroke();g.beginPath();g.moveTo(lx,ly-h*.08);g.quadraticCurveTo(lx-h*.13,ly,lx,ly+h*.1);g.lineTo(lx+h*.03,ly);g.closePath();g.fill();
+ g.lineWidth=Math.max(1.5,h*.015);g.beginPath();g.moveTo(lx-h*.07,ly+h*.06);g.lineTo(lx-h*.07,y);g.stroke();const cx=x+h*.3,cy=y-h*.16,ca=t*1.3+ph;g.beginPath();g.arc(cx,cy,h*.06,0,TAU);g.fill();g.lineWidth=Math.max(2,h*.035);g.beginPath();g.moveTo(rx,ry);g.lineTo(cx+Math.cos(ca)*h*.1,cy+Math.sin(ca)*h*.1);g.stroke()}
+
+/* ---------- Brunei places ---------- */
+const BN=[27.2,27.3,27.8,28.2,28.4,28.1,27.8,27.9,27.7,27.5,27.3,27.2];
+const bm=o=>BN.map(v=>Math.round((v+o)*10)/10);
+const BSM='NNNIISSSSINN',BSS={N:'Northeast monsoon: the wettest stretch of the year, with heavy downpours.',I:'Inter-monsoon: hot, with afternoon thunderstorms.',S:'Southwest monsoon: fairly stable, but haze can drift in during dry spells.'},BSL={N:'Northeast monsoon',I:'Inter-monsoon',S:'Southwest monsoon'};
+const BR=[
+ {name:'Golden dome',city:'Omar Ali Saifuddien Mosque',co:'Bandar Seri Begawan, Brunei-Muara',la:4.89,lo:114.94,m:bm(0),amp:4,hum:80,wind:7,wx:2,rainTxt:'about 3,000 mm rain a year in the capital',
+  about:'Completed in 1958 in the heart of the capital, the mosque stands beside an artificial lagoon that holds a replica of a 16th-century royal barge. Its main dome is covered in gold.',
+  why:'Low-lying and close to the Brunei River and the sea, the capital shows Brunei\'s standard climate: hot, humid and wet in every month of the year.',
+  cmp:'This is the capital, so it matches Brunei\'s headline averages: about 27 to 28°C in every month.',
+  draw(g,W,H,t,L){const s=Math.min(W,H),wy=H*.66;sky(g,W,H,['#3d8fd2','#8fcaec','#e2f3fa']);
+   L(.04,()=>glow(g,W*.3,H*.16,s*.04,'rgba(255,253,236,1)'));L(.1,()=>canopy(g,W,H,H*.62,s*.03,81,'#6f9c86'));L(.25,()=>mosque(g,W*.6,wy,s));
+   L(.32,()=>{water(g,W,H,wy,'#4f8fa8','#1f4f68',t,83,'rgba(255,255,255,.3)');g.save();g.beginPath();g.rect(-W*.5,wy,W*2,H);g.clip();g.translate(0,wy*2);g.scale(1,-1);g.globalAlpha=.28;mosque(g,W*.6,wy,s);g.restore()});
+   L(.45,()=>barge(g,W*.36,wy+H*.06,s));L(.85,()=>{palm(g,W*.93,H*1.02,s*.55,t,'#1f3b2c');palm(g,W*1.03,H*1.04,s*.45,t+1,'#1f3b2c')})}},
+ {name:'Water village',city:'Kampong Ayer',co:'Bandar Seri Begawan, Brunei-Muara',la:4.88,lo:114.94,m:bm(0),amp:3.5,hum:84,wind:7,wx:63,rainTxt:'about 3,000 mm rain a year in the capital',
+  about:'One of the largest water villages in the world: homes, schools and mosques built on stilts over the Brunei River, linked by wooden walkways and water taxis.',
+  why:'Surrounded by river water, the village warms and cools a little more slowly than dry land, and river breezes help on hot afternoons.',
+  cmp:'Close to the rest of the capital, but the water keeps the swing between day and night slightly smaller.',
+  draw(g,W,H,t,L){const s=Math.min(W,H);sky(g,W,H,['#5d7d78','#8faea6','#c9d9cf']);
+   L(.08,()=>ridge(g,W,H,H*.5,H*.05,1,2,'#7f9f95'));L(.16,()=>canopy(g,W,H,H*.56,s*.035,3,'#5e8576'));L(.24,()=>mist(g,W,H,H*.57,H*.045,t,'rgba(220,235,228,.65)'));
+   L(.32,()=>canopy(g,W,H,H*.63,s*.045,5,'#365f50'));L(.5,()=>water(g,W,H,H*.68,'#5c8784','#2a4d4f',t,23,'rgba(220,240,235,.35)'));L(.7,()=>stilts(g,W,H,H*.8,s))}},
+ {name:'Canopy walkway',city:'Ulu Temburong National Park',co:'Temburong',la:4.54,lo:115.16,m:bm(-1.2),amp:4.5,hum:88,wind:4,wx:2,rainTxt:'wetter than the coast',
+  about:'A protected rainforest park reached by longboat up the Temburong River. Its canopy walkway climbs above the treetops for views across untouched forest.',
+  why:'Deep inland, the rainforest releases huge amounts of water vapour, so humidity is very high, mornings are often misty and afternoon storms are common.',
+  cmp:'Usually around 1°C cooler than the capital thanks to forest shade and higher ground, and wetter than the coast.',
+  draw(g,W,H,t,L){const s=Math.min(W,H);sky(g,W,H,['#86ab9e','#bcd6cb','#eaf3ec']);
+   L(.08,()=>ridge(g,W,H,H*.48,H*.08,1.2,5,'#8fb3a5'));L(.15,()=>mist(g,W,H,H*.5,H*.06,t,'rgba(235,245,238,.8)'));L(.22,()=>canopy(g,W,H,H*.58,s*.04,91,'#5d8a74'));
+   L(.3,()=>mist(g,W,H,H*.61,H*.05,t+2,'rgba(230,242,234,.7)'));L(.42,()=>{[[.42,.3],[.88,.36],[1.05,.28],[.55,.22]].forEach(([fx,fh])=>{const x=W*fx,y=H*.72;g.strokeStyle='#4a4234';g.lineWidth=s*.01;g.beginPath();g.moveTo(x,y);g.lineTo(x,y-s*fh);g.stroke();g.fillStyle='#3f6e55';[[0,0,.06],[-.05,.02,.045],[.05,.02,.05]].forEach(([a,b,r])=>{g.beginPath();g.arc(x+a*s,y-s*fh+b*s,r*s,0,TAU);g.fill()})});canopy(g,W,H,H*.72,s*.05,93,'#3b6a53');tower(g,W*.66,H*.75,s)});
+   L(.6,()=>{water(g,W,H,H*.8,'#7a8461','#3a432c',t,95,'rgba(230,240,220,.3)');longboat(g,W,H,t,s)})}},
+ {name:'Bay bridge',city:'Temburong Bridge',co:'Brunei Bay, Brunei-Muara to Temburong',la:4.95,lo:115.05,m:bm(-.3),amp:2.5,hum:82,wind:12,wx:2,rainTxt:'about 3,000 mm rain a year nearby',
+  about:'Opened in 2020, this bridge of about 30 km crosses Brunei Bay and its mangroves to link Brunei-Muara with Temburong, replacing a boat trip or a drive through Malaysia.',
+  why:'Out over open water, sea breezes keep afternoons a little cooler and the bay smooths out changes in temperature.',
+  cmp:'Slightly cooler than the city on hot afternoons because of steady breezes off the bay.',
+  draw(g,W,H,t,L){const s=Math.min(W,H);sky(g,W,H,['#f3a06a','#f8c792','#fde7c6']);
+   L(.04,()=>glow(g,W*.32,H*.42,s*.05,'rgba(255,240,205,1)'));L(.1,()=>canopy(g,W,H,H*.6,s*.012,101,'#6c7d5e'));
+   L(.2,()=>water(g,W,H,H*.6,'#d2a07c','#3f5872',t,103,'rgba(255,230,200,.45)'));L(.35,()=>bridge(g,W,H,t,s))}},
+ {name:'Casuarina coast',city:'Muara Beach',co:'Muara, Brunei-Muara',la:5.03,lo:115.07,m:bm(-.2),amp:3,hum:80,wind:12,wx:1,rainTxt:'about 3,000 mm rain a year nearby',
+  about:'A popular beach on the South China Sea near Muara port, lined with casuarina trees and loved for picnics, sea breezes and evening skies.',
+  why:'Facing the open South China Sea, the beach gets steady sea breezes. During the northeast monsoon, winds blow onshore and the sea turns rough.',
+  cmp:'Close to the capital\'s temperatures but breezier, especially from November to March.',
+  draw(g,W,H,t,L){const s=Math.min(W,H);sky(g,W,H,['#f9875a','#ffad74','#ffd6a0','#ffeccb']);
+   L(.04,()=>glow(g,W*.6,H*.56,s*.06,'rgba(255,236,190,1)'));
+   L(.15,()=>{water(g,W,H,H*.58,'#e79a6e','#5d6f8c',t,111,'rgba(255,220,170,.5)');g.fillStyle='rgba(255,236,190,.6)';for(let i=0;i<14;i++){const y=H*(.59+i*.016),w=s*(.05+i*.008)*(.6+.4*Math.sin(t*2+i));g.fillRect(W*.6-w/2,y,w,2)}g.fillStyle='#4b3d4f';g.fillRect(W*.82,H*.572,s*.05,s*.008);g.fillRect(W*.84,H*.562,s*.01,s*.01)});
+   L(.45,()=>{g.strokeStyle='rgba(255,255,255,.65)';g.lineWidth=2;for(let i=0;i<3;i++){g.beginPath();const y=H*(.795+i*.012)+Math.sin(t*.8+i)*H*.006;for(let x=-W*.5;x<W*1.5;x+=W/60)g.lineTo(x,y+Math.sin(x*.02+t+i)*2);g.stroke()}dune(g,W,H,H*.84,H*.012,.4,2,'#e8c79a','#c99f6c')});
+   L(.8,()=>{casuarina(g,W*.86,H*.98,s*.62,t);casuarina(g,W*.99,H*1,s*.5,t)})}},
+ {name:'Black-water lake',city:'Tasek Merimbun',co:'Tutong',la:4.59,lo:114.68,m:bm(.1),amp:5,hum:85,wind:4,wx:2,rainTxt:'about 3,000 mm or more a year',
+  about:'Brunei\'s largest natural lake. Its tea-coloured water gets its colour from the surrounding peat swamp forest, and it was declared an ASEAN Heritage Park in 1984.',
+  why:'Inland and sheltered from sea breezes, afternoons can get hotter here, while calm nights let mist form over the water by dawn.',
+  cmp:'Days can run a little hotter and nights a little cooler than the coast, because it is away from the sea.',
+  draw(g,W,H,t,L){const s=Math.min(W,H),ly=H*.62;sky(g,W,H,['#9fb6a6','#cbd9c8','#eef0e2']);
+   L(.08,()=>ridge(g,W,H,H*.5,H*.04,.9,7,'#8aa392',true));L(.14,()=>mist(g,W,H,H*.53,H*.05,t,'rgba(240,244,232,.8)'));L(.22,()=>canopy(g,W,H,H*.58,s*.04,121,'#4f6f55'));
+   L(.3,()=>{water(g,W,H,ly,'#5a4630','#1e150c',t,123,'rgba(230,220,200,.25)');g.save();g.beginPath();g.rect(-W*.5,ly,W*2,H);g.clip();g.translate(0,ly*2);g.scale(1,-1);g.globalAlpha=.32;canopy(g,W,H,H*.58,s*.04,121,'#4f6f55');g.restore()});
+   L(.45,()=>{const x=W*.62,y=H*.68;g.fillStyle='#3f5a3a';g.beginPath();g.ellipse(x,y,s*.16,s*.02,0,0,TAU);g.fill();g.fillStyle='#2f4a2e';[[-.1,-.03,.04],[-.04,-.05,.055],[.03,-.045,.05],[.1,-.03,.04]].forEach(([a,b,r])=>{g.beginPath();g.arc(x+a*s,y+b*s,r*s,0,TAU);g.fill()});
+    g.strokeStyle='#6b4a2c';g.lineWidth=Math.max(2,s*.004);g.beginPath();g.moveTo(x+s*.15,y-s*.004);g.lineTo(W*1.5,y-s*.004);for(let px=x+s*.17;px<W*1.5;px+=s*.04){g.moveTo(px,y-s*.004);g.lineTo(px,y+s*.016)}g.stroke()});
+   L(.55,()=>mist(g,W,H,H*.7,H*.04,t+4,'rgba(240,240,228,.55)'));
+   L(.85,()=>{const q=rng(127);g.strokeStyle='#24361f';g.lineWidth=Math.max(1.5,s*.004);g.beginPath();for(let i=0;i<70;i++){const x=W*(.72+q()*.4),y=H*1.01,h=s*(.1+q()*.18),w=Math.sin(t+i)*h*.08+(q()-.5)*h*.5;g.moveTo(x,y);g.quadraticCurveTo(x+w*.3,y-h*.6,x+w,y-h)}g.stroke()})}},
+ {name:'Oil coast',city:'Seria',co:'Belait',la:4.61,lo:114.32,m:bm(0),amp:3.5,hum:82,wind:9,wx:2,rainTxt:'wetter further inland in Belait',
+  about:'Oil was found at Seria in 1929. On the beach, the Billionth Barrel Monument marks the billionth barrel produced by the Seria field, and nodding pumps still work along the coast.',
+  why:'On the flat Belait coast, Seria has a classic coastal rainforest climate. Inland Belait is among the wettest parts of the country because moist air rises over higher ground.',
+  cmp:'Similar to the capital along the coast; inland Belait gets more rain.',
+  draw(g,W,H,t,L){const s=Math.min(W,H);sky(g,W,H,['#4a5d9e','#c98a86','#f7b47e','#fde0b0']);
+   L(.04,()=>glow(g,W*.7,H*.55,s*.045,'rgba(255,230,190,1)'));L(.12,()=>water(g,W,H,H*.58,'#c2848a','#4c5a86',t,131,'rgba(255,220,200,.4)'));
+   L(.22,()=>{[W*.42,W*.9].forEach((x,i)=>{g.fillStyle='#3a3550';g.fillRect(x,H*.565,s*.05,s*.006);g.fillRect(x+s*.005,H*.571,s*.003,s*.012);g.fillRect(x+s*.04,H*.571,s*.003,s*.012);g.beginPath();g.moveTo(x+s*.012,H*.565);g.lineTo(x+s*.02,H*.53);g.lineTo(x+s*.028,H*.565);g.fill();g.fillStyle=`rgba(255,120,80,${.5+.5*Math.sin(t*3+i)})`;g.fillRect(x+s*.019,H*.528,3,3)})});
+   L(.4,()=>{dune(g,W,H,H*.72,H*.012,.3,1,'#c9a27e','#8f6a4c');pump(g,W*.5,H*.72,s*.12,t,0);pump(g,W*.62,H*.73,s*.1,t,2)});
+   L(.7,()=>{dune(g,W,H,H*.92,H*.015,.5,3,'#7d5a40','#4a3424');pump(g,W*.8,H*.92,s*.3,t,1.3)})}}
+];
+
+/* ---------- beach helpers ---------- */
+function bPerson(g,x,y,h,t,ph,c,walk){g.strokeStyle=g.fillStyle=c;g.lineCap='round';g.lineWidth=Math.max(1.5,h*.12);const sw=walk?Math.sin(t*5+ph)*h*.18:0;g.beginPath();g.moveTo(x,y-h*.45);g.lineTo(x,y-h*.85);g.moveTo(x,y-h*.45);g.lineTo(x+sw,y);g.moveTo(x,y-h*.45);g.lineTo(x-sw,y);g.moveTo(x,y-h*.78);g.lineTo(x+sw*.8+h*.05,y-h*.5);g.stroke();g.beginPath();g.arc(x,y-h*.97,h*.11,0,TAU);g.fill()}
+function bSurf(g,W,H,y,t,n,a){g.strokeStyle=`rgba(255,255,255,${a})`;g.lineWidth=2;for(let i=0;i<n;i++){g.beginPath();const yy=y+i*H*.013+Math.sin(t*.8+i)*H*.005;for(let x=-W*.5;x<W*1.5;x+=W/60)g.lineTo(x,yy+Math.sin(x*.02+t+i)*2);g.stroke()}}
+function bShine(g,x,y,s,H,t,c){g.fillStyle=c;for(let i=0;i<14;i++){const yy=y+i*H*.016,w=s*(.05+i*.008)*(.6+.4*Math.sin(t*2+i));g.fillRect(x-w/2,yy,w,2)}}
+function bDrift(g,x,y,l,a,c){g.save();g.translate(x,y);g.rotate(a);g.fillStyle=c;g.beginPath();g.ellipse(0,0,l/2,l*.06,0,0,TAU);g.fill();g.strokeStyle=c;g.lineWidth=l*.05;g.lineCap='round';g.beginPath();g.moveTo(l*.2,0);g.lineTo(l*.32,-l*.14);g.moveTo(-l*.3,0);g.lineTo(-l*.42,l*.1);g.stroke();g.restore()}
+function bHut(g,x,y,s,c){const w=s*.07,h=s*.05;g.fillStyle='#3a2a1e';g.fillRect(x-w*.42,y-h,Math.max(1.5,s*.004),h);g.fillRect(x+w*.42-s*.004,y-h,Math.max(1.5,s*.004),h);g.fillStyle='#6a4a32';g.fillRect(x-w*.35,y-h*.45,w*.7,Math.max(1.5,s*.005));g.fillStyle=c;g.beginPath();g.moveTo(x-w*.62,y-h);g.lineTo(x,y-h*1.75);g.lineTo(x+w*.62,y-h);g.closePath();g.fill()}
+function bLamp(g,x,y,s,on){g.strokeStyle='#241f30';g.lineWidth=Math.max(1.5,s*.003);g.beginPath();g.moveTo(x,y);g.lineTo(x,y-s*.07);g.lineTo(x+s*.012,y-s*.07);g.stroke();if(on)glow(g,x+s*.012,y-s*.066,s*.004,'rgba(255,220,150,1)')}
+function bRig(g,x,y,s,t,i){g.fillStyle='#3a3550';g.fillRect(x,y,s*.05,s*.006);g.fillRect(x+s*.005,y+s*.006,s*.003,s*.012);g.fillRect(x+s*.04,y+s*.006,s*.003,s*.012);g.beginPath();g.moveTo(x+s*.012,y);g.lineTo(x+s*.02,y-s*.035);g.lineTo(x+s*.028,y);g.fill();g.fillStyle=`rgba(255,120,80,${.5+.5*Math.sin(t*3+i)})`;g.fillRect(x+s*.019,y-s*.038,3,3)}
+function bFisher(g,x,y,h,t,c){bPerson(g,x,y,h,t,0,c,false);const b=Math.sin(t*1.3)*h*.03;g.strokeStyle=c;g.lineWidth=Math.max(1.2,h*.035);g.beginPath();g.moveTo(x+h*.1,y-h*.55);g.quadraticCurveTo(x+h*.6,y-h*1.4,x+h*1.1,y-h*1.2+b);g.stroke();g.lineWidth=1;g.strokeStyle='rgba(30,20,30,.45)';g.beginPath();g.moveTo(x+h*1.1,y-h*1.2+b);g.lineTo(x+h*1.9,y-h*.2);g.stroke()}
+function bCyclist(g,x,y,h,c){const r=h*.2;g.strokeStyle=g.fillStyle=c;g.lineWidth=Math.max(1.4,h*.06);g.beginPath();g.arc(x-h*.28,y-r,r,0,TAU);g.moveTo(x+h*.28+r,y-r);g.arc(x+h*.28,y-r,r,0,TAU);g.moveTo(x-h*.28,y-r);g.lineTo(x-h*.02,y-r*2.2);g.lineTo(x+h*.28,y-r);g.moveTo(x-h*.02,y-r*2.2);g.lineTo(x+h*.2,y-r*2.4);g.moveTo(x-h*.04,y-r*2.3);g.lineTo(x+h*.04,y-h*.78);g.lineTo(x+h*.2,y-r*2.4);g.stroke();g.beginPath();g.arc(x+h*.06,y-h*.9,h*.1,0,TAU);g.fill()}
+function bSurfer(g,x,y,s,t,c){g.fillStyle='#f4f4f0';g.fillRect(x-s*.025,y,s*.05,Math.max(1.5,s*.005));g.fillStyle=c;g.beginPath();g.moveTo(x-s*.004,y-s*.004);g.lineTo(x+s*.004,y-s*.075);g.quadraticCurveTo(x+s*.036,y-s*.04,x+s*.022,y-s*.006);g.closePath();g.fill();bPerson(g,x-s*.012,y,s*.035,t,0,'#1d2233',false)}
+function bSail(g,x,y,s,c){g.fillStyle='#2b3140';g.beginPath();g.moveTo(x-s*.03,y);g.lineTo(x+s*.03,y);g.lineTo(x+s*.022,y+s*.009);g.lineTo(x-s*.022,y+s*.009);g.closePath();g.fill();g.fillStyle=c;g.beginPath();g.moveTo(x,y-s*.003);g.lineTo(x,y-s*.075);g.lineTo(x+s*.034,y-s*.004);g.closePath();g.fill();g.fillStyle='rgba(255,255,255,.85)';g.beginPath();g.moveTo(x-s*.003,y-s*.062);g.lineTo(x-s*.022,y-s*.006);g.lineTo(x-s*.003,y-s*.006);g.closePath();g.fill()}
+function bWall(g,W,H,y,s,c1,c2){const q=rng(301);g.fillStyle=c2;g.fillRect(-W*.5,y,W*2,s*.07);for(let x=-W*.5;x<W*1.5;x+=s*.022){const r=s*(.012+q()*.01);g.fillStyle=q()<.5?c1:c2;g.beginPath();g.ellipse(x,y+s*.065,r*1.3,r,0,0,TAU);g.fill()}g.fillStyle='#cbbfb6';g.fillRect(-W*.5,y-s*.006,W*2,s*.009)}
+function bResort(g,x,y,s){const w=s*.62,h=s*.11;g.fillStyle='#ede2cb';g.fillRect(x-w/2,y-h,w,h);g.fillStyle='#ddcda9';g.fillRect(x-w*.12,y-h*1.6,w*.24,h*.6);g.fillStyle='#a77a45';[[x-w/2,w*.38],[x+w*.12,w*.38]].forEach(([rx,rw])=>{g.beginPath();g.moveTo(rx-s*.01,y-h);g.lineTo(rx+rw/2,y-h-s*.035);g.lineTo(rx+rw+s*.01,y-h);g.closePath();g.fill()});g.beginPath();g.moveTo(x-w*.14,y-h*1.6);g.lineTo(x,y-h*1.6-s*.05);g.lineTo(x+w*.14,y-h*1.6);g.closePath();g.fill();
+ for(let r=0;r<3;r++)for(let c=0;c<24;c++){g.fillStyle=(c*7+r*3)%5?'rgba(255,214,140,.9)':'rgba(90,80,70,.55)';g.fillRect(x-w/2+s*.012+c*w/24.6,y-h+s*.014+r*h/3.2,s*.009,s*.013)}}
+function bLight(g,x,y,s,t){const h=s*.38,b=s*.04,tp=s*.024,ly=y-h-s*.022;g.fillStyle='#f4f1ea';g.beginPath();g.moveTo(x-b,y);g.lineTo(x-tp,y-h);g.lineTo(x+tp,y-h);g.lineTo(x+b,y);g.closePath();g.fill();g.fillStyle='rgba(0,0,0,.08)';g.beginPath();g.moveTo(x,y);g.lineTo(x,y-h);g.lineTo(x+tp,y-h);g.lineTo(x+b,y);g.closePath();g.fill();
+ g.fillStyle='#2b2b33';g.fillRect(x-tp*1.4,y-h-s*.004,tp*2.8,s*.006);g.fillRect(x-tp*1.1,y-h-s*.04,tp*2.2,s*.04);g.fillStyle='#ffe9a8';g.fillRect(x-tp*.8,y-h-s*.034,tp*1.6,s*.026);g.fillStyle='#2b2b33';g.beginPath();g.moveTo(x-tp*1.3,y-h-s*.04);g.lineTo(x,y-h-s*.066);g.lineTo(x+tp*1.3,y-h-s*.04);g.closePath();g.fill();
+ const a=Math.cos(t*.9);g.fillStyle='rgba(255,240,190,.2)';g.beginPath();g.moveTo(x,ly);g.lineTo(x+a*s*1.1,ly-s*.05);g.lineTo(x+a*s*1.1,ly+s*.05);g.closePath();g.fill()}
+function bJet(g,x,y,s,t,dir){g.fillStyle='rgba(255,255,255,.6)';g.beginPath();g.moveTo(x-dir*s*.02,y+s*.003);g.lineTo(x-dir*s*.22,y-s*.006);g.lineTo(x-dir*s*.22,y+s*.014);g.closePath();g.fill();g.fillStyle='#e8433a';g.beginPath();g.moveTo(x-dir*s*.03,y+s*.004);g.lineTo(x+dir*s*.035,y+s*.004);g.lineTo(x+dir*s*.025,y-s*.01);g.lineTo(x-dir*s*.02,y-s*.012);g.closePath();g.fill();bPerson(g,x,y-s*.008,s*.04,t,0,'#1d2233',false)}
+function bKite(g,x,y,s,t,c){const kx=x-s*.12+Math.sin(t*.7)*s*.04,ky=y-s*.28+Math.cos(t*.9)*s*.02;g.strokeStyle='rgba(30,30,40,.5)';g.lineWidth=1;g.beginPath();g.moveTo(x,y-s*.025);g.lineTo(kx-s*.06,ky+s*.012);g.moveTo(x,y-s*.025);g.lineTo(kx+s*.06,ky+s*.012);g.stroke();g.fillStyle=c;g.beginPath();g.moveTo(kx-s*.075,ky+s*.014);g.quadraticCurveTo(kx,ky-s*.05,kx+s*.075,ky+s*.014);g.quadraticCurveTo(kx,ky-s*.022,kx-s*.075,ky+s*.014);g.closePath();g.fill();g.fillStyle='rgba(255,255,255,.6)';g.fillRect(x-s*.05,y+s*.004,s*.12,1.5);g.fillStyle='#1d2233';g.fillRect(x-s*.02,y,s*.04,Math.max(1.5,s*.004));bPerson(g,x,y,s*.04,t,0,'#1d2233',false)}
+function bGrass(g,x0,x1,y,s,t,c,sd,n){const q=rng(sd);g.strokeStyle=c;g.lineWidth=Math.max(1.5,s*.004);g.beginPath();for(let i=0;i<n;i++){const x=x0+q()*(x1-x0),hh=s*(.08+q()*.14),w=Math.sin(t+i)*hh*.08+(q()-.5)*hh*.5;g.moveTo(x,y);g.quadraticCurveTo(x+w*.3,y-hh*.6,x+w,y-hh)}g.stroke()}
+function bGulls(g,W,H,t,n,y,c,sd){const q=rng(sd);g.strokeStyle=c;g.lineWidth=1.6;g.beginPath();for(let i=0;i<n;i++){const x=((q()+t*.01*(1+q()))%1.3-.15)*W,yy=H*(y+q()*.12),w=6+q()*6,f=Math.sin(t*4+i)*3;g.moveTo(x-w,yy-f);g.quadraticCurveTo(x-w/2,yy-w*.5,x,yy);g.quadraticCurveTo(x+w/2,yy-w*.5,x+w,yy-f)}g.stroke()}
+const bWrap=v=>((v%1.4)+1.4)%1.4-.2;
+
+const BEACHES=[
+ {name:'Sailing spit',city:'Serasa Beach',co:'Serasa, Brunei-Muara',dist:'Brunei-Muara',beach:true,la:4.99,lo:115.07,m:bm(-.2),amp:3,hum:80,wind:12,wx:1,rainTxt:'about 3,000 mm rain a year nearby',
+  about:'A 1 km artificial spit off Serasa Bay near Muara. The Royal Brunei Yacht Club and the Serasa Water Sports Complex are here, and the water is popular for windsurfing, kayaking and jet skiing.',
+  why:'It faces sheltered Brunei Bay rather than the open sea, so the water is calmer, while steady sea breezes make it a good place to sail.',
+  cmp:'About as warm as the capital, with breezier afternoons out on the water.',
+  draw(g,W,H,t,L){const s=Math.min(W,H),hy=H*.6;sky(g,W,H,['#3f9ad8','#98cfee','#e4f5fb']);
+   L(.04,()=>glow(g,W*.22,H*.18,s*.04,'rgba(255,252,235,1)'));L(.06,()=>clouds(g,W,H,t*.5,.5));
+   L(.1,()=>ridge(g,W,H,hy,H*.03,1.1,11,'#87a6ba',true));
+   L(.18,()=>water(g,W,H,hy,'#62b6d2','#1f5f7e',t,141,'rgba(255,255,255,.35)'));
+   L(.3,()=>{[[.1,'#ff6b4a',.66],[.5,'#ffd34a',.69],[.8,'#ffffff',.64]].forEach(([x0,c,yy],i)=>bSail(g,bWrap(x0+t*.006*(i+1))*W,H*yy+Math.sin(t+i)*2,s*(.9+i*.15),c));bSurfer(g,bWrap(.3+t*.012)*W,H*.72,s,t,'#3fd2a0');bSurfer(g,bWrap(.95+t*.009)*W,H*.75,s*1.1,t+2,'#ff4fa0')});
+   L(.5,()=>{g.fillStyle=vg(g,H*.76,H,['#efdcb3','#cdb184']);g.beginPath();g.moveTo(-W*.5,H+2);g.lineTo(-W*.5,H*.82);g.quadraticCurveTo(W*.35,H*.77,W*.66,H*.8);g.quadraticCurveTo(W*.95,H*.84,W*1.5,H*.86);g.lineTo(W*1.5,H+2);g.closePath();g.fill();
+    g.strokeStyle='#5b5f6a';g.lineWidth=Math.max(1,s*.003);for(let i=0;i<7;i++){const x=W*(.6+i*.045),y=H*(.797+i*.006);g.beginPath();g.moveTo(x,y);g.lineTo(x,y-s*(.1+(i%3)*.025));g.stroke();g.fillStyle='#f4f4f0';g.fillRect(x-s*.02,y-s*.004,s*.04,s*.008)}});
+   L(.85,()=>{casuarina(g,W*.08,H*1.02,s*.55,t);casuarina(g,-W*.03,H*1.03,s*.45,t+1)})}},
+ {name:'Wild shore',city:'Meragang Beach',co:'Serasa, Brunei-Muara',dist:'Brunei-Muara',beach:true,la:5.01,lo:115.02,m:bm(-.2),amp:3,hum:80,wind:13,wx:1,rainTxt:'about 3,000 mm rain a year nearby',
+  about:'A long, quiet stretch of sand on the South China Sea near the Marine Biodiversity Centre. With few facilities it feels wild, it is often almost empty on weekdays, and it is a favourite spot for sunsets.',
+  why:'Open to the South China Sea with little shelter, it feels the monsoons directly: calmer seas in the southwest monsoon, and onshore winds with rough surf from about November to March.',
+  cmp:'Similar temperatures to the capital, but windier, with bigger waves during the northeast monsoon.',
+  draw(g,W,H,t,L){const s=Math.min(W,H),hy=H*.56;sky(g,W,H,['#6d9fd0','#e8c38e','#fbe0b4']);
+   L(.04,()=>glow(g,W*.74,H*.47,s*.05,'rgba(255,236,190,1)'));L(.06,()=>bGulls(g,W,H,t,6,.16,'rgba(60,50,60,.7)',5));
+   L(.15,()=>{water(g,W,H,hy,'#a9b9bf','#33607a',t,151,'rgba(255,230,180,.45)');bShine(g,W*.74,hy+2,s,H,t,'rgba(255,236,190,.55)')});
+   L(.4,()=>{bSurf(g,W,H,H*.73,t,4,.7);dune(g,W,H,H*.79,H*.012,.35,4,'#ecd2a4','#c69d6c')});
+   L(.6,()=>{bDrift(g,W*.3,H*.87,s*.3,-.08,'#8a6a4c');bDrift(g,W*.62,H*.91,s*.2,.12,'#7a5c42')});
+   L(.85,()=>bGrass(g,W*.75,W*1.1,H*1.01,s,t,'#5c6b38',157,60))}},
+ {name:'Seawall sunset',city:'Tanjong Batu Beach',co:'Muara, Brunei-Muara',dist:'Brunei-Muara',beach:true,la:5.03,lo:115.05,m:bm(-.2),amp:3,hum:80,wind:12,wx:1,rainTxt:'about 3,000 mm rain a year nearby',
+  about:'Near Muara, a long man-made seawall was built to protect this stretch of coast from erosion. Its promenade has become a favourite place to walk, jog and cycle at sunset.',
+  why:'Waves driven by the northeast monsoon wear away soft coasts. Rock armour like this breaks up the waves\' energy before it reaches the land.',
+  cmp:'The same warm, humid climate as the capital, with stronger winds along the exposed coast.',
+  draw(g,W,H,t,L){const s=Math.min(W,H),hy=H*.58,wy=H*.72;sky(g,W,H,['#3b3a7a','#9a5f90','#f39a7a','#fbd2a0']);
+   L(.04,()=>glow(g,W*.38,H*.55,s*.05,'rgba(255,214,170,1)'));L(.08,()=>bGulls(g,W,H,t,5,.18,'rgba(40,30,60,.6)',9));
+   L(.15,()=>{water(g,W,H,hy,'#d98a86','#3d4a7a',t,161,'rgba(255,210,180,.45)');bShine(g,W*.38,hy+2,s,H,t,'rgba(255,214,170,.5)')});
+   L(.4,()=>{bWall(g,W,H,wy,s,'#5a5266','#3e3850');for(let i=0;i<7;i++)bLamp(g,W*(-.1+i*.22),wy,s,true)});
+   L(.5,()=>{bPerson(g,bWrap(.2+t*.02)*W,wy,s*.06,t,0,'#211c30',true);bPerson(g,bWrap(.65+t*.015)*W,wy,s*.055,t,1,'#211c30',true);bCyclist(g,bWrap(1.1-t*.035)*W,wy,s*.065,'#211c30')});
+   L(.75,()=>{const y=wy+s*.07;g.fillStyle='#2b2438';g.fillRect(-W*.5,y,W*2,H-y+2);const q=rng(167);for(let x=-W*.5;x<W*1.5;x+=s*.05){const r=s*(.03+q()*.03);g.fillStyle=q()<.5?'#3a3148':'#2b2438';g.beginPath();g.ellipse(x,y+s*.01,r*1.4,r,0,0,TAU);g.fill()}})}},
+ {name:'Fishing surf',city:'Tungku Beach',co:'Tungku, Brunei-Muara',dist:'Brunei-Muara',beach:true,la:4.97,lo:114.86,m:bm(-.2),amp:3,hum:80,wind:12,wx:2,rainTxt:'about 3,000 mm rain a year nearby',
+  about:'West of the capital in Kampong Tungku, this beach is known for fishing, picnics and sunsets over the South China Sea. Parts of the shore have suffered from sand erosion over the years.',
+  why:'Brunei\'s coast faces northwest, so the sun sets over the sea here. Waves and currents keep moving sand along the shore, which is why erosion is an ongoing problem.',
+  cmp:'Practically the same climate as the capital, which is only a short drive inland.',
+  draw(g,W,H,t,L){const s=Math.min(W,H),hy=H*.57;sky(g,W,H,['#2c3a6c','#c85f5c','#f6a25d','#fbd08e']);
+   L(.04,()=>glow(g,W*.55,H*.54,s*.055,'rgba(255,220,170,1)'));
+   L(.15,()=>{water(g,W,H,hy,'#d7865d','#36456e',t,171,'rgba(255,214,170,.45)');bShine(g,W*.55,hy+2,s,H,t,'rgba(255,220,170,.5)')});
+   L(.35,()=>{for(let i=0;i<3;i++){const y=H*(.67+i*.035);g.fillStyle=`rgba(255,240,228,${.3+i*.2})`;g.beginPath();g.moveTo(-W*.5,y+s*.006);for(let x=-W*.5;x<=W*1.5;x+=W/80)g.lineTo(x,y-Math.max(0,Math.sin(x*.012+t*1.2+i*2))*s*.014);g.lineTo(W*1.5,y+s*.006);g.closePath();g.fill()}});
+   L(.5,()=>{dune(g,W,H,H*.8,H*.01,.3,6,'#c9906a','#7d5440');bFisher(g,W*.32,H*.83,s*.11,t,'#24182a');bFisher(g,W*.7,H*.84,s*.1,t+1,'#24182a')});
+   L(.85,()=>{g.fillStyle='#2a1d28';g.beginPath();g.moveTo(-W*.5,H+2);g.lineTo(-W*.5,H*.8);g.quadraticCurveTo(W*.02,H*.79,W*.14,H*.9);g.lineTo(W*.2,H+2);g.closePath();g.fill();const q=rng(177);for(let i=0;i<9;i++){g.beginPath();g.arc(W*(-.06+q()*.18),H*(.78+q()*.06),s*(.03+q()*.03),0,TAU);g.fill()}})}},
+ {name:'Resort shore',city:'Jerudong Beach',co:'Jerudong, Brunei-Muara',dist:'Brunei-Muara',beach:true,la:4.95,lo:114.84,m:bm(-.2),amp:3,hum:80,wind:11,wx:1,rainTxt:'about 3,000 mm rain a year nearby',
+  about:'West of the capital, Jerudong Beach is lined by a grand beachfront resort hotel with a sunset viewpoint. Jerudong Park, a well-known theme park, is close by.',
+  why:'On sunny days the land heats up faster than the sea. Warm air rises over the land and cooler air flows in from the sea to replace it, giving the beach a refreshing afternoon sea breeze.',
+  cmp:'About as warm as the capital, but afternoons often feel fresher thanks to the sea breeze.',
+  draw(g,W,H,t,L){const s=Math.min(W,H),hy=H*.6;sky(g,W,H,['#1d2c58','#4a5c96','#c98a86','#f4bb86']);
+   L(.03,()=>{g.fillStyle='rgba(255,255,255,.8)';const q=rng(181);for(let i=0;i<40;i++)g.fillRect(q()*W,q()*H*.3,1.2,1.2)});
+   L(.05,()=>glow(g,W*.16,H*.58,s*.035,'rgba(255,200,150,1)'));
+   L(.15,()=>{water(g,W,H,hy,'#b07c86','#1f2c52',t,183,'rgba(255,210,170,.4)');bShine(g,W*.16,hy+2,s,H,t,'rgba(255,200,150,.45)')});
+   L(.35,()=>{g.fillStyle=vg(g,H*.7,H*.8,['#7d6a68','#4a3e48']);g.beginPath();g.moveTo(W*.38,H*.73);g.quadraticCurveTo(W*.6,H*.7,W*1.5,H*.7);g.lineTo(W*1.5,H*.8);g.lineTo(W*.38,H*.8);g.closePath();g.fill();bResort(g,W*.74,H*.72,s*.9)});
+   L(.6,()=>{bSurf(g,W,H,H*.79,t,2,.5);dune(g,W,H,H*.85,H*.01,.4,9,'#cfa883','#8c6a50')});
+   L(.85,()=>{palm(g,W*.08,H*1.02,s*.6,t,'#1a2238');palm(g,W*.97,H*1.03,s*.5,t+1,'#1a2238')})}},
+ {name:'River and sea',city:'Seri Kenangan Beach',co:'Kuala Tutong, Tutong',dist:'Tutong',beach:true,la:4.81,lo:114.64,m:bm(-.1),amp:3,hum:81,wind:11,wx:1,rainTxt:'about 3,000 mm or more a year',
+  about:'Also called Tutong Beach. A narrow spit about 2 km west of Tutong town separates the mirror-smooth Tutong River from the choppier South China Sea. It is lined with casuarinas, and its picnic huts fill up at weekends.',
+  why:'A spit forms when waves carry sand along the coast and drop it where the coastline changes direction, here at the mouth of the Tutong River. The sea side faces the wind and waves, while the river side stays sheltered and calm.',
+  cmp:'Coastal Tutong is very close to the capital in temperature, with a steady breeze off the sea.',
+  draw(g,W,H,t,L){const s=Math.min(W,H),hy=H*.52;sky(g,W,H,['#2f8ed6','#7cc2ee','#d8f0fb']);
+   L(.04,()=>glow(g,W*.82,H*.14,s*.04,'rgba(255,253,240,1)'));L(.06,()=>clouds(g,W,H,t*.4,.6));
+   L(.1,()=>{g.save();g.beginPath();g.rect(W*.56,0,W,H);g.clip();canopy(g,W,H,hy+1,s*.014,191,'#5f8a6e');g.restore()});
+   L(.18,()=>water(g,W,H,hy,'#4fa8cf','#1c5b7c',t,193,'rgba(255,255,255,.45)'));
+   L(.3,()=>{g.fillStyle=vg(g,hy,H,['#8f9f7c','#3c4f3c']);g.beginPath();g.moveTo(W*.555,hy);g.lineTo(W*1.5,hy);g.lineTo(W*1.5,H+2);g.lineTo(W*.66,H+2);g.closePath();g.fill();
+    g.fillStyle='rgba(235,245,225,.22)';for(let i=0;i<9;i++){const y=hy+(H-hy)*Math.pow((i+1)/10,1.4),x0=W*(.56+.1*((y-hy)/(H-hy)))+s*.02;g.fillRect(x0,y,W*(.15+.1*Math.sin(t*.5+i)),1.5)}
+    g.fillStyle=vg(g,hy,H,['#f3e6c4','#e2c995']);g.beginPath();g.moveTo(W*.535,hy+1);g.lineTo(W*.56,hy+1);g.lineTo(W*.68,H+2);g.lineTo(W*.14,H+2);g.closePath();g.fill();
+    g.strokeStyle='rgba(255,255,255,.75)';g.lineWidth=2;for(let i=0;i<3;i++){const o=((t*.15+i/3)%1)*s*.04;g.beginPath();g.moveTo(W*.535-o*.1,hy+2);g.lineTo(W*.14-o,H+2);g.stroke()}});
+   L(.45,()=>{for(let k=0;k<8;k++){const p=k/7,x=W*(.56+.07*p),y=hy+(H*.96-hy)*p*p;if(k===3||k===5)bHut(g,x-W*.06*p-s*.02,y,s*(.15+.9*p*p),'#a5432f');casuarina(g,x,y,s*(.03+.55*p*p),t+k)}})}},
+ {name:'Water sports',city:'Penanjong Beach',co:'Penanjong, Tutong',dist:'Tutong',beach:true,la:4.84,lo:114.67,m:bm(-.1),amp:3,hum:81,wind:12,wx:1,rainTxt:'about 3,000 mm or more a year',
+  about:'A beach in Kampong Penanjong near Tutong town, known for water sports and for sunsets over the South China Sea.',
+  why:'Sea breezes build in the afternoon as the land heats up, and winds strengthen during the northeast monsoon (about November to March), so conditions on the water change a lot through the year.',
+  cmp:'Very close to the capital\'s temperatures, with more wind along the open coast.',
+  draw(g,W,H,t,L){const s=Math.min(W,H),hy=H*.58;sky(g,W,H,['#4b6fae','#d991a2','#ffc99a']);
+   L(.04,()=>glow(g,W*.3,H*.53,s*.05,'rgba(255,226,190,1)'));L(.07,()=>bGulls(g,W,H,t,4,.2,'rgba(60,40,70,.6)',13));
+   L(.15,()=>{water(g,W,H,hy,'#d79aa0','#355a86',t,201,'rgba(255,220,200,.45)');bShine(g,W*.3,hy+2,s,H,t,'rgba(255,226,190,.5)')});
+   L(.3,()=>{bKite(g,bWrap(.9-t*.01)*W,H*.68,s,t,'#18c0a8');bJet(g,bWrap(.2+t*.03)*W,H*.72,s,t,1)});
+   L(.5,()=>{bSurf(g,W,H,H*.78,t,3,.6);dune(g,W,H,H*.83,H*.012,.3,10,'#eac29c','#b38262')});
+   L(.85,()=>{palm(g,W*.9,H*1.02,s*.6,t,'#2a2440');palm(g,W*1.02,H*1.04,s*.48,t+1,'#2a2440')})}},
+ {name:'Lighthouse coast',city:'Lumut Beach',co:'Lumut, Belait',dist:'Belait',beach:true,la:4.66,lo:114.43,m:bm(0),amp:3.5,hum:82,wind:10,wx:2,rainTxt:'wetter further inland in Belait',
+  about:'A popular picnic beach in Belait with golden sand, picnic huts and playgrounds, overlooked by the Lumut Lighthouse. Lumut is also home to Brunei\'s liquefied natural gas (LNG) plant.',
+  why:'Like the rest of the coast, Lumut is hot and wet all year. Breezes blow in from the sea by day and out from the land at night, keeping the shoreline a little fresher than inland.',
+  cmp:'Similar to the capital; inland Belait gets more rain.',
+  draw(g,W,H,t,L){const s=Math.min(W,H),hy=H*.6;sky(g,W,H,['#7fb3df','#c9e1f1','#f6f1df']);
+   L(.04,()=>glow(g,W*.22,H*.24,s*.04,'rgba(255,250,232,1)'));L(.06,()=>clouds(g,W,H,t*.4,.55));
+   L(.15,()=>water(g,W,H,hy,'#8fc0d4','#2f6585',t,211,'rgba(255,255,255,.4)'));
+   L(.3,()=>{g.fillStyle='#4e7a52';g.beginPath();g.moveTo(W*.6,H*.72);g.quadraticCurveTo(W*.8,H*.62,W*1.5,H*.62);g.lineTo(W*1.5,H*.8);g.lineTo(W*.6,H*.8);g.closePath();g.fill();g.save();g.beginPath();g.rect(W*.66,0,W,H);g.clip();canopy(g,W,H,H*.66,s*.03,213,'#355e3f');g.restore();bLight(g,W*.8,H*.68,s,t)});
+   L(.5,()=>{bSurf(g,W,H,H*.74,t,3,.65);dune(g,W,H,H*.79,H*.01,.3,12,'#f1d39a','#cf9f5c');bHut(g,W*.3,H*.86,s*1.2,'#2f6f8f');bHut(g,W*.5,H*.85,s*1.1,'#b0432f')});
+   L(.85,()=>{casuarina(g,W*.05,H*1.02,s*.5,t)})}},
+ {name:'Rig horizon',city:'Belait Beach',co:'Kuala Belait, Belait',dist:'Belait',beach:true,la:4.59,lo:114.21,m:bm(0),amp:3.5,hum:82,wind:10,wx:2,rainTxt:'wetter further inland in Belait',
+  about:'Known locally as Pantai KB, a long sandy coastline beside Kuala Belait town, about 2 hours from the capital. Offshore oil platforms are visible on the horizon, and Silver Jubilee Park sits just behind the beach.',
+  why:'The flat Belait coast lets sea breezes reach well inland. Like Seria, it has a classic coastal rainforest climate, while the higher ground further inland gets more rain.',
+  cmp:'Close to the capital\'s temperatures; the far west of Brunei is a little wetter inland.',
+  draw(g,W,H,t,L){const s=Math.min(W,H),hy=H*.58;sky(g,W,H,['#5d4a8a','#d9806e','#ffc48a']);
+   L(.04,()=>glow(g,W*.62,H*.54,s*.05,'rgba(255,224,180,1)'));L(.07,()=>bGulls(g,W,H,t,5,.15,'rgba(50,30,60,.6)',17));
+   L(.15,()=>{water(g,W,H,hy,'#cf8a7a','#3f4a7c',t,221,'rgba(255,214,180,.45)');bShine(g,W*.62,hy+2,s,H,t,'rgba(255,224,180,.5)')});
+   L(.22,()=>{[.08,.3,.84,1.05].forEach((x,i)=>bRig(g,W*x,hy-s*.006,s*(.8+(i%2)*.25),t,i))});
+   L(.45,()=>{bSurf(g,W,H,H*.74,t,3,.6);dune(g,W,H,H*.8,H*.01,.25,14,'#d9a77e','#8e6248');bPerson(g,bWrap(.4+t*.012)*W,H*.85,s*.07,t,2,'#2a1d30',true)});
+   L(.85,()=>{bHut(g,W*.88,H*1.0,s*2,'#3a2840');bGrass(g,-W*.1,W*.25,H*1.01,s,t,'#3a2c30',227,50)})}}
+];
+const BDIST={'Omar Ali Saifuddien Mosque':'Brunei-Muara','Kampong Ayer':'Brunei-Muara','Ulu Temburong National Park':'Temburong','Temburong Bridge':'Temburong','Muara Beach':'Brunei-Muara','Tasek Merimbun':'Tutong','Seria':'Belait'};
+BR.forEach(b=>{if(!b.dist)b.dist=BDIST[b.city];if(b.city==='Muara Beach')b.beach=true});
+BR.push(...BEACHES);
+const DO={'Brunei-Muara':0,Tutong:1,Belait:2,Temburong:3};BR.sort((a,b)=>DO[a.dist]-DO[b.dist]);
+BR.forEach(b=>Object.assign(b,{cat:'brunei',tz:'Asia/Brunei',k:'Af',kt:'Tropical rainforest',sm:BSM,ss:BSS,sig:null}));
+S.push(...BR);
+
+/* ---------- particles ---------- */
+const PT={
+ petal:{n:55,mk:p=>{p.v=.035+R()*.045;p.s=3+R()*4;p.c=['#ffc2d4','#ff9fbe','#ffe3ec','#f7a8c4'][R()*4|0]},
+  st(g,p,W,H,t,dt){p.y+=p.v*dt;p.x+=(.02+Math.sin(t*.8+p.a)*.035)*dt;const r=t*1.6+p.a,m=Math.min(W,H)/800;g.save();g.translate(p.x*W,p.y*H);g.rotate(r);g.scale(1,.35+.65*Math.abs(Math.sin(r*1.3)));g.fillStyle=p.c;g.beginPath();g.ellipse(0,0,p.s*m*2,p.s*m*1.2,0,0,TAU);g.fill();g.restore()}},
+ rain:{n:260,line:1,col:'rgba(225,238,255,.42)',lw:1.1,mk:p=>{p.v=1.1+R()*.7;p.s=.02+R()*.025},
+  st(g,p,W,H,t,dt){p.y+=p.v*dt;p.x+=p.v*.08*dt;g.moveTo(p.x*W,p.y*H);g.lineTo(p.x*W-p.s*H*.08,p.y*H-p.s*H)}},
+ snow:{n:180,mk:p=>{p.v=.03+R()*.06;p.s=.8+R()*2.4},
+  st(g,p,W,H,t,dt){p.y+=p.v*dt;p.x+=Math.sin(t*.7+p.a)*.012*dt;g.fillStyle='rgba(255,255,255,.85)';g.beginPath();g.arc(p.x*W,p.y*H,p.s,0,TAU);g.fill()}},
+ sand:{n:150,mk:p=>{p.v=.06+R()*.16;p.s=.6+R()*1.4;p.y=.55+R()*.45},
+  st(g,p,W,H,t,dt){p.x+=p.v*dt;p.y+=Math.sin(t*2+p.a)*.0015;if(p.y>1.02||p.y<.5)p.y=.6;g.fillStyle='rgba(255,226,170,.55)';g.fillRect(p.x*W,p.y*H,p.s*2.2,p.s)}},
+ blow:{n:200,line:1,col:'rgba(255,255,255,.55)',lw:1.2,mk:p=>{p.v=.18+R()*.3;p.s=.01+R()*.02},
+  st(g,p,W,H,t,dt){p.x+=p.v*dt;p.y+=(.01+Math.sin(t+p.a)*.01)*dt;g.moveTo(p.x*W,p.y*H);g.lineTo(p.x*W-p.s*W,p.y*H-p.s*H*.1)}}
+};
+const POOL={};
+function runPT(g,k,W,H,t,dt,f){const T=PT[k],n=Math.round(T.n*f),a=POOL[k]||(POOL[k]=[]);while(a.length<n){const p={x:R(),y:R(),a:R()*TAU};T.mk(p);a.push(p)}
+ if(T.line)g.beginPath();for(let i=0;i<n;i++){const p=a[i];T.st(g,p,W,H,t,dt);if(p.y>1.05){p.y=-.05;p.x=R()}if(p.x>1.08)p.x=-.08;if(p.x<-.08)p.x=1.08}
+ if(T.line){g.strokeStyle=T.col;g.lineWidth=T.lw;g.stroke()}}
+
+/* ---------- weather words ---------- */
+const WX=c=>c==null?'':c===0?'Clear sky':c===1?'Mainly clear':c===2?'Partly cloudy':c===3?'Overcast':c<=48?'Fog':c<=57?'Drizzle':c<=65?'Rain':c<=67?'Freezing rain':c<=77?'Snow':c<=82?'Rain showers':c<=86?'Snow showers':'Thunderstorm';
+const kind=c=>c==null||c<=1?'clear':c<=3?'cloud':c<=48?'fog':c<=67?'rain':c<=77?'snow':c<=82?'rain':c<=86?'snow':'rain';
+function weather(g,W,H,t,dt,code,u){const k=kind(code),pr=u?u.precipitation:1;
+ if(k==='cloud'){if(code===3){g.fillStyle='rgba(90,100,115,.18)';g.fillRect(0,0,W,H)}clouds(g,W,H,t,code===3?.42:.28)}
+ else if(k==='fog'){g.fillStyle='rgba(230,235,240,.28)';g.fillRect(0,0,W,H);for(let i=0;i<3;i++)mist(g,W,H,H*(.45+i*.17),H*.12,t+i*3,'rgba(240,244,248,.5)')}
+ else if(k==='rain'){g.fillStyle='rgba(40,55,70,.16)';g.fillRect(0,0,W,H);clouds(g,W,H,t,.22);runPT(g,'rain',W,H,t,dt,u?Math.min(1.6,.5+pr/2):1);if(code>=95&&Math.sin(t*.9)>.996){g.fillStyle='rgba(255,255,255,.35)';g.fillRect(0,0,W,H)}}
+ else if(k==='snow')runPT(g,'snow',W,H,t,dt,u?Math.min(1.6,.6+pr):1)}
+
+/* ---------- time and sun ---------- */
+const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const FM={};
+function lp(tz){let f=FM[tz];if(!f){try{f=new Intl.DateTimeFormat('en-GB',{timeZone:tz,hour:'2-digit',minute:'2-digit',month:'numeric',hourCycle:'h23'})}catch(e){f=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',month:'numeric',hourCycle:'h23'})}FM[tz]=f}
+ const o={};f.formatToParts(new Date()).forEach(p=>o[p.type]=p.value);const h=(+o.hour)%24;return{h,m:+o.minute,mo:(+o.month||1)-1,txt:String(h).padStart(2,'0')+':'+o.minute}}
+function elev(la,lo,d){const r=Math.PI/180,n=(d-Date.UTC(d.getUTCFullYear(),0,0))/864e5,dec=-23.44*Math.cos(TAU*(n+10)/365),h=d.getUTCHours()+d.getUTCMinutes()/60,B=TAU*(n-81)/365,eot=9.87*Math.sin(2*B)-7.53*Math.cos(B)-1.5*Math.sin(B),ha=(h+lo/15+eot/60-12)*15;return Math.asin(Math.sin(la*r)*Math.sin(dec*r)+Math.cos(la*r)*Math.cos(dec*r)*Math.cos(ha*r))/r}
+const typical=(s,p)=>s.m[p.mo]+s.amp*Math.cos((p.h+p.m/60-15)/24*TAU);
+const tcol=v=>`hsl(${Math.round(v<=0?212:v>=35?4:212-v/35*208)} 78% ${v<=0?Math.round(58-Math.min(1,-v/27)*14):52}%)`;
+
+/* ---------- state ---------- */
+let cat='brunei',cur=S.findIndex(s=>s.cat==='brunei'),tr=null,LIVE=null,AP=!RM,apT0=performance.now(),mx=0,pmx=0,EL=S.map(()=>0),cards=[];
+let DIST='all';const DL=[['all','All Brunei'],['Brunei-Muara','Brunei-Muara'],['Tutong','Tutong'],['Belait','Belait'],['Temburong','Temburong'],['beach','Beaches']];
+const inD=(i,d=DIST)=>d==='all'||(d==='beach'?!!S[i].beach:S[i].dist===d),dlab=()=>DIST==='all'?'':DL.find(d=>d[0]===DIST)[1];
+const list=()=>S.map((s,i)=>i).filter(i=>S[i].cat===cat&&(cat!=='brunei'||inD(i)));
+const tempOf=i=>cu(i)?cu(i).temperature_2m:typical(S[i],lp(S[i].tz));
+const FB=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Brunei',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+function sunTimes(la,lo){const d=new Date(),day=Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate())-lo/15*36e5+(d.getUTCHours()+lo/15>=24?864e5:0);let rise=null,set=null,prev=elev(la,lo,new Date(day));
+ for(let m=2;m<=1440;m+=2){const tt=new Date(day+m*6e4),e=elev(la,lo,tt);if(prev<-.833&&e>=-.833&&!rise)rise=tt;if(prev>=-.833&&e<-.833&&!set)set=tt;prev=e}return{rise,set}}
+const aqil=v=>v<=50?'Good':v<=100?'Moderate':v<=150?'Unhealthy for sensitive groups':v<=200?'Unhealthy':'Very unhealthy';
+const aqis=v=>v<=50?'Good':v<=100?'Moderate':v<=150?'Sensitive':v<=200?'Unhealthy':'Very poor';
+let AQL=null,LT='';
+let FCM='h';
+const ic=d=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const IC={th:ic('<path d="M10 14V5a2 2 0 0 1 4 0v9a4 4 0 1 1-4 0z"/><path d="M12 11v6"/>'),drop:ic('<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>'),wind:ic('<path d="M3 9h11a3 3 0 1 0-3-3M3 15h14a3 3 0 1 1-3 3M3 12h7"/>'),cloud:ic('<path d="M7 18h10a4 4 0 0 0 .4-8A6 6 0 0 0 6 10.5 3.8 3.8 0 0 0 7 18z"/>'),gauge:ic('<path d="M4 16a8 8 0 1 1 16 0"/><path d="M12 16l4-5"/>'),umb:ic('<path d="M3 12a9 9 0 0 1 18 0zM12 12v6a2 2 0 0 0 4 0"/>'),rain:ic('<path d="M8 4l-2 5M14 4l-2 5M11 13l-2 5M17 13l-2 5"/>'),sun:ic('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'),clock:ic('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),dot:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6" fill="currentColor"/></svg>',globe:ic('<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/>'),leaf:ic('<path d="M5 19c0-8 6-14 14-14 0 8-6 14-14 14zM5 19l7-7"/>')};
+const chip=(i,c,t)=>`<span class="chip"><i style="--c:${c}">${i}</i>${t}</span>`;
+function wxi(c,day){const S1=`<circle cx="24" cy="22" r="8" fill="#ffc107"/><g stroke="#ffc107" stroke-width="2.6" stroke-linecap="round">${[0,45,90,135,180,225,270,315].map(a=>{const r=a*Math.PI/180;return`<line x1="${(24+Math.cos(r)*12).toFixed(1)}" y1="${(22+Math.sin(r)*12).toFixed(1)}" x2="${(24+Math.cos(r)*15.5).toFixed(1)}" y2="${(22+Math.sin(r)*15.5).toFixed(1)}"/>`}).join('')}</g>`,
+ M1='<path d="M28 8a13 13 0 1 0 11 20A11 11 0 0 1 28 8z" fill="#b0bec5"/>',body=day?S1:M1,
+ cl=(f,t='')=>`<path${t} d="M14 40h21a8 8 0 0 0 1-15.9A10.5 10.5 0 0 0 16 22a9 9 0 0 0-2 18z" fill="${f}"/>`,v='viewBox="0 0 48 50" aria-hidden="true"';
+ if(c==null||c<=1)return`<svg ${v}>${body}</svg>`;
+ if(c===2)return`<svg ${v}><g transform="translate(-6 -7) scale(.85)">${body}</g>${cl('#e3e9ee')}</svg>`;
+ if(c===3)return`<svg ${v}>${cl('#9aa7b1',' transform="translate(-6 -6) scale(.9)"')}${cl('#cfd8dc')}</svg>`;
+ if(c<=48)return`<svg ${v}>${cl('#b0bec5',' transform="translate(0 -6)"')}<path d="M10 40h28M14 45h22" stroke="#90a4ae" stroke-width="2.6" stroke-linecap="round"/></svg>`;
+ if((c>=71&&c<=77)||c===85||c===86)return`<svg ${v}>${cl('#cfd8dc',' transform="translate(0 -6)"')}<g fill="#90caf9"><circle cx="18" cy="42" r="2"/><circle cx="26" cy="45" r="2"/><circle cx="34" cy="42" r="2"/></g></svg>`;
+ if(c>=95)return`<svg ${v}>${cl('#78909c',' transform="translate(0 -6)"')}<path d="M26 32l-6 9h5l-3 8 9-11h-5l3-6z" fill="#ffc107"/></svg>`;
+ return`<svg ${v}>${cl('#b0bec5',' transform="translate(0 -6)"')}<path d="M18 39l-2 6M26 39l-2 6M34 39l-2 6" stroke="#42a5f5" stroke-width="2.6" stroke-linecap="round"/></svg>`}
+function gauge(n,v,mn,mx,col,k,txt,sub){const f=v==null?0:Math.max(0,Math.min(1,(v-mn)/(mx-mn))),a=Math.PI*(1-f),x=45+34*Math.cos(a),y=44-34*Math.sin(a);
+ return`<button class="hc hgc" data-x="${k}" aria-label="${n}: ${String(txt).replace(/<[^>]+>/g,'')}"><svg viewBox="0 0 90 50" aria-hidden="true"><path d="M11 44A34 34 0 0 1 79 44" class="gt"/>${v!=null&&f>0?`<path d="M11 44A34 34 0 0 1 ${x.toFixed(2)} ${y.toFixed(2)}" stroke="${col}" class="gv"/>`:''}</svg><b>${txt}</b><em>${sub||''}</em><span>${n}</span></button>`}
+function haGraph(v,pp){const n=v.length,W=300,H=72,mn=Math.min(...v),mx=Math.max(...v),rg=(mx-mn)||1,P=v.map((x,j)=>[j/(n-1)*W,6+(1-(x-mn)/rg)*(H-16)]);let d=`M0 ${P[0][1].toFixed(1)}`;
+ for(let j=0;j<n-1;j++){const p0=P[j-1]||P[j],p1=P[j],p2=P[j+1],p3=P[j+2]||p2;d+=`C${(p1[0]+(p2[0]-p0[0])/6).toFixed(1)} ${(p1[1]+(p2[1]-p0[1])/6).toFixed(1)} ${(p2[0]-(p3[0]-p1[0])/6).toFixed(1)} ${(p2[1]-(p3[1]-p1[1])/6).toFixed(1)} ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`}
+ let b='';if(pp)pp.forEach((x,j)=>{if(x)b+=`<rect x="${Math.max(0,j/(n-1)*W-3).toFixed(1)}" y="${(H-x/100*H*.5).toFixed(1)}" width="6" height="${(x/100*H*.5).toFixed(1)}" fill="#2196f3" fill-opacity=".25"/>`});
+ return`<svg class="hsg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="hag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9800" stop-opacity=".35"/><stop offset="1" stop-color="#ff9800" stop-opacity="0"/></linearGradient></defs>${b}<path d="${d}L${W} ${H}L0 ${H}Z" fill="url(#hag)"/><path d="${d}" fill="none" stroke="#ff9800" stroke-width="2.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>`}
+const cu=i=>LIVE&&LIVE[i]?LIVE[i].current:null;
+const TF={},tf=tz=>TF[tz]||(TF[tz]=new Intl.DateTimeFormat('en-GB',{timeZone:tz,hour:'2-digit',minute:'2-digit',hourCycle:'h23'}));
+const dewpt=(T,h)=>{const a=17.62,b=243.12,y=Math.log(Math.max(1,h)/100)+a*T/(b+T);return b*y/(a-y)};
+const CP=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'],cmp=d=>d==null?'':CP[Math.round(d/22.5)%16];
+const BF=[[1,'Calm','Smoke rises straight up.'],[6,'Light air','Smoke drifts, but wind vanes stay still.'],[12,'Light breeze','You feel the wind on your face and leaves rustle.'],[20,'Gentle breeze','Leaves and small twigs keep moving and flags stretch out.'],[29,'Moderate breeze','Dust and loose paper lift and small branches move.'],[39,'Fresh breeze','Small trees sway and little waves form on lakes.'],[50,'Strong breeze','Large branches move and umbrellas are hard to use.'],[62,'Near gale','Whole trees sway and walking into the wind is hard.'],[75,'Gale','Twigs snap off trees.'],[89,'Strong gale','Slight damage to buildings is possible.'],[103,'Storm','Trees can be uprooted and buildings damaged.'],[1e9,'Hurricane force','Widespread, serious damage.']];
+const bft=v=>{const i=BF.findIndex(b=>(v||0)<b[0]);return{n:i,t:BF[i][1],x:BF[i][2]}};
+const uvl=v=>v==null?'n/a':v<3?'Low':v<6?'Moderate':v<8?'High':v<11?'Very high':'Extreme';
+const uvc=v=>v<3?'#3fbf6f':v<6?'#e0c040':v<8?'#f08a30':v<11?'#e04a4a':'#9b4fc0';
+const aqc=v=>v<=50?'#3fbf6f':v<=100?'#e0c040':v<=150?'#f08a30':v<=200?'#e04a4a':v<=300?'#9b4fc0':'#7a2040';
+const dewl=d=>d<10?'dry':d<16?'comfortable':d<20?'sticky':d<24?'muggy':'oppressive';
+function heatIdx(T,h){if(T<27)return T;const F=T*9/5+32,HI=-42.379+2.04901523*F+10.14333127*h-.22475541*F*h-.00683783*F*F-.05481717*h*h+.00122874*F*F*h+.00085282*F*h*h-.00000199*F*F*h*h;return(HI-32)*5/9}
+const chill=(T,v)=>T<=10&&v>4.8?13.12+.6215*T-11.37*v**.16+.3965*T*v**.16:T;
+const hm=h=>Math.floor(h)+'h '+String(Math.round(h%1*60)%60).padStart(2,'0')+'m';
+const fx=(v,u='',d=0)=>v==null||isNaN(v)?'n/a':(+v).toFixed(d)+u;
+const cap=t=>t[0].toUpperCase()+t.slice(1);
+const DN=t=>new Date(t+'T12:00:00Z').toLocaleDateString('en-GB',{weekday:'short',timeZone:'UTC'});
+const mxv=a=>{const b=(a||[]).filter(x=>x!=null);return b.length?Math.max(...b):null};
+function hIdx(h,ct){if(!h||!h.time||!ct)return 0;const k=ct.slice(0,13),i=h.time.findIndex(x=>x.slice(0,13)===k);return i<0?0:i}
+function D(i){const s=S[i],r=LIVE&&LIVE[i],c=r&&r.current,a=AQL&&AQL[i],p=lp(s.tz),T=c?c.temperature_2m:typical(s,p),hum=c?c.relative_humidity_2m:s.hum;
+ const o={live:!!c,temp:T,feels:c?c.apparent_temperature:null,hum,dew:c&&c.dew_point_2m!=null?c.dew_point_2m:dewpt(T,hum),pres:c?c.pressure_msl??null:null,vis:c?c.visibility??null:null,cloud:c?c.cloud_cover??null:null,precip:c?c.precipitation:null,code:c?c.weather_code:s.wx,ws:c?c.wind_speed_10m:s.wind,wd:c?c.wind_direction_10m??null:null,gust:c?c.wind_gusts_10m??null:null,uv:c?c.uv_index??null:null,aqi:null,pm25:null,pm10:null,o3:null,H:null,DY:null,AH:null};
+ if(c&&r.hourly&&r.hourly.time){const h=r.hourly,k=hIdx(h,c.time),sl=x=>x?x.slice(k,k+24):null;o.H={t:sl(h.time).map(x=>x.slice(11,13)),temp:sl(h.temperature_2m),pp:sl(h.precipitation_probability),uv:sl(h.uv_index),ws:sl(h.wind_speed_10m),wd:sl(h.wind_direction_10m),code:sl(h.weather_code)}}
+ if(c&&r.daily&&r.daily.time){const d=r.daily;o.DY=d.time.map((t,j)=>({t,code:d.weather_code[j],hi:d.temperature_2m_max[j],lo:d.temperature_2m_min[j],rain:d.precipitation_sum[j],pp:d.precipitation_probability_max[j],uv:d.uv_index_max[j],rise:d.sunrise[j],set:d.sunset[j],dl:d.daylight_duration[j]}))}
+ if(a&&a.current&&a.current.us_aqi!=null){o.aqi=a.current.us_aqi;o.pm25=a.current.pm2_5;o.pm10=a.current.pm10;o.o3=a.current.ozone;if(a.hourly&&a.hourly.us_aqi)o.AH=a.hourly.us_aqi.slice(hIdx(a.hourly,a.current.time)).slice(0,24)}
+ if(!o.H){const t=[],v=[];for(let j=0;j<24;j++){const hh=(p.h+j)%24;t.push(String(hh).padStart(2,'0'));v.push(s.m[p.mo]+s.amp*Math.cos((hh-15)/24*TAU))}o.H={t,temp:v,est:1}}
+ return o}
+function sunInfo(i,o){const s=S[i],d=o.DY&&o.DY[0];let rise,set,dl;
+ if(d&&d.dl!=null){dl=d.dl/3600;rise=d.rise?d.rise.slice(11,16):null;set=d.set?d.set.slice(11,16):null}
+ else{const st=sunTimes(s.la,s.lo),f=tf(s.tz);rise=st.rise?f.format(st.rise):null;set=st.set?f.format(st.set):null;dl=st.rise&&st.set?((st.set-st.rise)/36e5+24)%24:(EL[i]>0?24:0)}
+ if(dl>=23.9)rise=set='Up all day';else if(dl<=.1)rise=set='Down all day';return{rise:rise||'--',set:set||'--',dl}}
+function chart(o){const v=(o.v||[]).map(x=>x==null?null:+x),n=v.length,ok=v.filter(x=>x!=null);if(n<2||!ok.length)return`<p class="na">${o.na||'Shown when live readings load.'}</p>`;
+ const W=360,Hh=o.h||110,pl=10,iw=W-20,pt=16,pb=18,ih=Hh-pt-pb,mn=o.min!=null?Math.min(o.min,...ok):Math.min(...ok),mx=Math.max(o.max!=null?o.max:-1e9,...ok),rg=(mx-mn)||1,X=j=>pl+j*iw/(n-1),Y=x=>pt+ih-(x-mn)/rg*ih,bw=Math.min(10,iw/n*.62),f=x=>(+x).toFixed(o.d||0)+(o.unit||'');
+ let s=`<svg class="ch" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="${o.al||''}"><line x1="${pl}" x2="${W-pl}" y1="${pt+ih}" y2="${pt+ih}" stroke="currentColor" stroke-opacity=".3"/>`;
+ if(o.b2)o.b2.forEach((x,j)=>{if(x==null)return;const bh=x/100*ih;s+=`<rect x="${(X(j)-bw/2).toFixed(1)}" y="${(pt+ih-bh).toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" rx="2" fill="#4fb3ff" fill-opacity=".45"/>`});
+ if(o.bar)v.forEach((x,j)=>{if(x==null)return;const y=Y(x);s+=`<rect x="${(X(j)-bw/2).toFixed(1)}" y="${Math.min(y,pt+ih-2).toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(2,pt+ih-y).toFixed(1)}" rx="2" fill="${typeof o.col==='function'?o.col(x):o.col}"/>`});
+ else{let d='';v.forEach((x,j)=>{if(x!=null)d+=(d?'L':'M')+X(j).toFixed(1)+' '+Y(x).toFixed(1)});s+=`<path d="${d}" fill="none" stroke="${o.col}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`}
+ const im=v.indexOf(Math.max(...ok)),il=v.indexOf(Math.min(...ok)),lb=j=>`<text class="cv" x="${Math.min(W-18,Math.max(18,X(j))).toFixed(1)}" y="${Math.max(11,Y(v[j])-5).toFixed(1)}" text-anchor="middle">${f(v[j])}</text>`;
+ s+=lb(im);if(!o.bar&&il!==im)s+=lb(il);
+ v.forEach((x,j)=>{if(j%(o.ev||6))return;s+=`<text class="cl" x="${X(j).toFixed(1)}" y="${Hh-3}" text-anchor="${j?'middle':'start'}">${o.lab?o.lab[j]:''}</text>`});
+ return s+'</svg>'}
+function arrows(wd){if(!wd)return'';const n=wd.length;let s='<svg class="ch" viewBox="0 0 360 22" aria-hidden="true">';wd.forEach((d,j)=>{if(j%3||d==null)return;const x=10+j*340/(n-1);s+=`<g transform="translate(${x.toFixed(1)} 11) rotate(${Math.round((d+180)%360)})"><path d="M0 -8L5 2H1.6V8H-1.6V2H-5Z" fill="#8bd450"/></g>`});return s+'</svg>'}
+
+/* ---------- canvas ---------- */
+const cv=$('wall'),g=cv.getContext('2d'),bc=document.createElement('canvas'),bg=bc.getContext('2d');let VW=0,VH=0,dpr=1;
+function size(){dpr=Math.min(1.5,devicePixelRatio||1);VW=innerWidth;VH=innerHeight;[cv,bc].forEach(c=>{c.width=Math.round(VW*dpr);c.height=Math.round(VH*dpr)})}
+size();addEventListener('resize',size);
+function scene(c,s,t,dx){s.draw(c,VW,VH,t,(d,f)=>{c.save();c.translate(dx*d,0);f();c.restore()})}
+let last=performance.now(),pnow=last;
+function frame(now){const dt=RM?0:Math.min(.05,(now-last)/1000);last=now;const t=RM?6:now/1000;pmx+=(mx-pmx)*.05;
+ if(XO){xvDraw(t,dt);apT0+=Math.min(50,now-pnow);pnow=now;requestAnimationFrame(frame);return}
+ const s=S[cur],u=cu(cur),base=-pmx*VW*.03;let e=1;
+ if(tr&&!RM){e=Math.min(1,(now-tr.t0)/1500);e=e<.5?2*e*e:1-(-2*e+2)**2/2}
+ g.setTransform(dpr,0,0,dpr,0,0);scene(g,s,t,base+(1-e)*VW*.25);
+ if(!s.night){const a=Math.max(0,Math.min(1,(3-EL[cur])/12))*.6;if(a>0){g.fillStyle=`rgba(6,10,30,${a})`;g.fillRect(0,0,VW,VH);stars(g,VW,VH,t,a*1.4)}}
+ weather(g,VW,VH,t,dt,u?u.weather_code:s.wx,u);if(s.sig)runPT(g,s.sig,VW,VH,t,dt,1);
+ if(tr&&e<1){bg.setTransform(dpr,0,0,dpr,0,0);scene(bg,S[tr.from],t,base-e*VW*.25);g.setTransform(1,0,0,1,0,0);g.globalAlpha=1-e;g.drawImage(bc,0,0);g.globalAlpha=1}else tr=null;
+ const pg=document.querySelector('.wp.on .pg'),paused=!$('board').hidden||XO;
+ if(AP&&!paused){const p=(now-apT0)/12000;if(pg)pg.style.transform=`scaleX(${Math.min(1,p)})`;if(p>=1)step(1)}else apT0+=Math.min(50,now-pnow);pnow=now;
+ requestAnimationFrame(frame)}
+
+/* ---------- slider ---------- */
+function thumb(s){const c=document.createElement('canvas');c.width=360;c.height=226;const x=c.getContext('2d');try{s.draw(x,360,226,4,(d,f)=>{x.save();f();x.restore()})}catch(e){}return c.toDataURL('image/jpeg',.85)}
+const TH=S.map(thumb);
+function renderSlider(){$('slider').innerHTML=list().map(i=>{const s=S[i];return`<button class="wp" data-i="${i}" role="option" aria-selected="false" aria-label="${s.name}, ${s.city}"><img alt="" src="${TH[i]}"><span class="wt" id="wt${i}"></span><span class="wl"><b>${s.name}</b><em>${s.city}</em></span><i class="pg"></i></button>`}).join('');cards=[...document.querySelectorAll('.wp')];temps()}
+function temps(){cards.forEach(c=>{const i=+c.dataset.i;$('wt'+i).textContent=Math.round(tempOf(i))+'°'})}
+function layer(){const L=list(),k=L.indexOf(cur);cards.forEach(c=>{const i=+c.dataset.i,p=L.indexOf(i)-k,d=Math.abs(p);c.classList.toggle('on',i===cur);c.setAttribute('aria-selected',i===cur);c.style.zIndex=30-d;c.style.setProperty('--d',d);c.style.setProperty('--r',Math.sign(p)*Math.min(d,3)*1.2)});
+ const c=cards[k];if(c){const sl=$('slider');sl.scrollTo({left:c.offsetLeft-sl.clientWidth/2+c.offsetWidth/2,behavior:RM?'auto':'smooth'})}}
+$('slider').addEventListener('click',e=>{const b=e.target.closest('.wp');if(!b)return;const i=+b.dataset.i;if(i===cur)enterFS();else go(i)});
+
+/* ---------- card ---------- */
+function info(){const s=S[cur],p=lp(s.tz),o=D(cur),T=o.temp,el=EL[cur]=elev(s.la,s.lo,new Date()),br=s.cat==='brunei',L=list(),si=sunInfo(cur,o),e=o.live?'':'~',day=el>0;
+ $('kn').textContent=`${br?'Brunei'+(dlab()?' · '+dlab():''):'World climates'} · ${L.indexOf(cur)+1} of ${L.length} · ${s.name}`;$('city').textContent=s.city;$('ctry').textContent=s.co;
+ $('kc').textContent=s.k;$('kt').textContent=s.kt;
+ $('chips').innerHTML=chip(IC.clock,'#03a9f4',`<span id="clock">${p.txt}</span><span>local</span>`)+chip(IC.dot,o.live?'#4caf50':'#ff9800',o.live?'Live':'Typical estimate')+chip(IC.globe,'#9c27b0',s.k)+chip(IC.leaf,'#009688',s.ss[s.sm[p.mo]].split(':')[0]);
+ const fl=o.feels!=null?o.feels:heatIdx(T,o.hum),cond=o.live?WX(o.code):`Typical ${MN[p.mo]} ${day?'day':'night'}`,hi=o.DY?o.DY[0].hi:s.m[p.mo]+s.amp,lo=o.DY?o.DY[0].lo:s.m[p.mo]-s.amp;
+ const fc=FCM==='d'&&o.DY?`<div class="hwf d">${o.DY.map((d,j)=>`<div><span>${j?DN(d.t):'Today'}</span>${wxi(d.code,1)}<b>${Math.round(d.hi)}°</b><span>${Math.round(d.lo)}°</span>${d.pp!=null?`<em>${d.pp}%</em>`:''}</div>`).join('')}</div>`
+  :`<div class="hwf">${[0,3,6,9,12,15,18,21].map(j=>{const c=o.H.code&&o.H.code[j]!=null?o.H.code[j]:o.code,dn=elev(s.la,s.lo,new Date(Date.now()+j*36e5))>0;return`<div><span>${j?o.H.t[j]+':00':'Now'}</span>${wxi(c,dn)}<b>${Math.round(o.H.temp[j])}°</b>${o.H.pp?`<em>${o.H.pp[j]??'-'}%</em>`:''}</div>`}).join('')}</div>`;
+ $('wxc').innerHTML=`<div class="hwt"><div class="hwi">${wxi(o.code,day)}</div><div class="hwn"><b>${cond}</b><span>${o.DY?'Today':'Typical'} ${Math.round(hi)}° / ${Math.round(lo)}°</span></div><div class="hwv"><b>${T.toFixed(1)}<small>°C</small></b><span>Feels like ${fl.toFixed(0)}°</span></div></div>`
+  +`<div class="hwa"><span>${IC.drop}${e}${Math.round(o.hum)}%</span><span>${IC.gauge}${fx(o.pres,' hPa')}</span><span>${IC.wind}${e}${Math.round(o.ws)} km/h${o.wd!=null?' '+cmp(o.wd):''}</span></div>`
+  +(o.DY?`<div class="hwtabs" role="tablist" aria-label="Forecast"><button role="tab" data-fc="h" aria-selected="${FCM!=='d'}">Hourly</button><button role="tab" data-fc="d" aria-selected="${FCM==='d'}">Daily</button></div>`:`<div class="hwl">Hourly${o.H.est?', typical pattern':''}</div>`)+fc;
+ $('gauges').innerHTML=gauge('Humidity',o.hum,0,100,'#03a9f4',4,e+Math.round(o.hum)+'<small>%</small>',o.live?'':'typical')+gauge('UV index',o.uv,0,11,o.uv!=null?uvc(o.uv):'',0,o.uv!=null?o.uv.toFixed(1):'n/a',o.uv!=null?uvl(o.uv):'')+gauge('Air quality',o.aqi,0,300,o.aqi!=null?aqc(o.aqi):'',3,o.aqi!=null?o.aqi:'n/a',o.aqi!=null?aqis(o.aqi):'');
+ const pm=mxv(o.H.pp),sunTxt=/all day/.test(si.rise)?si.rise.toLowerCase():day?'sets '+si.set:'rises '+si.rise;
+ const TL=[[IC.th,'#ff9800','Feels like',fl.toFixed(0)+' °C'+(o.feels==null?' (est.)':''),4],[IC.drop,'#009688','Dew point',e+fx(o.dew,' °C')+' · '+dewl(o.dew),4],[IC.wind,'#8bc34a','Wind',e+Math.round(o.ws)+' km/h'+(o.wd!=null?' '+cmp(o.wd):''),2],[IC.cloud,'#607d8b','Cloud cover',fx(o.cloud,' %'),1],[IC.gauge,'#9c27b0','Pressure',fx(o.pres,' hPa'),4],[IC.umb,'#2196f3','Rain chance, 24 h',fx(pm,' %'),1],[IC.rain,'#03a9f4','Rain now',fx(o.precip,' mm',1),1],[IC.sun,'#ffc107','Sun',`${Math.round(el)}° · ${sunTxt}`,0]];
+ $('stats').innerHTML=TL.map(([i,c,n,v,k])=>`<button class="hc ht" data-x="${k}" style="--c:${c}"><i>${i}</i><span><small>${n}</small><b>${v}</b></span></button>`).join('');
+ const tv=o.H.temp;
+ $('h24').innerHTML=`<div class="hsh"><i style="--c:#ff9800">${IC.th}</i><span>Temperature<small>${o.H.est?'Typical pattern':'Forecast'}, next 24 h · high ${Math.max(...tv).toFixed(0)}° · low ${Math.min(...tv).toFixed(0)}°</small></span><b>${T.toFixed(1)} °C</b></div>${haGraph(tv,o.H.pp)}<div class="hsx"><span>Now</span><span>+6 h</span><span>+12 h</span><span>+18 h</span><span>+24 h</span></div>`;
+$('rainyr').innerHTML=s.rain?`<b>${s.rain.toLocaleString()} mm</b> rain a year`:s.rainTxt[0].toUpperCase()+s.rainTxt.slice(1);
+ $('bars').innerHTML=s.m.map((v,i)=>`<div class="${i===p.mo?'on':''}" title="${MN[i]}: ${v}°C"><i style="--c:${tcol(v)};height:${Math.round(6+(v+27)/64*94)}%"></i><span>${MN[i][0]}</span></div>`).join('');
+ $('about').hidden=!br;if(br)$('about').textContent=s.about;
+ $('why').textContent=s.why;$('seas').textContent='Season now: '+s.ss[s.sm[p.mo]];
+ if(br)$('cmp').textContent=s.cmp;
+ else{const d=s.m[p.mo]-BN[p.mo];$('cmp').textContent=`In ${MN[p.mo]}, ${s.city} averages ${s.m[p.mo].toFixed(1)}°C, which is ${Math.abs(d).toFixed(1)}°C ${d<0?'cooler':'warmer'} than Bandar Seri Begawan. It gets about ${Math.round(s.rain/3066*100)}% as much rain a year as Brunei's capital.`}
+ $('note').textContent=br?'Brunei place averages are estimated from the capital\'s long-term averages, adjusted for distance from the sea and forest cover. When live readings are unavailable, temperatures are estimated from the month\'s average and the time of day.':'Monthly averages and yearly rainfall are approximate long-term values. When live readings are unavailable, temperatures are estimated from the month\'s average and the local time of day.';
+ S.forEach((x,i)=>{if(i!==cur)EL[i]=elev(x.la,x.lo,new Date())});temps();mini();board();xvFill()}
+function mini(){const s=S[cur],u=cu(cur),p=lp(s.tz);$('mt').textContent=tempOf(cur).toFixed(1)+'°C';$('mc').textContent=`${s.city}`;$('ms').textContent=`${u?WX(u.weather_code):'Typical estimate'} · ${p.txt} local · ${s.co}`}
+function go(i){if(i===cur)return;tr={from:cur,t0:performance.now()};cur=i;apT0=performance.now();info();layer()}
+function step(d){const L=list(),k=L.indexOf(cur);go(L[(k+d+L.length)%L.length])}
+function setCat(c){if(c===cat)return;cat=c;document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.c===c));renderDists();renderSlider();const L=list();cur!==L[0]&&go(L[0]);layer();info()}
+
+/* ---------- live board ---------- */
+function board(){if($('board').hidden)return;const br=cat==='brunei',L=list(),ds=L.map(i=>[i,D(i)]),feed=LIVE?'Live readings from Open-Meteo':'Live feed unavailable here, showing typical estimates';
+ $('bt').textContent=br?'Brunei live board'+(dlab()?' · '+dlab():''):'World climates board';$('bsub').textContent=feed+' · tap a place for its exploded view';
+ const top=f=>{const a=ds.filter(([,o])=>f(o)!=null).sort((x,y)=>f(y[1])-f(x[1]));return a.length?a[0]:null},uvT=top(o=>o.uv),wT=top(o=>o.ws);
+ let st;if(br){const ci=S.findIndex(x=>x.cat==='brunei'),c=D(ci),sn=sunInfo(ci,c),mo=lp('Asia/Brunei').mo,pp=mxv(c.H.pp);st=[['Time in Brunei',lp('Asia/Brunei').txt],['Sunrise',sn.rise],['Sunset',sn.set],['Season',BSL[BSM[mo]]],['Air quality, capital',c.aqi!=null?`${c.aqi} US AQI · ${aqil(c.aqi)}`:'n/a'],['UV index, capital',c.uv!=null?`${c.uv.toFixed(1)} · ${uvl(c.uv)}`:'n/a'],['Rain chance, next 24 h',pp!=null?pp+'%':'n/a'],['Windiest now',wT?`${S[wT[0]].city} ${Math.round(wT[1].ws)} km/h`:'n/a']]}
+ else{const ts=ds.map(([i,o])=>[i,o.temp]).sort((a,b)=>b[1]-a[1]),day=L.filter(i=>EL[i]>0).length,bt=tempOf(S.findIndex(x=>x.cat==='brunei'));st=[['Hottest now',`${S[ts[0][0]].city} ${ts[0][1].toFixed(0)}°C`],['Coldest now',`${S[ts[ts.length-1][0]].city} ${ts[ts.length-1][1].toFixed(0)}°C`],['In daylight now',`${day} of ${L.length} places`],['Highest UV now',uvT?`${S[uvT[0]].city} ${uvT[1].uv.toFixed(1)}`:'n/a'],['Windiest now',wT?`${S[wT[0]].city} ${Math.round(wT[1].ws)} km/h`:'n/a'],['Brunei capital now',`${bt.toFixed(1)}°C`]]}
+ $('bstats').innerHTML=st.map(([a,v])=>`<div><span>${a}</span><b>${v}</b></div>`).join('');
+ $('tiles').innerHTML=ds.map(([i,o])=>{const s=S[i],p=lp(s.tz),e=o.live?'':'~';return`<button class="tile${i===cur?' on':''}" data-i="${i}"><img alt="" src="${TH[i]}"><span class="tbad${o.live?'':' off'}">${o.live?'Live':'Typical'}</span><span class="tb"><b>${s.city}</b><span class="tco">${s.co}</span><span class="tt">${o.temp.toFixed(1)}°C</span><span class="tc">${o.live?WX(o.code):'Typical for '+MN[p.mo]}${br?'':' · '+p.txt+' local'}</span><span class="tm"><span>Humidity ${e}${Math.round(o.hum)}%</span><span>Wind ${e}${Math.round(o.ws)} km/h${o.wd!=null?' '+cmp(o.wd):''}</span><span>Rain ${o.precip!=null?o.precip+' mm':'n/a'}</span><span>UV ${fx(o.uv)}</span><span>AQI ${o.aqi??'n/a'}</span></span></span></button>`}).join('');
+ $('bnote').textContent=(br?'Sunrise and sunset are for Bandar Seri Begawan. Places close together, like the mosque and Kampong Ayer, share the same weather grid square. ':'Brunei has its own tab with famous places around the country. ')+'Tap any place to pull its climate apart, layer by layer.'}
+function openBoard(){$('board').hidden=false;$('bdb').setAttribute('aria-expanded','true');board();$('bx').focus()}
+function closeBoard(){$('board').hidden=true;$('bdb').setAttribute('aria-expanded','false')}
+$('tiles').addEventListener('click',e=>{const b=e.target.closest('.tile');if(!b)return;closeBoard();go(+b.dataset.i);openXV()});
+
+/* ---------- live data ---------- */
+async function getJ(u){const c=new AbortController(),to=setTimeout(()=>c.abort(),9000);try{const r=await fetch(u,{signal:c.signal});if(!r.ok)throw 0;return await r.json()}finally{clearTimeout(to)}}
+async function load(){const q='?latitude='+S.map(s=>s.la).join(',')+'&longitude='+S.map(s=>s.lo).join(','),B='https://api.open-meteo.com/v1/forecast'+q,
+  full=B+'&current=temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,precipitation,cloud_cover,pressure_msl,visibility,wind_speed_10m,wind_direction_10m,wind_gusts_10m,weather_code,uv_index,is_day&hourly=temperature_2m,precipitation_probability,weather_code,uv_index,wind_speed_10m,wind_direction_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,daylight_duration,uv_index_max,precipitation_sum,precipitation_probability_max&forecast_days=7&timezone=auto',
+  basic=B+'&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,wind_speed_10m,weather_code&timezone=auto',
+  arr=j=>{const a=Array.isArray(j)?j:[j];if(a.length!==S.length||!a[0]||!a[0].current)throw 0;return a};
+ try{let a;try{a=arr(await getJ(full))}catch(e){a=arr(await getJ(basic))}LIVE=a;LT=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});$('stat').classList.remove('off');$('statt').textContent='Live weather · updated '+LT}
+ catch(e){if(!LIVE){$('stat').classList.add('off');$('statt').textContent='Live feed unavailable here · showing typical values'}}
+ try{const a=await getJ('https://air-quality-api.open-meteo.com/v1/air-quality'+q+'&current=us_aqi,pm2_5,pm10,ozone&hourly=us_aqi&forecast_days=2&timezone=auto'),b=Array.isArray(a)?a:[a];if(b.length===S.length)AQL=b}catch(e){}
+ info()}
+
+/* ---------- exploded view ---------- */
+const XL=[
+ {n:'Sun & light',a:'#f5c542',d:'Where the sun is, and how strong its rays are.'},
+ {n:'Clouds & rain',a:'#4fb3ff',d:'Cloud cover, and what is falling from the sky.'},
+ {n:'Wind',a:'#8bd450',d:'How fast the air moves, and where it comes from.'},
+ {n:'Air quality',a:'#ff5fa2',d:'Tiny particles and gases in the air we breathe.'},
+ {n:'Heat & humidity',a:'#ff8a3d',d:'Warmth and water vapour in the air near the ground.'},
+ {n:'Land & climate',a:'#9b7bff',d:'The place itself, which shapes its long-term climate.'}];
+let XO=false,XS=-1,XP=[],XD=null,XSK='',XSP=[];const XW=[],XA=[],XH=[];
+function buildXV(){const st=$('xvst');st.innerHTML=XL.map((l,k)=>`<button class="xpl" data-k="${k}" style="--a:${l.a};z-index:${10-k}" aria-label="${k+1}. ${l.n}" aria-pressed="false"><canvas></canvas><span class="dt" style="left:${k%2?95:5}%;top:50%"></span></button>`).join('');
+ $('xvcl').innerHTML='';$('xvcr').innerHTML='';
+ XL.forEach((l,k)=>{const b=document.createElement('button');b.className='xco';b.dataset.k=k;b.style.setProperty('--a',l.a);b.setAttribute('aria-pressed','false');b.innerHTML=`<i>${k+1}</i><span><b>${l.n}</b><em id="xv${k}"></em><small>${l.d}</small></span>`;(k%2?$('xvcr'):$('xvcl')).appendChild(b)});
+ $('xvl').innerHTML=XL.map((l,k)=>`<g data-k="${k}"><path fill="none" stroke="${l.a}" stroke-width="1.5" stroke-dasharray="5 4"/><circle r="2.5" fill="${l.a}"/><circle r="5" fill="${l.a}" stroke="#121317" stroke-width="2"/></g>`).join('');
+ const gs=[...$('xvl').querySelectorAll('g')];
+ XP=[...st.querySelectorAll('.xpl')].map((p,k)=>({p,c:p.querySelector('canvas'),dot:p.querySelector('.dt'),co:document.querySelector(`.xco[data-k="${k}"]`),gr:gs[k],ln:gs[k].children[0],d0:gs[k].children[1],d1:gs[k].children[2]}))}
+function xvLayout(anim){if(!XP.length)return;const st=$('xvst'),Hs=st.clientHeight,pw=XP[0].p.offsetWidth,ph=XP[0].p.offsetHeight;if(!Hs)return;const vh=(pw*.643+ph*.766)*.53,n=XP.length;let g=(Hs-vh-16)/(n-1);g=Math.max(10,Math.min(g,vh*1.1));const y0=Hs/2-g*(n-1)/2;
+ XP.forEach((x,k)=>{x.p.style.transitionDelay=(anim?k*80:0)+'ms,0ms,0ms';x.p.style.top=(y0+k*g)+'px';const W=x.p.clientWidth,H=x.p.clientHeight;if(x.c.width!==W*2||x.c.height!==H*2){x.c.width=W*2;x.c.height=H*2}})}
+function openXV(k){if(XO){if(k!=null){XS=-1;xvSel(k)}return}closeBoard();XO=true;$('xv').hidden=false;if(!XP.length)buildXV();XP.forEach(x=>{x.p.style.transitionDelay='0ms';x.p.style.top='50%'});xvFill();
+ requestAnimationFrame(()=>{xvLayout(false);XP.forEach(x=>x.p.style.top='50%');requestAnimationFrame(()=>xvLayout(!RM))});if(k!=null){XS=-1;xvSel(k)}$('xvx').focus()}
+function closeXV(){if(!XO)return;XO=false;$('xv').hidden=true;$('xvb').focus()}
+function xvSel(k){XS=XS===k?-1:k;XP.forEach((x,j)=>{const d=XS>=0&&j!==XS;[x.p,x.co,x.gr].forEach(el=>el.classList.toggle('dim',d));x.p.classList.toggle('sel',j===XS);x.p.setAttribute('aria-pressed',j===XS);x.co.setAttribute('aria-pressed',j===XS)});xvDetail();if(innerWidth<=900&&XS>=0)$('xvd').scrollIntoView({behavior:RM?'auto':'smooth',block:'start'})}
+const XF=[
+ (g,W,H,t,dt,s,o)=>{const hy=H*.7,k=H*.62/90,now=Date.now(),key=cur+':'+Math.floor(now/6e4);if(XSK!==key){XSK=key;XSP=[];for(let m=-720;m<=720;m+=20)XSP.push(elev(s.la,s.lo,new Date(now+m*6e4)))}
+  g.strokeStyle='rgba(255,255,255,.45)';g.setLineDash([4,4]);g.lineWidth=1;g.beginPath();g.moveTo(6,hy);g.lineTo(W-6,hy);g.stroke();g.setLineDash([]);
+  const P=XSP.map((e,j)=>[8+j/(XSP.length-1)*(W-16),hy-e*k]);
+  [[0,hy,'rgba(245,197,66,.95)'],[hy,H,'rgba(150,160,185,.6)']].forEach(([a,b,c])=>{g.save();g.beginPath();g.rect(0,a,W,b-a);g.clip();g.strokeStyle=c;g.lineWidth=2.5;g.beginPath();P.forEach(([x,y],j)=>j?g.lineTo(x,y):g.moveTo(x,y));g.stroke();g.restore()});
+  const e0=EL[cur],sx=W/2,sy=hy-e0*k;
+  if(e0>0){g.strokeStyle='rgba(255,220,120,.75)';g.lineWidth=1.5;const r2=15+(o.uv||2)*1.2;for(let i=0;i<12;i++){const a=i/12*TAU+t*.4;g.beginPath();g.moveTo(sx+Math.cos(a)*9,sy+Math.sin(a)*9);g.lineTo(sx+Math.cos(a)*r2,sy+Math.sin(a)*r2);g.stroke()}}
+  glow(g,sx,sy,6,e0>0?'rgba(255,214,90,1)':'rgba(180,190,215,1)')},
+ (g,W,H,t,dt,s,o)=>{const kd=kind(o.code),cc=o.cloud!=null?o.cloud:o.code===0?5:o.code===1?25:o.code===2?50:85,n=Math.round(cc/100*7),sc=Math.min(W,H);
+  g.fillStyle=kd==='rain'||kd==='snow'||o.code===3?'rgba(205,214,228,.92)':'rgba(255,255,255,.92)';
+  CL.slice(0,n).forEach(c=>{const x=(((c.x+t*c.v*2)%1.6)-.3)*W,y=(.12+c.y)*H,r=c.r*sc*1.3;g.beginPath();g.arc(x,y,r,0,TAU);g.arc(x+r*.9,y+r*.15,r*.8,0,TAU);g.arc(x-r*.9,y+r*.2,r*.7,0,TAU);g.arc(x+r*.2,y-r*.45,r*.75,0,TAU);g.fill()});
+  if(kd==='rain')runPT(g,'rain',W,H,t,dt,.35+Math.min(1,(o.precip||0)*.3));else if(kd==='snow')runPT(g,'snow',W,H,t,dt,.4);else if(kd==='fog'){g.fillStyle='rgba(230,235,240,.35)';g.fillRect(0,0,W,H)}
+  if(o.code>=95&&Math.sin(t*1.7)>.97){g.fillStyle='rgba(255,255,255,.5)';g.fillRect(0,0,W,H)}},
+ (g,W,H,t,dt,s,o)=>{const ws=o.ws||0,to=((o.wd==null?270:o.wd)+180)*Math.PI/180,vx=Math.sin(to),vy=-Math.cos(to),sp=.05+ws/40*.3;
+  while(XW.length<60)XW.push({x:R(),y:R(),l:.4+R()*.6});g.strokeStyle='rgba(170,240,120,.75)';g.lineWidth=1.4;g.lineCap='round';g.beginPath();
+  XW.forEach(p=>{p.x+=vx*sp*dt*p.l;p.y+=vy*sp*dt*p.l;if(p.x<-.1)p.x=1.1;if(p.x>1.1)p.x=-.1;if(p.y<-.1)p.y=1.1;if(p.y>1.1)p.y=-.1;const l=(6+ws*.6)*p.l;g.moveTo(p.x*W,p.y*H);g.lineTo(p.x*W-vx*l,p.y*H-vy*l)});g.stroke();
+  g.save();g.translate(W/2,H/2);g.rotate(to);g.globalAlpha=o.wd==null?.35:.9;g.fillStyle='#8bd450';g.beginPath();g.moveTo(0,-H*.3);g.lineTo(H*.11,-H*.08);g.lineTo(H*.035,-H*.08);g.lineTo(H*.035,H*.24);g.lineTo(-H*.035,H*.24);g.lineTo(-H*.035,-H*.08);g.lineTo(-H*.11,-H*.08);g.closePath();g.fill();g.restore()},
+ (g,W,H,t,dt,s,o)=>{const v=o.aqi,c=v==null?'#9aa0ad':aqc(v),n=Math.round(v==null?25:Math.min(160,25+v*1.1));g.fillStyle=c;g.globalAlpha=.14;g.fillRect(0,0,W,H);g.globalAlpha=.8;
+  while(XA.length<160)XA.push([R(),R(),R()*TAU,.6+R()*1.6]);for(let i=0;i<n;i++){const q=XA[i],x=(q[0]+Math.sin(t*.3+q[2])*.03+1)%1,y=(q[1]+Math.cos(t*.25+q[2]*1.3)*.03+1)%1;g.beginPath();g.arc(x*W,y*H,q[3],0,TAU);g.fill()}g.globalAlpha=1},
+ (g,W,H,t,dt,s,o)=>{s.draw(g,W,H,t,(d,f)=>{if(d<.06){g.save();f();g.restore()}});g.globalAlpha=.3;g.fillStyle=tcol(o.temp);g.fillRect(0,0,W,H);
+  while(XH.length<40)XH.push([R(),R(),R()*TAU]);g.fillStyle='rgba(225,240,255,.9)';for(let i=0,n=Math.round(o.hum/100*40);i<n;i++){const[x,y,a]=XH[i];g.globalAlpha=.25+.5*Math.sin(t*1.5+a)**2;g.beginPath();g.arc(x*W,y*H,1.6,0,TAU);g.fill()}g.globalAlpha=1;
+  if(o.temp>=30){g.strokeStyle='rgba(255,255,255,.3)';g.lineWidth=1.2;for(let i=0;i<4;i++){g.beginPath();const y=H*(.55+i*.1);for(let x=0;x<=W;x+=6)g.lineTo(x,y+Math.sin(x*.08+t*3+i)*2.5);g.stroke()}}},
+ (g,W,H,t,dt,s,o)=>{NOSKY=true;s.draw(g,W,H,t,(d,f)=>{if(d>=.06){g.save();f();g.restore()}});NOSKY=false}];
+function xvDraw(t,dt){if(!XP.length||!XD)return;const s=S[cur],o=XD;
+ XP.forEach((x,k)=>{const c=x.c,W=c.width/2,H=c.height/2;if(!W)return;const g=c.getContext('2d');g.setTransform(2,0,0,2,0,0);g.globalAlpha=1;g.clearRect(0,0,W,H);try{XF[k](g,W,H,t,dt,s,o)}catch(e){}NOSKY=false});
+ const sr=$('xvstage').getBoundingClientRect();
+ XP.forEach((x,k)=>{const d=x.dot.getBoundingClientRect(),cx=d.left+d.width/2,cy=d.top+d.height/2,col=x.co.parentNode.getBoundingClientRect();x.co.style.top=(cy-col.top-21)+'px';
+  const cr=x.co.getBoundingClientRect(),ax=(k%2?cr.left:cr.right)-sr.left,ay=cy-sr.top,dx=cx-sr.left;
+  x.ln.setAttribute('d',`M${ax.toFixed(1)} ${ay.toFixed(1)}H${dx.toFixed(1)}`);x.d0.setAttribute('cx',ax.toFixed(1));x.d0.setAttribute('cy',ay.toFixed(1));x.d1.setAttribute('cx',dx.toFixed(1));x.d1.setAttribute('cy',ay.toFixed(1))})}
+function xvFill(){if(!XO)return;const s=S[cur],o=XD=D(cur),p=lp(s.tz),el=EL[cur];
+ $('xvt').textContent=s.city;$('xvsrc').textContent=o.live?'LIVE':'TYPICAL ESTIMATE';
+ $('xvi').textContent=`${s.co} · ${p.txt} local time. Today's climate pulled apart into six layers, from the sun down to the ground. Tap a layer or its label to explore it.`;
+ [`${Math.round(el)}° sun angle · UV ${o.uv!=null?o.uv.toFixed(1):'n/a'}`,`${o.live?WX(o.code):'Typical: '+WX(o.code)}${o.cloud!=null?' · '+o.cloud+'% cloud':''}`,`${Math.round(o.ws)} km/h${o.wd!=null?' from '+cmp(o.wd):''} · ${bft(o.ws).t}`,o.aqi!=null?`AQI ${o.aqi} · ${aqil(o.aqi)}`:'AQI n/a',`${o.temp.toFixed(1)}°C · humidity ${Math.round(o.hum)}%`,`${s.k} · ${s.kt}`].forEach((x,k)=>$('xv'+k).textContent=x);
+ const bi=S.findIndex(x=>x.cat==='brunei'),bt=tempOf(bi),dd=o.temp-bt,gap=o.temp-o.dew;
+ const F=[['#4fb3ff','Source',o.live?`Live readings from Open-Meteo, refreshed every 10 minutes. Last update ${LT}.`:'Live feed unavailable here, so these are typical values for this month and time of day.'],
+  ['#ff8a3d','How the layers link',`The sun heats the ground, warm air rises, and its water vapour cools into cloud and rain. Here the air is ${gap.toFixed(0)}°C above its dew point: ${gap<3?'close to saturated, so cloud, fog or rain form easily':gap<10?'clouds form once the air rises a little':'dry air, so clouds need a lot of lifting'}.`],
+  ['#9b7bff','Versus Brunei',cur===bi?"This is Brunei's capital, the reference point for every comparison.":`Right now it is ${Math.abs(dd).toFixed(1)}°C ${dd<0?'cooler':'warmer'} here than in Bandar Seri Begawan (${bt.toFixed(1)}°C).`]];
+ $('xvf').innerHTML=F.map(([c,h,x])=>`<div style="--a:${c}"><i></i><span><b>${h}</b><p>${x}</p></span></div>`).join('');xvDetail()}
+function xvDetail(){if(!XD)return;const s=S[cur],o=XD,el=EL[cur],p=lp(s.tz),k=XS,H=o.H,lab=H.t.map((x,j)=>j?x+':00':'Now'),br=s.cat==='brunei';
+ const grid=a=>`<div class="xg">${a.map(([n,v])=>`<div><span>${n}</span><b>${v}</b></div>`).join('')}</div>`,
+  head=(k,big,sub)=>`<div class="xdh" style="--a:${XL[k].a}"><i>${k+1}</i><div><b>${XL[k].n}</b><strong>${big}</strong><span>${sub}</span></div></div>`,
+  ct=t=>`<p class="xct">${t}</p>`,m=t=>`<p class="xm">${t}</p>`,
+  wk=o.DY?ct('Next 7 days')+`<div class="xwk">${o.DY.map((d,j)=>`<div><span>${j?DN(d.t):'Today'}</span><b>${Math.round(d.hi)}°</b><em>${Math.round(d.lo)}°</em><small>${d.pp??'-'}%</small><small>${fx(d.rain)} mm</small></div>`).join('')}</div>`:'';
+ let h='';
+ if(k<0){h=`<div class="xdh" style="--a:#ff5a3c"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M12 3l9 4.5-9 4.5-9-4.5z"/><path d="M3 12.5l9 4.5 9-4.5M3 17l9 4.5 9-4.5"/></svg></i><div><b>Overview</b><strong>${o.temp.toFixed(1)}°C</strong><span>${o.live?WX(o.code):'Typical '+MN[p.mo]+' conditions'} in ${s.city}</span></div></div>`
+  +m('Tap any layer, or its numbered label, to pull out its details. Tap it again to come back here.')
+  +(wk||ct('Average temperature by month')+`<div class="bars">${s.m.map((v,i)=>`<div class="${i===p.mo?'on':''}"><i style="--c:${tcol(v)};height:${Math.round(6+(v+27)/64*94)}%"></i><span>${MN[i][0]}</span></div>`).join('')}</div>`)
+  +(o.live?ct('Temperature (line) and chance of rain (bars), next 24 hours')+chart({v:H.temp,lab,col:'#ff8a3d',unit:'°',b2:H.pp,al:'Next 24 hours'}):'')
+  +m('Season now: '+s.ss[s.sm[p.mo]])}
+ else if(k===0){const si=sunInfo(cur,o),pw=Math.max(0,Math.sin(el*Math.PI/180))*100,md=Date.now()-(p.h*60+p.m)*6e4;let ne=-90;for(let j=0;j<=144;j++)ne=Math.max(ne,elev(s.la,s.lo,new Date(md+j*6e5)));
+  const ua=o.uv==null?'':o.uv<3?' UV is low, so there is little risk from the sun right now.':o.uv<6?' UV is moderate: wear sunscreen and a hat around midday.':' UV is high: seek shade around midday, cover up and use sunscreen.';
+  h=head(0,Math.round(el)+'°',el>0?'Sun above the horizon':'Sun below the horizon')+grid([['Sunrise',si.rise],['Sunset',si.set],['Daylight',si.dl!=null?hm(si.dl):'n/a'],['Highest sun today',Math.round(ne)+'°'],['UV now',o.uv!=null?fx(o.uv,'',1)+' · '+uvl(o.uv):'n/a'],['UV max today',o.DY&&o.DY[0].uv!=null?fx(o.DY[0].uv,'',1)+' · '+uvl(o.DY[0].uv):'n/a']])
+   +(H.uv?ct('UV index, next 24 hours')+chart({v:H.uv,lab,bar:1,col:uvc,min:0,max:3,d:1,al:'UV index next 24 hours'}):ct('Sun angle, next 24 hours')+chart({v:Array.from({length:24},(_,j)=>elev(s.la,s.lo,new Date(Date.now()+j*36e5))),lab,col:'#f5c542',unit:'°',al:'Sun angle next 24 hours'}))
+   +m((el>0?`At ${Math.round(el)}°, each square metre of ground gets about ${Math.round(pw)}% of the energy it would get with the sun straight overhead. The lower the sun, the more its light spreads out.`:'The sun is below the horizon, so the ground is losing heat to the sky.')+(si.dl>=23.9?' Today the sun never sets: this is the midnight sun.':si.dl<=.1?' Today the sun never rises: this is the polar night.':'')+ua)}
+ else if(k===1){const pm=mxv(H.pp),wr=o.DY?o.DY.reduce((a,d)=>a+(d.rain||0),0):null,wt=o.DY?o.DY.reduce((a,d)=>(d.rain||0)>(a.rain||0)?d:a,o.DY[0]):null,cc=o.cloud;
+  h=head(1,o.live?WX(o.code):'Typical: '+WX(o.code),cc!=null?cc+'% of the sky covered':'Cloud cover needs live readings')+grid([['Cloud cover',fx(cc,'%')],['Rain now',fx(o.precip,' mm',1)],['Rain chance, 24 h',fx(pm,'%')],['Rain, next 7 days',fx(wr,' mm')],['Wettest day ahead',wt&&wt.rain>0?`${DN(wt.t)} · ${fx(wt.rain,' mm')}`:'n/a'],['Yearly average',s.rain?s.rain.toLocaleString()+' mm':cap(s.rainTxt)]])
+   +ct('Chance of rain, next 24 hours')+chart({v:H.pp,lab,bar:1,col:'#4fb3ff',min:0,max:100,unit:'%',al:'Chance of rain next 24 hours'})
+   +m((cc==null?'':cc>=80?'Thick cloud blocks sunlight, keeping days cooler and nights warmer. ':cc>=30?'Broken cloud lets sunshine through in patches. ':'Clear skies let the sun heat the ground fast by day, and let heat escape quickly at night. ')+'Season now: '+s.ss[s.sm[p.mo]])}
+ else if(k===2){const b=bft(o.ws),dr=o.wd!=null?cmp(o.wd):null,op=o.wd!=null?cmp((o.wd+180)%360):null;
+  h=head(2,Math.round(o.ws)+' km/h',`${b.t} · Beaufort force ${b.n}`)+grid([['Coming from',dr?`${dr} (${Math.round(o.wd)}°)`:'n/a'],['Gusts',fx(o.gust,' km/h')],['Beaufort scale',`${b.n} · ${b.t}`],['Usual here','~'+s.wind+' km/h']])
+   +ct('Wind speed (km/h) and direction, next 24 hours')+chart({v:H.ws,lab,col:'#8bd450',min:0,al:'Wind speed next 24 hours'})+arrows(H.wd)
+   +m(b.x+' '+(dr?`The wind is coming from the ${dr} and blowing toward the ${op}. `:'')+(br?'In Brunei, winds come mostly from the northeast during the northeast monsoon (about November to March), and from the southwest during the southwest monsoon (about June to September).':''))}
+ else if(k===3){const v=o.aqi,ad=v==null?(o.live?'There is no air-quality reading for this location right now.':'Air-quality readings appear when the live feed loads.'):v<=50?'The air is clean: a great time to be outdoors.':v<=100?'Air is fine for most people. Very sensitive people may want to take it easy outdoors.':v<=150?'People with asthma, children and older adults should cut down on long, hard exercise outdoors.':'Everyone should spend less time outdoors and keep windows closed.';
+  h=head(3,v!=null?v+' AQI':'n/a',v!=null?aqil(v)+' (US AQI scale)':'No reading yet')+grid([['PM2.5',fx(o.pm25,' µg/m³',1)],['PM10',fx(o.pm10,' µg/m³',1)],['Ozone',fx(o.o3,' µg/m³')],['Worst, next 24 h',fx(mxv(o.AH),' AQI')]])
+   +ct('Air quality index, next 24 hours')+chart({v:o.AH,lab,bar:1,col:aqc,min:0,max:50,al:'Air quality next 24 hours'})
+   +m(ad+' PM2.5 particles are smaller than 2.5 micrometres, about 30 times thinner than a human hair, so they can reach deep into the lungs.'+(br?' In Brunei, smoke haze from fires in the region can drift in during dry spells of the southwest monsoon.':''))}
+ else if(k===4){const fl=o.feels!=null?o.feels:heatIdx(o.temp,o.hum),pr=o.pres,wc=chill(o.temp,o.ws),pt=pr==null?'':pr<1005?' Pressure is low: rising air makes clouds and showers more likely.':pr>1020?' Pressure is high: sinking air usually brings settled, dry weather.':' Pressure is close to average.';
+  h=head(4,o.temp.toFixed(1)+'°C',`Feels like ${fl.toFixed(0)}°C`)+grid([['Humidity',(o.live?'':'~')+Math.round(o.hum)+'%'],['Dew point',fx(o.dew,'°C')+' · '+dewl(o.dew)],['Pressure',fx(pr,' hPa')],['Visibility',o.vis!=null?fx(o.vis/1000,' km',o.vis<1e4?1:0):'n/a'],['Today high',o.DY?fx(o.DY[0].hi,'°C'):'~'+fx(s.m[p.mo]+s.amp,'°C')],['Today low',o.DY?fx(o.DY[0].lo,'°C'):'~'+fx(s.m[p.mo]-s.amp,'°C')]])
+   +ct('Temperature, next 24 hours'+(H.est?' (estimated)':''))+chart({v:H.temp,lab,col:'#ff8a3d',unit:'°',al:'Temperature next 24 hours'})+wk
+   +m(`With a dew point of ${o.dew.toFixed(0)}°C, the air feels ${dewl(o.dew)}. `+(o.temp>=27&&o.hum>=40?'Humid air slows down the evaporation of sweat, so your body cools less well and it feels hotter than the thermometer says.':wc<o.temp-1?`Wind carries heat away from your skin, so it feels like about ${wc.toFixed(0)}°C.`:'')+pt)}
+ else{const mn=Math.min(...s.m),mx=Math.max(...s.m);
+  h=head(5,s.k,s.kt)+grid([[MN[p.mo]+' average',s.m[p.mo].toFixed(1)+'°C'],['Yearly range',`${mn.toFixed(0)} to ${mx.toFixed(0)}°C`],['Rain a year',s.rain?s.rain.toLocaleString()+' mm':cap(s.rainTxt)],['Season now',s.ss[s.sm[p.mo]].split(':')[0]]])
+   +ct('Average temperature by month')+`<div class="bars">${s.m.map((v,i)=>`<div class="${i===p.mo?'on':''}" title="${MN[i]}: ${v}°C"><i style="--c:${tcol(v)};height:${Math.round(6+(v+27)/64*94)}%"></i><span>${MN[i][0]}</span></div>`).join('')}</div>`
+   +(br?m(s.about):'')+m(s.why)+m(br?s.cmp:$('cmp').textContent)}
+ $('xvd').innerHTML=h}
+$('xvst').addEventListener('click',e=>{const b=e.target.closest('.xpl');if(b)xvSel(+b.dataset.k)});
+$('xv').addEventListener('click',e=>{const b=e.target.closest('.xco');if(b)xvSel(+b.dataset.k)});
+$('xvx').onclick=closeXV;$('xvp').onclick=()=>step(-1);$('xvn').onclick=()=>step(1);$('xvb').onclick=()=>openXV();
+$('card').addEventListener('click',e=>{const tb=e.target.closest('[data-fc]');if(tb){FCM=tb.dataset.fc;info();const f=$('card').querySelector(`[data-fc="${FCM}"]`);f&&f.focus();return}if(e.target.closest('#more,#xvb'))return;if(String(getSelection()).length)return;const x=e.target.closest('[data-x]');openXV(x?+x.dataset.x:undefined)});
+addEventListener('resize',()=>{if(XO)xvLayout(false)});
+
+/* ---------- adaptive glass tint ---------- */
+const SC=document.createElement('canvas');SC.width=SC.height=12;const SG=SC.getContext('2d',{willReadFrequently:true});let GT=.22;
+function tint(){if(XO||document.hidden)return;const r=$('card').getBoundingClientRect();if(!r.width||!r.height)return;try{SG.drawImage(cv,r.left*dpr,r.top*dpr,r.width*dpr,r.height*dpr,0,0,12,12);const d=SG.getImageData(0,0,12,12).data;let L=0;for(let i=0;i<d.length;i+=4)L+=(.2126*d[i]+.7152*d[i+1]+.0722*d[i+2])/255;L/=d.length/4;const tg=.12+Math.max(0,L-.3)*.62;GT+=(tg-GT)*.5;$('card').style.setProperty('--gt',GT.toFixed(3))}catch(e){}}
+setInterval(tint,700);
+/* ---------- controls ---------- */
+function enterFS(){document.body.classList.add('fs');$('fsui').setAttribute('aria-hidden','false');mini();try{const p=document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();if(p&&p.catch)p.catch(()=>{})}catch(e){}}
+function exitFS(){document.body.classList.remove('fs');$('fsui').setAttribute('aria-hidden','true');try{if(document.fullscreenElement){const p=document.exitFullscreen();if(p&&p.catch)p.catch(()=>{})}}catch(e){}}
+document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement&&document.body.classList.contains('fs'))exitFS()});
+function setPlay(v){AP=v;apT0=performance.now();$('play').setAttribute('aria-pressed',v);$('play').setAttribute('aria-label',v?'Pause slideshow':'Play slideshow');
+ $('pico').innerHTML=v?'<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>':'<path d="M7 5l12 7-12 7z"/>'}
+setPlay(AP);
+$('prev').onclick=()=>step(-1);$('next').onclick=()=>step(1);$('fsp').onclick=()=>step(-1);$('fsn').onclick=()=>step(1);
+$('play').onclick=()=>setPlay(!AP);$('fsb').onclick=enterFS;$('fsx').onclick=exitFS;$('bdb').onclick=openBoard;$('bx').onclick=closeBoard;
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setCat(b.dataset.c));
+$('more').onclick=()=>{const o=$('card').classList.toggle('open');$('more').setAttribute('aria-expanded',o);$('more').textContent=o?'Hide climate details':'Show climate details'};
+document.addEventListener('keydown',e=>{if(XO){if(e.key==='Escape')closeXV();else if(e.key==='ArrowRight')step(1);else if(e.key==='ArrowLeft')step(-1);return}if(!$('board').hidden){if(e.key==='Escape')closeBoard();return}
+ if((e.key==='e'||e.key==='E')&&!e.ctrlKey&&!e.metaKey){openXV();return}
+ if(e.key==='ArrowRight')step(1);else if(e.key==='ArrowLeft')step(-1);else if(e.key==='f'||e.key==='F')document.body.classList.contains('fs')?exitFS():enterFS();else if(e.key==='Escape')exitFS();else if(e.key===' '&&!(e.target.closest&&e.target.closest('button'))){e.preventDefault();setPlay(!AP)}});
+addEventListener('pointermove',e=>{if(e.pointerType==='mouse')mx=e.clientX/innerWidth*2-1});
+let sx=null;cv.addEventListener('pointerdown',e=>{sx=e.clientX});
+document.addEventListener('pointerup',e=>{if(sx==null)return;const d=e.clientX-sx;sx=null;if(Math.abs(d)>60)step(d<0?1:-1)});
+
+let n=0;setInterval(()=>{n++;$('clock').textContent=lp(S[cur].tz).txt;if(document.body.classList.contains('fs'))mini();if(n%30===0)info()},1000);
+
+function renderDists(){const el=$('dists');el.hidden=cat!=='brunei';el.innerHTML=DL.map(([k,n])=>`<button class="dist" data-d="${k}" aria-pressed="${DIST===k}">${n}<small>${S.filter((s,i)=>s.cat==='brunei'&&inD(i,k)).length}</small></button>`).join('')}
+function setDist(d){if(d===DIST)return;DIST=d;renderDists();renderSlider();const L=list();if(!L.includes(cur))go(L[0]);layer();info()}
+$('dists').addEventListener('click',e=>{const b=e.target.closest('.dist');if(b)setDist(b.dataset.d)});
+renderDists();renderSlider();info();layer();requestAnimationFrame(frame);load();setInterval(load,600000);
+}
+</script>
+</body>
+</html>
