@@ -1069,7 +1069,7 @@ $('rainyr').innerHTML=s.rain?`<b>${s.rain.toLocaleString()} mm</b> rain a year`:
  $('bars').innerHTML=s.m.map((v,i)=>`<div class="${i===p.mo?'on':''}" title="${MN[i]}: ${v}°C"><i style="--c:${tcol(v)};height:${Math.round(6+(v+27)/64*94)}%"></i><span>${MN[i][0]}</span></div>`).join('');
  $('about').hidden=!br;if(br)$('about').textContent=s.about;
  $('why').textContent=s.why;$('seas').textContent='Season now: '+s.ss[s.sm[p.mo]];
- if(br)$('cmp').textContent=s.cmp;
+ if(s.cmp)$('cmp').textContent=s.cmp;
  else{const d=s.m[p.mo]-BN[p.mo];$('cmp').textContent=`In ${MN[p.mo]}, ${s.city} averages ${s.m[p.mo].toFixed(1)}°C, which is ${Math.abs(d).toFixed(1)}°C ${d<0?'cooler':'warmer'} than Bandar Seri Begawan. It gets about ${Math.round(s.rain/3066*100)}% as much rain a year as Brunei's capital.`}
  $('note').textContent=br?'Brunei place averages are estimated from the capital\'s long-term averages, adjusted for distance from the sea and forest cover. When live readings are unavailable, temperatures are estimated from the month\'s average and the time of day.':'Monthly averages and yearly rainfall are approximate long-term values. When live readings are unavailable, temperatures are estimated from the month\'s average and the local time of day.';
  S.forEach((x,i)=>{if(i!==cur)EL[i]=elev(x.la,x.lo,new Date())});temps();mini();board();xvFill()}
