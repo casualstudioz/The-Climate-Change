@@ -325,7 +325,7 @@ body.incorner #wall{filter:saturate(1.1) brightness(.7)}
 .lbctl{display:flex;justify-content:flex-end;gap:8px}
 @media(max-width:900px){.cnh{grid-template-columns:minmax(0,1fr)}.cnevw{grid-template-columns:minmax(0,1fr)}.cncal{position:static}.lbc{grid-template-columns:minmax(0,1fr);overflow:auto}.lbart{min-height:220px;aspect-ratio:4/3}.lbb{overflow:visible}}
 @media(max-width:600px){.cnc.big{grid-column:auto;grid-row:auto}.cnc.big .cnart{aspect-ratio:4/3;min-height:0}.cnst b{font-size:20px}.cnx strong{font-size:20px}.lbst{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:480px){.tabs{order:3;width:100%;overflow-x:auto;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{flex:1 0 auto;font-size:12.5px;padding:0 10px}.stat{order:4}}
+@media(max-width:480px){.tabs{order:3;width:100%;overflow-x:auto;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{flex:1 0 auto;font-size:12.5px;padding:0 10px}.stat{order:4}.tcw{display:none}}
 @media(max-width:380px){.tab{font-size:12px;padding:0 8px}.tabs{padding:2px}}
 @media(max-width:340px){.tab{font-size:11px;padding:0 5px;min-height:34px}}
 @media(prefers-reduced-motion:reduce){.cn{scroll-behavior:auto}.cnc,.cnart svg,.cnart img{transition:none}}
@@ -345,7 +345,7 @@ body.incorner #wall{filter:saturate(1.1) brightness(.7)}
 <div class="ui">
  <header class="top">
   <div class="logo"><svg width="28" height="28" viewBox="0 0 30 30" aria-hidden="true"><path d="M15 3 27 10 15 17 3 10z" fill="#ff5a3c"/><path d="M3 14l12 7 12-7M3 19l12 7 12-7" fill="none" stroke="#fff" stroke-width="3"/></svg><span>The Climate Change</span></div>
-  <div class="tabs" role="tablist" aria-label="Category"><button class="tab" role="tab" data-c="world" aria-selected="false">World climates</button><button class="tab" role="tab" data-c="brunei" aria-selected="true">Brunei</button><button class="tab" role="tab" data-c="corner" aria-selected="false"><span class="tcc">Climate Change </span>Corner</button></div>
+  <div class="tabs" role="tablist" aria-label="Category"><button class="tab" role="tab" data-c="world" aria-selected="false">World<span class="tcw"> climates</span></button><button class="tab" role="tab" data-c="asean" aria-selected="false">ASEAN</button><button class="tab" role="tab" data-c="brunei" aria-selected="true">Brunei</button><button class="tab" role="tab" data-c="corner" aria-selected="false"><span class="tcc">Climate Change </span>Corner</button></div>
   <div class="stat off" id="stat"><i></i><span id="statt">Connecting to live weather…</span></div>
   <div class="ctl">
    <button class="ib" id="prev" aria-label="Previous wallpaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
@@ -790,6 +790,127 @@ BR.push(...BEACHES);
 const DO={'Brunei-Muara':0,Tutong:1,Belait:2,Temburong:3};BR.sort((a,b)=>DO[a.dist]-DO[b.dist]);
 BR.forEach(b=>Object.assign(b,{cat:'brunei',tz:'Asia/Brunei',k:'Af',kt:'Tropical rainforest',sm:BSM,ss:BSS,sig:null}));
 S.push(...BR);
+/* ---------- ASEAN helpers and scenes ---------- */
+function aAngkor(g,x,y,s,c){g.fillStyle=c;const tw=(cx,by,w,h)=>{g.beginPath();g.moveTo(cx-w/2,by);g.quadraticCurveTo(cx-w*.62,by-h*.5,cx,by-h);g.quadraticCurveTo(cx+w*.62,by-h*.5,cx+w/2,by);g.closePath();g.fill()};
+ g.fillRect(x-s*.42,y-s*.03,s*.84,s*.03);g.fillRect(x-s*.32,y-s*.06,s*.64,s*.031);g.fillRect(x-s*.2,y-s*.09,s*.4,s*.031);
+ tw(x-s*.3,y-s*.03,s*.06,s*.13);tw(x+s*.3,y-s*.03,s*.06,s*.13);tw(x-s*.15,y-s*.06,s*.07,s*.17);tw(x+s*.15,y-s*.06,s*.07,s*.17);tw(x,y-s*.09,s*.09,s*.24)}
+function aCone(g,x,y,w,h,c1,c2,t,smoke){g.fillStyle=vg(g,y-h,y,[c1,c2]);g.beginPath();g.moveTo(x-w/2,y);g.quadraticCurveTo(x-w*.1,y-h*.5,x-w*.035,y-h);g.lineTo(x+w*.035,y-h);g.quadraticCurveTo(x+w*.1,y-h*.5,x+w/2,y);g.closePath();g.fill();
+ if(smoke)for(let i=0;i<10;i++){const k=(i/10+t*.03)%1,r=w*(.02+k*.08);g.fillStyle=`rgba(236,236,240,${(.5*(1-k)).toFixed(3)})`;g.beginPath();g.arc(x+k*w*.25+Math.sin(t*.5+i)*w*.01,y-h-k*h*.6,r,0,TAU);g.fill()}}
+function aBorobudur(g,x,y,s){const c1='#6b6670',c2='#4e4a57',hh=s*.028;for(let i=0;i<6;i++){const w=s*(.6-i*.075);g.fillStyle=i%2?c1:c2;g.fillRect(x-w/2,y-(i+1)*hh,w,hh)}
+ const top=y-6*hh;for(let r=0;r<3;r++){const n=7-r*2,w=s*(.3-r*.08),yy=top-r*s*.03;for(let k=0;k<n;k++){const xx=x-w/2+k*w/(n-1);g.fillStyle=c1;g.beginPath();g.arc(xx,yy,s*.014,Math.PI,0);g.fill();g.fillRect(xx-s*.002,yy-s*.026,s*.004,s*.013)}}
+ const ty=top-3*s*.03+s*.01;g.fillStyle=c2;g.beginPath();g.arc(x,ty,s*.042,Math.PI,0);g.fill();g.beginPath();g.moveTo(x-s*.008,ty-s*.036);g.lineTo(x,ty-s*.09);g.lineTo(x+s*.008,ty-s*.036);g.closePath();g.fill()}
+function aStupa(g,x,y,s,c1,c2){const gr=g.createLinearGradient(x-s*.2,0,x+s*.2,0);gr.addColorStop(0,c2);gr.addColorStop(.45,c1);gr.addColorStop(1,c2);g.fillStyle=gr;
+ g.fillRect(x-s*.22,y-s*.03,s*.44,s*.03);g.fillRect(x-s*.17,y-s*.055,s*.34,s*.026);g.fillRect(x-s*.13,y-s*.075,s*.26,s*.021);
+ g.beginPath();g.moveTo(x-s*.12,y-s*.074);g.quadraticCurveTo(x-s*.12,y-s*.2,x-s*.03,y-s*.24);g.lineTo(x+s*.03,y-s*.24);g.quadraticCurveTo(x+s*.12,y-s*.2,x+s*.12,y-s*.074);g.closePath();g.fill();
+ for(let i=0;i<5;i++){const w=s*(.035-i*.005);g.fillRect(x-w,y-s*(.255+i*.022),w*2,s*.017)}
+ g.beginPath();g.moveTo(x-s*.012,y-s*.36);g.lineTo(x,y-s*.5);g.lineTo(x+s*.012,y-s*.36);g.closePath();g.fill()}
+function aPrang(g,x,y,s,c){g.fillStyle=c;const p=(cx,by,w,h)=>{for(let i=0;i<4;i++){const ww=w*(1.6-i*.15);g.fillRect(cx-ww/2,by-(i+1)*h*.05,ww,h*.05)}const b=by-h*.2;g.beginPath();g.moveTo(cx-w/2,b);g.quadraticCurveTo(cx-w*.55,b-h*.45,cx-w*.08,b-h*.72);g.lineTo(cx,b-h*.8);g.lineTo(cx+w*.08,b-h*.72);g.quadraticCurveTo(cx+w*.55,b-h*.45,cx+w/2,b);g.closePath();g.fill();g.fillRect(cx-w*.025,b-h*.98,w*.05,h*.22)};
+ p(x-s*.24,y,s*.07,s*.24);p(x+s*.24,y,s*.07,s*.24);p(x,y,s*.13,s*.52)}
+function aSkyline(g,W,H,y,s,sd,c,lit,t){const q=rng(sd);let x=-W*.05;while(x<W*1.05){const w=s*(.04+q()*.06),h=s*(.08+q()*.3);g.fillStyle=c;g.fillRect(x,y-h,w,h);
+ if(lit){const q2=rng(sd*7+Math.round(x));for(let yy=y-h+s*.012;yy<y-s*.012;yy+=s*.02)for(let xx=x+s*.008;xx<x+w-s*.01;xx+=s*.014)if(q2()<.45){g.fillStyle=`rgba(255,${210+(q2()*40|0)},150,${(.55+.35*Math.sin(t*.3+xx)).toFixed(2)})`;g.fillRect(xx,yy,s*.006,s*.008)}}x+=w+s*.008}}
+function aTwin(g,x,y,s){const steps=[[.075,.18],[.066,.14],[.056,.12],[.045,.08],[.032,.06],[.02,.04]];const tower=cx=>{let yy=y;const gr=g.createLinearGradient(cx-s*.04,0,cx+s*.04,0);gr.addColorStop(0,'#59647f');gr.addColorStop(.5,'#cfd8ea');gr.addColorStop(1,'#4a5470');
+  steps.forEach(([w,h])=>{g.fillStyle=gr;g.fillRect(cx-s*w/2,yy-s*h,s*w,s*h);g.fillStyle='rgba(255,226,160,.7)';for(let ly=yy-s*h+s*.008;ly<yy-s*.004;ly+=s*.012)g.fillRect(cx-s*w*.35,ly,s*w*.7,Math.max(1,s*.0025));yy-=s*h});
+  g.fillStyle=gr;g.beginPath();g.moveTo(cx-s*.006,yy);g.lineTo(cx,yy-s*.1);g.lineTo(cx+s*.006,yy);g.closePath();g.fill()};
+ tower(x-s*.075);tower(x+s*.075);g.fillStyle='#8b94ab';g.fillRect(x-s*.045,y-s*.33,s*.09,s*.012)}
+function aBoat(g,x,y,s,c){g.fillStyle=c;g.beginPath();g.moveTo(x-s*.08,y-s*.012);g.quadraticCurveTo(x,y+s*.02,x+s*.08,y-s*.016);g.lineTo(x+s*.06,y-s*.004);g.lineTo(x-s*.06,y-s*.002);g.closePath();g.fill();g.fillRect(x-s*.025,y-s*.03,s*.04,s*.022)}
+function aJunk(g,x,y,s){g.fillStyle='#4a2f22';g.beginPath();g.moveTo(x-s*.09,y-s*.02);g.quadraticCurveTo(x,y+s*.015,x+s*.09,y-s*.03);g.lineTo(x+s*.08,y-s*.008);g.lineTo(x-s*.08,y-s*.004);g.closePath();g.fill();
+ [[-.05,.11],[0,.15],[.05,.1]].forEach(([dx,h])=>{const sx=x+s*dx,b=y-s*.02;g.fillStyle='#b5442e';g.beginPath();g.moveTo(sx,b);g.lineTo(sx-s*.005,b-s*h);g.lineTo(sx+s*.04,b-s*h*.9);g.lineTo(sx+s*.035,b);g.closePath();g.fill();g.strokeStyle='rgba(60,20,10,.6)';g.lineWidth=1;for(let k=1;k<5;k++){const yy=b-s*h*k/5;g.beginPath();g.moveTo(sx-s*.004*k/5,yy);g.lineTo(sx+s*.038,yy+s*.005);g.stroke()}})}
+function aKarst(g,W,H,y,s,sd,c,n,hs){const q=rng(sd);g.fillStyle=c;for(let i=0;i<n;i++){const x=(q()*1.3-.15)*W,w=s*(.08+q()*.14),hh=s*(.12+q()*.2)*hs;g.beginPath();g.moveTo(x-w/2,y);g.bezierCurveTo(x-w*.62,y-hh*.6,x-w*.42,y-hh,x,y-hh);g.bezierCurveTo(x+w*.45,y-hh,x+w*.6,y-hh*.5,x+w/2,y);g.closePath();g.fill()}}
+function aTree(g,x,y,h,c){g.strokeStyle=g.fillStyle=c;g.lineWidth=Math.max(2,h*.05);g.lineCap='round';g.beginPath();g.moveTo(x,y);g.lineTo(x,y-h*.6);g.moveTo(x,y-h*.4);g.lineTo(x-h*.25,y-h*.7);g.moveTo(x,y-h*.45);g.lineTo(x+h*.3,y-h*.72);g.stroke();g.beginPath();g.ellipse(x,y-h*.75,h*.5,h*.13,0,0,TAU);g.fill()}
+function aHill(g,x,y,w,h,c){g.fillStyle=c;g.beginPath();g.moveTo(x-w/2,y);g.quadraticCurveTo(x-w*.25,y-h,x,y-h);g.quadraticCurveTo(x+w*.25,y-h,x+w/2,y);g.closePath();g.fill()}
+const BRM=BR.find(b=>b.city==='Omar Ali Saifuddien Mosque');
+const ASEAN_S=[
+ {...BRM,co:'Bandar Seri Begawan, Brunei',dist:undefined,beach:undefined},
+ {name:'Temple dawn',city:'Angkor Wat',co:'Siem Reap, Cambodia',tz:'Asia/Phnom_Penh',la:13.41,lo:103.87,k:'Aw',kt:'Tropical savanna',m:[25.8,27.3,28.8,29.8,29.3,28.8,28.4,28.2,27.8,27.2,26.4,25.3],rain:1400,hum:74,wind:8,amp:5,wx:1,sig:null,
+  why:'Cambodia lies in the tropics between the Gulf of Thailand and the great Tonlé Sap lake. The southwest monsoon brings a long wet season, while dry northeast winds bring clear, warm skies from about November to April.',
+  sm:'CCHHWWWWWWCC',ss:{C:'Cool dry season: clear skies, warm days and the most comfortable weather of the year.',H:'Hot season: the hottest, driest weeks, often above 35°C in the afternoon.',W:'Wet season: afternoon downpours, while the Tonlé Sap lake swells to several times its dry-season size.'},
+  draw(g,W,H,t,L){const s=Math.min(W,H),hy=H*.66;sky(g,W,H,['#2b3566','#c4708a','#f6b37a','#fde0b0']);
+   L(.04,()=>glow(g,W*.5,H*.5,s*.06,'rgba(255,226,180,1)'));L(.1,()=>canopy(g,W,H,hy-H*.005,s*.022,31,'#5d3f58'));
+   L(.22,()=>aAngkor(g,W*.5,hy,s,'#3a2440'));
+   L(.35,()=>{water(g,W,H,hy,'#d58f8a','#2d2a52',t,33,'rgba(255,214,180,.4)');g.save();g.globalAlpha=.3;g.translate(0,hy*2);g.scale(1,-1);aAngkor(g,W*.5,hy,s,'#3a2440');g.restore()});
+   L(.6,()=>{palm(g,W*.1,H*.98,s*.55,t,'#22172c');palm(g,W*.88,H*1.0,s*.48,t+1,'#22172c')})}},
+ {name:'Stupa terraces',city:'Borobudur',co:'Central Java, Indonesia',tz:'Asia/Jakarta',la:-7.61,lo:110.2,k:'Am',kt:'Tropical monsoon',m:[25.9,26,26.2,26.5,26.4,25.8,25.3,25.5,26.2,26.6,26.4,26],rain:2300,hum:80,wind:6,amp:4,wx:2,sig:null,
+  why:'Java sits just south of the equator, so it is warm all year. Its seasons come from the monsoon winds: wet westerlies from about November to March, and drier winds from Australia from about May to September.',
+  sm:'WWWTDDDDDTWW',ss:{W:'Wet season: heavy afternoon storms almost every day.',T:'Change of season: showers ease or return, and the air feels very humid.',D:'Dry season: sunnier days and misty sunrises over the volcanoes.'},
+  draw(g,W,H,t,L){const s=Math.min(W,H);sky(g,W,H,['#5a7cc0','#9fc0e6','#f4dcc0']);
+   L(.04,()=>glow(g,W*.22,H*.36,s*.05,'rgba(255,240,215,1)'));L(.08,()=>aCone(g,W*.72,H*.6,W*.62,H*.32,'#7d90b0','#55698c',t,true));
+   L(.15,()=>ridge(g,W,H,H*.62,H*.04,1,41,'#5f7896',true));L(.22,()=>mist(g,W,H,H*.6,H*.05,t,'rgba(255,240,228,.6)'));
+   L(.32,()=>canopy(g,W,H,H*.74,s*.03,43,'#3c6a4c'));L(.45,()=>aBorobudur(g,W*.42,H*.76,s));
+   L(.6,()=>mist(g,W,H,H*.78,H*.04,t*1.3,'rgba(255,245,235,.45)'));L(.75,()=>canopy(g,W,H,H*.92,s*.05,47,'#244a35'));L(.9,()=>palm(g,W*.92,H*1.03,s*.55,t,'#1b3426'))}},
+ {name:'Mekong dusk',city:'Luang Prabang',co:'Laos',tz:'Asia/Vientiane',la:19.89,lo:102.13,k:'Aw',kt:'Tropical savanna',m:[20.4,22.4,25.2,27.6,28.3,28.2,27.6,27.3,27,25.5,23,20.6],rain:1300,hum:75,wind:5,amp:6,wx:2,sig:null,
+  why:'Luang Prabang lies in a mountain valley where the Nam Khan meets the Mekong. Surrounded by hills and far from the sea, it has cool mornings in winter and a wet monsoon season in summer.',
+  sm:'CCHHWWWWWWCC',ss:{C:'Cool dry season: misty mornings over the rivers and warm, sunny afternoons.',H:'Hot season: hazy and very warm before the rains arrive.',W:'Rainy season: the monsoon swells the Mekong and turns the hills deep green.'},
+  draw(g,W,H,t,L){const s=Math.min(W,H),hy=H*.7;sky(g,W,H,['#3c3f78','#b9708a','#f3a46d','#fbd79c']);
+   L(.04,()=>glow(g,W*.7,H*.5,s*.055,'rgba(255,220,170,1)'));L(.08,()=>ridge(g,W,H,H*.56,H*.06,1.2,51,'#8a6a92',true));
+   L(.14,()=>ridge(g,W,H,H*.62,H*.06,1.6,53,'#6a4e78',true));L(.2,()=>mist(g,W,H,H*.6,H*.04,t,'rgba(255,214,190,.45)'));
+   L(.3,()=>{aHill(g,W*.3,hy,W*.5,H*.2,'#3e2c4e');aStupa(g,W*.3,hy-H*.2+s*.006,s*.22,'#f2c85a','#b88a2a');glow(g,W*.3,hy-H*.2-s*.105,s*.006,'rgba(255,230,160,1)')});
+   L(.4,()=>canopy(g,W,H,hy,s*.02,55,'#2f2340'));
+   L(.5,()=>{water(g,W,H,hy,'#c98a7e','#3a2f55',t,57,'rgba(255,214,170,.45)');aBoat(g,((.15+t*.01)%1.3-.15)*W,H*.8,s,'#24182e');aBoat(g,((.75-t*.007)%1.3+1.3)%1.3*W-.15*W,H*.86,s*1.2,'#24182e')});
+   L(.85,()=>palm(g,W*.06,H*1.02,s*.5,t,'#1d1426'))}},
+ {name:'Twin towers',city:'Kuala Lumpur',co:'Malaysia',tz:'Asia/Kuala_Lumpur',la:3.15,lo:101.71,k:'Af',kt:'Tropical rainforest',m:[27.4,27.8,28.1,28.2,28.4,28.1,27.7,27.7,27.6,27.4,27.1,27],rain:2600,hum:80,wind:5,amp:4,wx:2,sig:null,
+  why:'Kuala Lumpur sits in the Klang Valley close to the equator, sheltered by the Titiwangsa Mountains. Hot, humid air rises on most afternoons, so thunderstorms are very common, especially between the monsoons.',
+  sm:'NNNIISSSSINN',ss:{N:'Northeast monsoon: wetter months, though the mountains shelter the city from the worst of it.',I:'Inter-monsoon: the stormiest time, with heavy afternoon thunderstorms.',S:'Southwest monsoon: slightly drier, sometimes with haze from fires in the region.'},
+  draw(g,W,H,t,L){const s=Math.min(W,H),gy=H*.84;sky(g,W,H,['#1b2650','#5b4a8a','#e28a7a','#f6c58c']);
+   L(.04,()=>{glow(g,W*.2,H*.62,s*.04,'rgba(255,200,160,1)');clouds(g,W,H,t*.3,.35)});L(.1,()=>ridge(g,W,H,H*.7,H*.04,1,61,'#4a3a6a',true));
+   L(.2,()=>aSkyline(g,W,H,gy,s,63,'#2a2445',true,t));L(.3,()=>aTwin(g,W*.62,gy,s*1.1));
+   L(.45,()=>aSkyline(g,W,H,gy+s*.02,s*.8,67,'#1c1832',true,t));
+   L(.7,()=>{canopy(g,W,H,H*.96,s*.05,69,'#141026');palm(g,W*.05,H*1.03,s*.5,t,'#141026')})}},
+ {name:'Golden stupa',city:'Yangon',co:'Myanmar',tz:'Asia/Yangon',la:16.8,lo:96.15,k:'Am',kt:'Tropical monsoon',m:[25,26.5,28.6,30.4,29,27.1,26.6,26.5,26.9,27.4,26.6,25.1],rain:2700,hum:76,wind:7,amp:5,wx:1,sig:null,
+  why:'Yangon sits near the Andaman Sea, right in the path of the southwest monsoon. From about June to October moist ocean winds bring very heavy rain, while the winter months are almost completely dry.',
+  sm:'CCHHHMMMMMCC',ss:{C:'Cool season: dry, sunny and pleasant.',H:'Hot season: the hottest weeks, ending with the first storms of the monsoon.',M:'Monsoon: heavy, frequent rain carried by moist winds from the sea.'},
+  draw(g,W,H,t,L){const s=Math.min(W,H),hy=H*.76;sky(g,W,H,['#40305f','#c36d6a','#f5a45d','#fdd28e']);
+   L(.04,()=>glow(g,W*.22,H*.58,s*.05,'rgba(255,214,160,1)'));L(.08,()=>bGulls(g,W,H,t,5,.18,'rgba(60,30,50,.6)',71));
+   L(.15,()=>mist(g,W,H,H*.66,H*.05,t,'rgba(255,210,170,.4)'));L(.25,()=>{aHill(g,W*.58,hy,W*.9,H*.1,'#4a2c3c');canopy(g,W,H,hy,s*.03,73,'#3a2232')});
+   L(.38,()=>{aStupa(g,W*.58,hy-H*.08,s*1.05,'#f6c84e','#a8761a');aStupa(g,W*.38,hy-H*.02,s*.32,'#e7b443','#9a6a18');aStupa(g,W*.78,hy-H*.03,s*.36,'#e7b443','#9a6a18');glow(g,W*.58,hy-H*.08-s*.52,s*.008,'rgba(255,240,190,1)')});
+   L(.7,()=>{canopy(g,W,H,H*.95,s*.05,75,'#24131f');palm(g,W*.94,H*1.03,s*.55,t,'#24131f')})}},
+ {name:'Perfect cone',city:'Mayon Volcano',co:'Albay, Philippines',tz:'Asia/Manila',la:13.25,lo:123.69,k:'Af',kt:'Tropical rainforest',m:[25.9,26,26.6,27.6,28.4,28.5,28,28.1,27.8,27.4,27,26.4],rain:3400,hum:83,wind:9,amp:4,wx:2,sig:null,
+  why:'Albay faces the Pacific Ocean on the east side of Luzon. Warm ocean water feeds frequent rain, the northeast monsoon brings the wettest weeks to this coast, and typhoons often pass nearby between about July and November.',
+  sm:'AAHHHBBBBBAA',ss:{A:'Amihan (northeast monsoon): winds off the Pacific bring the wettest weeks to this east-facing coast.',H:'Hot season: the sunniest, warmest months.',B:'Habagat and typhoon season: southwest monsoon rain, with typhoons passing nearby in some years.'},
+  draw(g,W,H,t,L){const s=Math.min(W,H);sky(g,W,H,['#5f9fd8','#a9d2ef','#e9f5fb']);
+   L(.04,()=>glow(g,W*.8,H*.2,s*.04,'rgba(255,252,236,1)'));L(.06,()=>clouds(g,W,H,t*.4,.5));
+   L(.12,()=>aCone(g,W*.5,H*.66,W*.9,H*.46,'#5e7088','#3f5a4a',t,true));L(.2,()=>mist(g,W,H,H*.6,H*.04,t,'rgba(255,255,255,.55)'));
+   L(.3,()=>canopy(g,W,H,H*.7,s*.025,81,'#3f7d4a'));
+   L(.45,()=>{for(let i=0;i<6;i++){const y=H*(.72+i*.045);g.fillStyle=i%2?'#7fc25a':'#6cb24c';g.fillRect(-W*.5,y,W*2,H*.045);g.fillStyle='rgba(180,220,255,.35)';g.fillRect(-W*.5,y,W*2,2)}});
+   L(.8,()=>{palm(g,W*.08,H*1.02,s*.6,t,'#2a4a2a');palm(g,W*.9,H*1.04,s*.5,t+1,'#2a4a2a')})}},
+ {name:'Garden city',city:'Singapore',co:'Singapore',tz:'Asia/Singapore',la:1.29,lo:103.85,k:'Af',kt:'Tropical rainforest',m:[26.6,27.1,27.6,28,28.4,28.4,28,27.9,27.8,27.7,27,26.5],rain:2500,hum:82,wind:8,amp:3.5,wx:2,sig:null,night:1,
+  why:'Just north of the equator, Singapore is hot and humid all year, with very little change in temperature from month to month. Rain falls in every month, often as short, heavy afternoon thunderstorms.',
+  sm:'NNNIISSSSIIN',ss:{N:'Northeast monsoon: the wettest spell, followed by drier, breezier weeks.',I:'Inter-monsoon: light winds and frequent afternoon thunderstorms.',S:'Southwest monsoon: slightly drier, with early-morning squalls.'},
+  draw(g,W,H,t,L){const s=Math.min(W,H),wy=H*.74;sky(g,W,H,['#0b1330','#1c2b5a','#43407a']);stars(g,W,H,t,.5);
+   L(.08,()=>aSkyline(g,W,H,wy,s*1.1,91,'#1a1d3a',true,t));L(.2,()=>aSkyline(g,W,H,wy,s*.8,93,'#12142c',true,t));
+   L(.35,()=>{water(g,W,H,wy,'#26315e','#0b1024',t,95,'rgba(255,214,150,.35)');const q=rng(97);for(let i=0;i<30;i++){const x=q()*W,c=q()<.5?'255,214,150':'150,200,255';g.fillStyle=`rgba(${c},${(.25+.2*Math.sin(t*2+i)).toFixed(2)})`;g.fillRect(x,wy+q()*H*.2,s*.004,s*(.02+q()*.05))}});
+   L(.7,()=>{canopy(g,W,H,H*.97,s*.06,99,'#08140f');palm(g,W*.08,H*1.03,s*.5,t,'#08140f');palm(g,W*.95,H*1.04,s*.42,t+1,'#08140f')})}},
+ {name:'River temple',city:'Bangkok',co:'Thailand',tz:'Asia/Bangkok',la:13.74,lo:100.49,k:'Aw',kt:'Tropical savanna',m:[27,28.3,29.5,30.5,30,29.5,29,28.8,28.3,28.1,27.6,26.4],rain:1650,hum:74,wind:8,amp:5,wx:1,sig:null,
+  why:'Bangkok sits on the flat, low delta of the Chao Phraya River, close to the Gulf of Thailand. The southwest monsoon brings a rainy season from about May to October, then dry northeast winds bring cooler, sunny months.',
+  sm:'CCHHHRRRRRCC',ss:{C:'Cool season: dry and sunny, with the most comfortable temperatures.',H:'Hot season: the hottest time of year, often 35°C or more.',R:'Rainy season: heavy afternoon and evening storms, with occasional flooding.'},
+  draw(g,W,H,t,L){const s=Math.min(W,H),hy=H*.68;sky(g,W,H,['#3b3577','#d26f71','#f7a35e','#fdd895']);
+   L(.04,()=>glow(g,W*.3,H*.56,s*.055,'rgba(255,222,170,1)'));L(.1,()=>aSkyline(g,W,H,hy,s*.6,101,'#7a4e6e',false,t));
+   L(.2,()=>{canopy(g,W,H,hy,s*.02,103,'#4a2c4c');aPrang(g,W*.64,hy,s,'#3a2440')});
+   L(.35,()=>{water(g,W,H,hy,'#d58b7e','#3a2c58',t,105,'rgba(255,214,170,.45)');g.save();g.globalAlpha=.28;g.translate(0,hy*2);g.scale(1,-1);aPrang(g,W*.64,hy,s,'#3a2440');g.restore()});
+   L(.55,()=>{aBoat(g,((.1+t*.02)%1.3-.15)*W,H*.8,s*1.2,'#201632');aBoat(g,((.6+t*.012)%1.3-.15)*W,H*.88,s*1.5,'#201632')});
+   L(.85,()=>{g.fillStyle='#1a1226';for(let i=0;i<5;i++)g.fillRect(W*(.02+i*.035),H*.86,s*.012,H*.2);g.fillRect(-W*.1,H*.86,W*.22,s*.015)})}},
+ {name:'Dry hills bay',city:'Dili',co:'Timor-Leste',tz:'Asia/Dili',la:-8.56,lo:125.57,k:'Aw',kt:'Tropical savanna',m:[27.4,27.2,27,27.1,27,26.1,25.6,25.6,26.2,27,27.8,27.8],rain:900,hum:72,wind:7,amp:5,wx:1,sig:null,
+  why:'Dili lies on the north coast of Timor, sheltered by the island\'s high central mountains. It has a short wet season from about December to April and a long dry season, when the hills turn golden brown.',
+  sm:'WWWWDDDDDDDW',ss:{W:'Wet season: the northwest monsoon brings warm, humid weather and heavy showers.',D:'Dry season: steady southeast trade winds, sunny skies and dry, golden hills.'},
+  draw(g,W,H,t,L){const s=Math.min(W,H),hy=H*.6;sky(g,W,H,['#4f9ad6','#9ccbee','#e7f4fb']);
+   L(.04,()=>glow(g,W*.75,H*.2,s*.04,'rgba(255,252,236,1)'));L(.06,()=>clouds(g,W,H,t*.3,.35));
+   L(.1,()=>{g.fillStyle='#7f9ab0';g.beginPath();g.moveTo(W*.6,hy);g.quadraticCurveTo(W*.78,hy-H*.08,W*1.05,hy-H*.02);g.lineTo(W*1.05,hy);g.closePath();g.fill()});
+   L(.18,()=>water(g,W,H,hy,'#4fa9d0','#1d5f86',t,111,'rgba(255,255,255,.4)'));
+   L(.28,()=>{g.fillStyle=vg(g,H*.38,H*.7,['#c9a46a','#9c7446']);g.beginPath();g.moveTo(-W*.1,H*.72);g.quadraticCurveTo(W*.05,H*.34,W*.25,H*.42);g.quadraticCurveTo(W*.4,H*.5,W*.48,H*.72);g.closePath();g.fill()});
+   L(.42,()=>{aBoat(g,((.55+t*.006)%1.3-.15)*W,H*.68,s,'#2c3d4f');aBoat(g,((.9+t*.004)%1.3-.15)*W,H*.72,s*1.2,'#7a3a2a')});
+   L(.6,()=>{dune(g,W,H,H*.82,H*.012,.3,113,'#d9bd8a','#b0905e');bGrass(g,-W*.1,W*.5,H*.9,s,t,'#9c8248',115,60)});
+   L(.85,()=>{aTree(g,W*.16,H*.98,s*.45,'#4a3a22');aTree(g,W*.86,H*1.0,s*.38,'#4a3a22')})}},
+ {name:'Karst bay',city:'Ha Long Bay',co:'Quang Ninh, Vietnam',tz:'Asia/Ho_Chi_Minh',la:20.91,lo:107.18,k:'Cwa',kt:'Humid subtropical',m:[16.5,17.2,19.5,23.4,27.2,28.8,29.1,28.5,27.6,25.3,22,18.5],rain:1900,hum:82,wind:9,amp:3.5,wx:3,sig:null,
+  why:'Northern Vietnam is far enough from the equator to have a real winter. Cool northeast winds from mainland Asia bring mist and drizzle from about December to March, while summers are hot, humid and wet, and typhoons can arrive from the South China Sea.',
+  sm:'WWWSHHHHHAAW',ss:{W:'Winter: cool and often grey, with fine drizzle and mist around the islands.',S:'Spring: warming up, still misty in the mornings.',H:'Summer: hot, humid and rainy, and typhoons can arrive from the sea.',A:'Autumn: dry, clear and pleasant, often the best weather of the year.'},
+  draw(g,W,H,t,L){const s=Math.min(W,H),hy=H*.7;sky(g,W,H,['#9fb7c9','#cfdde6','#eef3f5']);
+   L(.04,()=>glow(g,W*.3,H*.3,s*.05,'rgba(255,250,240,1)'));L(.08,()=>aKarst(g,W,H,hy-H*.02,s*.8,121,'#b6c7cf',9,.8));
+   L(.14,()=>mist(g,W,H,hy-H*.06,H*.05,t,'rgba(240,246,248,.7)'));L(.22,()=>aKarst(g,W,H,hy,s,123,'#7f978f',7,1));
+   L(.3,()=>mist(g,W,H,hy-H*.02,H*.04,t*1.2,'rgba(240,246,248,.55)'));
+   L(.4,()=>{water(g,W,H,hy,'#7fa59a','#2f5a55',t,125,'rgba(255,255,255,.35)');aJunk(g,((.2+t*.008)%1.3-.15)*W,H*.8,s*1.3);aJunk(g,((.75+t*.005)%1.3-.15)*W,H*.75,s*.8)});
+   L(.75,()=>{g.fillStyle='#2b3f3a';g.beginPath();g.moveTo(W*.78,H+2);g.bezierCurveTo(W*.8,H*.6,W*.9,H*.42,W*1.05,H*.45);g.lineTo(W*1.1,H+2);g.closePath();g.fill();canopy(g,W,H,H*1.02,s*.04,127,'#22352f')})}}
+];
+ASEAN_S.forEach(a=>a.cat='asean');S.push(...ASEAN_S);
+
 
 /* ---------- particles ---------- */
 const PT={
@@ -929,7 +1050,7 @@ $('slider').addEventListener('click',e=>{const b=e.target.closest('.wp');if(!b)r
 
 /* ---------- card ---------- */
 function info(){const s=S[cur],p=lp(s.tz),o=D(cur),T=o.temp,el=EL[cur]=elev(s.la,s.lo,new Date()),br=s.cat==='brunei',L=list(),si=sunInfo(cur,o),e=o.live?'':'~',day=el>0;
- $('kn').textContent=`${br?'Brunei'+(dlab()?' · '+dlab():''):'World climates'} · ${L.indexOf(cur)+1} of ${L.length} · ${s.name}`;$('city').textContent=s.city;$('ctry').textContent=s.co;
+ $('kn').textContent=`${br?'Brunei'+(dlab()?' · '+dlab():''):s.cat==='asean'?'ASEAN':'World climates'} · ${L.indexOf(cur)+1} of ${L.length} · ${s.name}`;$('city').textContent=s.city;$('ctry').textContent=s.co;
  $('kc').textContent=s.k;$('kt').textContent=s.kt;
  $('chips').innerHTML=chip(IC.clock,'#03a9f4',`<span id="clock">${p.txt}</span><span>local</span>`)+chip(IC.dot,o.live?'#4caf50':'#ff9800',o.live?'Live':'Typical estimate')+chip(IC.globe,'#9c27b0',s.k)+chip(IC.leaf,'#009688',s.ss[s.sm[p.mo]].split(':')[0]);
  const fl=o.feels!=null?o.feels:heatIdx(T,o.hum),cond=o.live?WX(o.code):`Typical ${MN[p.mo]} ${day?'day':'night'}`,hi=o.DY?o.DY[0].hi:s.m[p.mo]+s.amp,lo=o.DY?o.DY[0].lo:s.m[p.mo]-s.amp;
@@ -959,13 +1080,13 @@ function setCat(c){if(c==='corner'){openCorner();return}const was=CN;closeCorner
 
 /* ---------- live board ---------- */
 function board(){if($('board').hidden)return;const br=cat==='brunei',L=list(),ds=L.map(i=>[i,D(i)]),feed=LIVE?'Live readings from Open-Meteo':'Live feed unavailable here, showing typical estimates';
- $('bt').textContent=br?'Brunei live board'+(dlab()?' · '+dlab():''):'World climates board';$('bsub').textContent=feed+' · tap a place for its exploded view';
+ $('bt').textContent=br?'Brunei live board'+(dlab()?' · '+dlab():''):cat==='asean'?'ASEAN live board':'World climates board';$('bsub').textContent=feed+' · tap a place for its exploded view';
  const top=f=>{const a=ds.filter(([,o])=>f(o)!=null).sort((x,y)=>f(y[1])-f(x[1]));return a.length?a[0]:null},uvT=top(o=>o.uv),wT=top(o=>o.ws);
  let st;if(br){const ci=S.findIndex(x=>x.cat==='brunei'),c=D(ci),sn=sunInfo(ci,c),mo=lp('Asia/Brunei').mo,pp=mxv(c.H.pp);st=[['Time in Brunei',lp('Asia/Brunei').txt],['Sunrise',sn.rise],['Sunset',sn.set],['Season',BSL[BSM[mo]]],['Air quality, capital',c.aqi!=null?`${c.aqi} US AQI · ${aqil(c.aqi)}`:'n/a'],['UV index, capital',c.uv!=null?`${c.uv.toFixed(1)} · ${uvl(c.uv)}`:'n/a'],['Rain chance, next 24 h',pp!=null?pp+'%':'n/a'],['Windiest now',wT?`${S[wT[0]].city} ${Math.round(wT[1].ws)} km/h`:'n/a']]}
  else{const ts=ds.map(([i,o])=>[i,o.temp]).sort((a,b)=>b[1]-a[1]),day=L.filter(i=>EL[i]>0).length,bt=tempOf(S.findIndex(x=>x.cat==='brunei'));st=[['Hottest now',`${S[ts[0][0]].city} ${ts[0][1].toFixed(0)}°C`],['Coldest now',`${S[ts[ts.length-1][0]].city} ${ts[ts.length-1][1].toFixed(0)}°C`],['In daylight now',`${day} of ${L.length} places`],['Highest UV now',uvT?`${S[uvT[0]].city} ${uvT[1].uv.toFixed(1)}`:'n/a'],['Windiest now',wT?`${S[wT[0]].city} ${Math.round(wT[1].ws)} km/h`:'n/a'],['Brunei capital now',`${bt.toFixed(1)}°C`]]}
  $('bstats').innerHTML=st.map(([a,v])=>`<div><span>${a}</span><b>${v}</b></div>`).join('');
  $('tiles').innerHTML=ds.map(([i,o])=>{const s=S[i],p=lp(s.tz),e=o.live?'':'~';return`<button class="tile${i===cur?' on':''}" data-i="${i}"><img alt="" src="${TH[i]}"><span class="tbad${o.live?'':' off'}">${o.live?'Live':'Typical'}</span><span class="tb"><b>${s.city}</b><span class="tco">${s.co}</span><span class="tt">${o.temp.toFixed(1)}°C</span><span class="tc">${o.live?WX(o.code):'Typical for '+MN[p.mo]}${br?'':' · '+p.txt+' local'}</span><span class="tm"><span>Humidity ${e}${Math.round(o.hum)}%</span><span>Wind ${e}${Math.round(o.ws)} km/h${o.wd!=null?' '+cmp(o.wd):''}</span><span>Rain ${o.precip!=null?o.precip+' mm':'n/a'}</span><span>UV ${fx(o.uv)}</span><span>AQI ${o.aqi??'n/a'}</span></span></span></button>`}).join('');
- $('bnote').textContent=(br?'Sunrise and sunset are for Bandar Seri Begawan. Places close together, like the mosque and Kampong Ayer, share the same weather grid square. ':'Brunei has its own tab with famous places around the country. ')+'Tap any place to pull its climate apart, layer by layer.'}
+ $('bnote').textContent=(br?'Sunrise and sunset are for Bandar Seri Begawan. Places close together, like the mosque and Kampong Ayer, share the same weather grid square. ':cat==='asean'?'One place for each of ASEAN\'s 11 member states. ':'Brunei has its own tab with famous places around the country. ')+'Tap any place to pull its climate apart, layer by layer.'}
 function openBoard(){$('board').hidden=false;$('bdb').setAttribute('aria-expanded','true');board();$('bx').focus()}
 function closeBoard(){$('board').hidden=true;$('bdb').setAttribute('aria-expanded','false')}
 $('tiles').addEventListener('click',e=>{const b=e.target.closest('.tile');if(!b)return;closeBoard();go(+b.dataset.i);openXV()});
