@@ -13,6 +13,7 @@ Animated, live-weather wallpapers that show what the climate is doing right now 
 - **Exploded view.** Press **E** or click the dashboard to pull a place's climate apart into six layers: sun and light, clouds and rain, wind, air quality, heat and humidity, and land. Each layer has its own charts and a short explanation.
 - **Live board.** Every place in the current tab side by side, with comparisons such as hottest, coldest, windiest and highest UV.
 - **Climate Change Corner.** A third tab with a filterable activity gallery that opens into a full-size viewer, plus an events calendar of school events and global climate days such as Earth Hour, Earth Day and World Environment Day. Each event can be added to your calendar as an `.ics` file.
+- **Learning Hub.** A Climate Change A to Z with 78 key words, each explained simply for secondary students and, where relevant, linked to Brunei. Search the list, filter it by topic (Science, Weather, Impacts, Nature, Solutions, Policy) or jump to a letter. Each word opens a card with related words, and a quick quiz lets students test themselves. A word of the day changes daily, and the words a student has opened are ticked on that device.
 - **No build step.** Everything is in one HTML file and works offline. When the live feed can't be reached, the page falls back to typical values for the month and time of day.
 
 ## Places
@@ -38,6 +39,10 @@ The gallery and school events are stored in the `CORNER` list near the end of `i
 - **Photos:** put images in a `photos/` folder and list them, for example `photos:['photos/cleanup-1.jpg','photos/cleanup-2.jpg']`. The first photo becomes the cover, and the rest appear in the viewer. Without photos, a drawn illustration is shown instead.
 - **Events** need a title, date (`YYYY-MM-DD`), time (`07:30–10:00`), place and short description.
 - **Global climate days** are worked out automatically every year, so they don't need editing. Earth Hour follows WWF's rule: the last Saturday of March, moved a week earlier when that Saturday is Holy Saturday.
+
+## Editing the Learning Hub
+
+The words are stored in the `LEARN` list in `index.html`. Each word has a term `t`, a topic `c`, a definition `d`, an optional Brunei link `b` and a list of related words `r`. The list is sorted A to Z automatically.
 
 ## Controls
 
