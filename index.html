@@ -233,7 +233,7 @@ button.hc{cursor:pointer;width:100%}
  .card.ha .ext{display:flex}
 }
 @media(min-width:701px) and (max-width:1100px){.card.ha{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.card.ha .ext{display:flex}}
-@media(max-width:700px){.card.ha:not(.open) .c1 .hcl{display:none}.card.ha{max-height:56vh;width:100%}.card.ha:not(.open) .ext{display:none}.hwv b{font-size:30px}.hwi{width:50px;height:50px}}
+@media(max-width:700px){.card.ha:not(.open) .c1 .hcl{display:none}.card.ha{max-height:min(56vh,100%);width:100%}.card.ha:not(.open) .ext{display:none}.hwv b{font-size:30px}.hwi{width:50px;height:50px}}
 @media(max-width:400px){.hwf div:nth-child(n+7){display:none}.hwf{grid-template-columns:repeat(6,minmax(0,1fr))}.hwf.d{grid-template-columns:repeat(7,minmax(0,1fr))}.hwf.d div{display:flex}}
 .dists{display:flex;gap:6px;overflow-x:auto;padding:0 max(3vw,14px) 8px;scrollbar-width:none}
 .dists[hidden]{display:none}
@@ -241,7 +241,7 @@ button.hc{cursor:pointer;width:100%}
 .dist small{font-weight:700;font-size:11px;background:rgba(255,255,255,.22);border-radius:999px;padding:2px 7px;text-shadow:none}
 .dist[aria-pressed=true]{background:#fff;color:#10201f;text-shadow:none}.dist[aria-pressed=true] small{background:#10201f;color:#fff}
 .dist:hover{border-color:#fff}.dist:focus-visible{outline:3px solid #fff;outline-offset:2px}
-/* ---------- Climate Corner ---------- */
+/* ---------- Climate Change Corner ---------- */
 body.incorner .stage,body.incorner .dock,body.incorner #prev,body.incorner #play,body.incorner #next,body.incorner #bdb,body.incorner #fsb{display:none}
 body.incorner #wall{filter:saturate(1.1) brightness(.7)}
 .cn{overflow-y:auto;overscroll-behavior:contain;color:#fff;scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.35) transparent}
@@ -325,7 +325,9 @@ body.incorner #wall{filter:saturate(1.1) brightness(.7)}
 .lbctl{display:flex;justify-content:flex-end;gap:8px}
 @media(max-width:900px){.cnh{grid-template-columns:minmax(0,1fr)}.cnevw{grid-template-columns:minmax(0,1fr)}.cncal{position:static}.lbc{grid-template-columns:minmax(0,1fr);overflow:auto}.lbart{min-height:220px;aspect-ratio:4/3}.lbb{overflow:visible}}
 @media(max-width:600px){.cnc.big{grid-column:auto;grid-row:auto}.cnc.big .cnart{aspect-ratio:4/3;min-height:0}.cnst b{font-size:20px}.cnx strong{font-size:20px}.lbst{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:430px){.tcc{display:none}}
+@media(max-width:480px){.tabs{order:3;width:100%;overflow-x:auto;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{flex:1 0 auto;font-size:12.5px;padding:0 10px}.stat{order:4}}
+@media(max-width:380px){.tab{font-size:12px;padding:0 8px}.tabs{padding:2px}}
+@media(max-width:340px){.tab{font-size:11px;padding:0 5px;min-height:34px}}
 @media(prefers-reduced-motion:reduce){.cn{scroll-behavior:auto}.cnc,.cnart svg,.cnart img{transition:none}}
 .lbart img#lbimg{object-fit:contain;background:#0c1018;cursor:pointer}
 .lbcap{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:10px;padding:26px 14px 10px;background:linear-gradient(transparent,rgba(0,0,0,.7));font-size:13px;font-weight:600}
@@ -343,7 +345,7 @@ body.incorner #wall{filter:saturate(1.1) brightness(.7)}
 <div class="ui">
  <header class="top">
   <div class="logo"><svg width="28" height="28" viewBox="0 0 30 30" aria-hidden="true"><path d="M15 3 27 10 15 17 3 10z" fill="#ff5a3c"/><path d="M3 14l12 7 12-7M3 19l12 7 12-7" fill="none" stroke="#fff" stroke-width="3"/></svg><span>The Climate Change</span></div>
-  <div class="tabs" role="tablist" aria-label="Category"><button class="tab" role="tab" data-c="world" aria-selected="false">World climates</button><button class="tab" role="tab" data-c="brunei" aria-selected="true">Brunei</button><button class="tab" role="tab" data-c="corner" aria-selected="false"><span class="tcc">Climate </span>Corner</button></div>
+  <div class="tabs" role="tablist" aria-label="Category"><button class="tab" role="tab" data-c="world" aria-selected="false">World climates</button><button class="tab" role="tab" data-c="brunei" aria-selected="true">Brunei</button><button class="tab" role="tab" data-c="corner" aria-selected="false"><span class="tcc">Climate Change </span>Corner</button></div>
   <div class="stat off" id="stat"><i></i><span id="statt">Connecting to live weather…</span></div>
   <div class="ctl">
    <button class="ib" id="prev" aria-label="Previous wallpaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
@@ -1085,7 +1087,7 @@ addEventListener('resize',()=>{if(XO)xvLayout(false)});
 const SC=document.createElement('canvas');SC.width=SC.height=12;const SG=SC.getContext('2d',{willReadFrequently:true});let GT=.22;
 function tint(){if(XO||document.hidden)return;const r=$('card').getBoundingClientRect();if(!r.width||!r.height)return;try{SG.drawImage(cv,r.left*dpr,r.top*dpr,r.width*dpr,r.height*dpr,0,0,12,12);const d=SG.getImageData(0,0,12,12).data;let L=0;for(let i=0;i<d.length;i+=4)L+=(.2126*d[i]+.7152*d[i+1]+.0722*d[i+2])/255;L/=d.length/4;const tg=.12+Math.max(0,L-.3)*.62;GT+=(tg-GT)*.5;$('card').style.setProperty('--gt',GT.toFixed(3))}catch(e){}}
 setInterval(tint,700);
-/* ---------- Climate Corner: activity gallery and events ----------
+/* ---------- Climate Change Corner: activity gallery and events ----------
    EDIT HERE: replace the sample activities and events with your own.
    Dates are YYYY-MM-DD. Times are 24-hour, e.g. '07:30–10:00'.
    photos: add image paths (e.g. 'photos/cleanup-1.jpg'); the first photo becomes the card cover.
@@ -1149,7 +1151,7 @@ const CORNER={
   {title:'Create a 5-page e-poster: Climate Change',date:'2026-11-23',time:'Blocks 1 & 2',place:'F14 BAT Lab, Lower Campus',act:'eposter-2026',blurb:'Organised by the Humanities Department for lower secondary students. Theme: Understand, Act, Build a Sustainable Future.'},
   {title:'Mangrove planting',date:'2026-09-26',time:'07:00–11:00',place:'Brunei Bay (sample location)',sample:true,blurb:'Planting seedlings at low tide.'},
   {title:'Muara Beach clean-up',date:'2026-10-17',time:'07:30–10:30',place:'Muara Beach',sample:true,blurb:'Beach clean-up with the environment club.'},
-  {title:'Climate Corner launch and poster exhibition',date:'2026-11-28',time:'08:00–12:00',place:'School hall',sample:true,blurb:'Opening of the Climate Corner, with the poster exhibition and a live weather demo.'},
+  {title:'Climate Change Corner launch and poster exhibition',date:'2026-11-28',time:'08:00–12:00',place:'School hall',sample:true,blurb:'Opening of the Climate Change Corner, with the poster exhibition and a live weather demo.'},
   {title:'Compost workshop for World Soil Day',date:'2026-12-05',time:'14:00–16:00',place:'School garden',sample:true,blurb:'Turn canteen food scraps into compost for the school garden.'},
   {title:'Beach clean-up: Serasa Beach',date:'2026-12-12',time:'07:30–10:00',place:'Serasa Beach',sample:true,blurb:'Bring a hat, water and closed shoes. Gloves and bags provided.'},
   {title:'Mangrove planting trip',date:'2027-01-23',time:'07:00–11:00',place:'Brunei Bay (location to be confirmed)',sample:true,blurb:'Second planting session, plus checking last term\'s seedlings.'},
@@ -1242,7 +1244,7 @@ function renderList(EV){const T=cnToday();let L=CNSEL?EV.filter(e=>cnKey(e.d)===
 let CNEV=[];
 function cnIcs(e){const p=n=>String(n).padStart(2,'0'),ds=d=>d.getFullYear()+p(d.getMonth()+1)+p(d.getDate()),m=(e.time||'').match(/(\d{1,2}):(\d{2})\s*[–-]\s*(\d{1,2}):(\d{2})/),esc=s=>String(s||'').replace(/[\\;,]/g,x=>'\\'+x).replace(/\n/g,'\\n');let st,en;
  if(m){st='DTSTART:'+ds(e.d)+'T'+p(m[1])+m[2]+'00';en='DTEND:'+ds(e.d)+'T'+p(m[3])+m[4]+'00'}else{const n=new Date(e.d);n.setDate(n.getDate()+1);st='DTSTART;VALUE=DATE:'+ds(e.d);en='DTEND;VALUE=DATE:'+ds(n)}
- const txt=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//The Climate Change//Climate Corner//EN','BEGIN:VEVENT','UID:'+ds(e.d)+'-'+e.title.replace(/\W+/g,'-').toLowerCase()+'@the-climate-change','DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z',st,en,'SUMMARY:'+esc(e.title),'LOCATION:'+esc(e.place),'DESCRIPTION:'+esc(e.blurb),'END:VEVENT','END:VCALENDAR'].join('\r\n');
+ const txt=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//The Climate Change//Climate Change Corner//EN','BEGIN:VEVENT','UID:'+ds(e.d)+'-'+e.title.replace(/\W+/g,'-').toLowerCase()+'@the-climate-change','DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z',st,en,'SUMMARY:'+esc(e.title),'LOCATION:'+esc(e.place),'DESCRIPTION:'+esc(e.blurb),'END:VEVENT','END:VCALENDAR'].join('\r\n');
  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/calendar'}));a.download=e.title.replace(/[^\w]+/g,'-').replace(/^-|-$/g,'')+'.ics';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},800)}
 function openLB(i){const A=cnActs().filter(a=>CNF==='All'||a.cat===CNF),k=A.findIndex(a=>a.i===i);if(k<0)return;LBI=i;const a=A[k];
  const ph=a.photos||[],cp=a.captions||[];$('lbc').innerHTML=`<div class="lbart">${ph.length?`<img id="lbimg" src="${cnEsc(ph[0])}" alt="${cnEsc(cp[0]||a.title)}"><div class="lbcap"><span id="lbcp">${cnEsc(cp[0]||'')}</span><span id="lbct">1 / ${ph.length}</span></div>`:cnArt(a.art)}${a.sample?'<span class="cnsm">Sample</span>':''}</div><div class="lbb" style="--a:${CN_CAT[a.cat]}"><div class="cnmeta"><span class="cntag">${a.cat}</span><span>${cnFmt(a.d,{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</span></div><h3 id="lbt">${cnEsc(a.title)}</h3><p class="cnwhen">${cnEsc(a.place)}</p><p>${cnEsc(a.detail||a.blurb)}</p><div class="lbst">${a.stats.map(([v,l])=>`<div><b>${cnEsc(v)}</b><span>${cnEsc(l)}</span></div>`).join('')}</div>${a.learn&&a.learn.length?`<h5>What we learned</h5><ul>${a.learn.map(x=>`<li>${cnEsc(x)}</li>`).join('')}</ul>`:''}${ph.length>1?`<h5>Photos</h5><div class="lbph">${ph.map((p,j)=>`<button data-ph="${j}" aria-label="Photo ${j+1}: ${cnEsc(cp[j]||'')}" aria-current="${j===0}"><img src="${cnEsc(p)}" alt="" loading="lazy"></button>`).join('')}</div>`:''}<p class="lbn">${k+1} of ${A.length}</p></div>`;
