@@ -1,6 +1,6 @@
 # The Climate Change
 
-Animated, live-weather wallpapers that show what the climate is doing right now around the world and across Brunei. It was made for Brunei secondary students.
+Animated, live-weather wallpapers that show what the climate is doing right now around the world, across ASEAN and across Brunei. It was made for Brunei secondary students.
 
 ![The Climate Change preview](preview.png)
 
@@ -18,6 +18,8 @@ Animated, live-weather wallpapers that show what the climate is doing right now 
 ## Places
 
 **World climates:** Kyoto, Riyadh, Tromsø, Zermatt, Santorini, Darwin, McMurdo Station.
+
+**ASEAN:** one place for each of the 11 member states: Omar Ali Saifuddien Mosque (Brunei), Angkor Wat (Cambodia), Borobudur (Indonesia), Luang Prabang (Laos), Kuala Lumpur (Malaysia), Yangon (Myanmar), Mayon Volcano (Philippines), Singapore, Bangkok (Thailand), Dili (Timor-Leste) and Ha Long Bay (Vietnam).
 
 **Brunei.** You can filter these by district or show only the beaches:
 
