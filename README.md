@@ -14,6 +14,7 @@ Animated, live-weather wallpapers that show what the climate is doing right now 
 - **Live board.** Every place in the current tab side by side, with comparisons such as hottest, coldest, windiest and highest UV.
 - **Climate Change Corner.** A third tab with a filterable activity gallery that opens into a full-size viewer, plus an events calendar of school events and global climate days such as Earth Hour, Earth Day and World Environment Day. Each event can be added to your calendar as an `.ics` file.
 - **Learning Hub.** A Climate Change A to Z with 78 key words, each explained simply for secondary students and, where relevant, linked to Brunei. Search the list, filter it by topic (Science, Weather, Impacts, Nature, Solutions, Policy) or jump to a letter. Each word opens a card with related words, and a quick quiz lets students test themselves. A word of the day changes daily, and the words a student has opened are ticked on that device.
+  The **Global issues** page covers 11 big issues (record heat, greenhouse gases, rising seas, melting ice, coral reefs, forests, wildlife, displacement, air pollution, clean energy and the COP talks). Each has the latest figure, why it matters, what it means for Brunei and ASEAN, what can be done, related A to Z words and a link to its source. Figures were checked in November 2026.
 - **No build step.** Everything is in one HTML file and works offline. When the live feed can't be reached, the page falls back to typical values for the month and time of day.
 
 ## Places
@@ -43,6 +44,8 @@ The gallery and school events are stored in the `CORNER` list near the end of `i
 ## Editing the Learning Hub
 
 The words are stored in the `LEARN` list in `index.html`. Each word has a term `t`, a topic `c`, a definition `d`, an optional Brunei link `b` and a list of related words `r`. The list is sorted A to Z automatically.
+
+Global issues are stored in the `ISSUES` list. Update the figures (`v`, `u`, `s`) and the source (`src`) when new reports come out.
 
 ## Controls
 
