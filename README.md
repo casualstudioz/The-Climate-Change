@@ -12,7 +12,7 @@ Animated, live-weather wallpapers that show what the climate is doing right now 
 - **Dashboard.** Glass cards in a Home Assistant style: a weather card with hourly and daily forecasts, gauges, sensor tiles and a temperature graph. The glass darkens a little over bright scenes so the text stays readable.
 - **Exploded view.** Press **E** or click the dashboard to pull a place's climate apart into six layers: sun and light, clouds and rain, wind, air quality, heat and humidity, and land. Each layer has its own charts and a short explanation.
 - **Live board.** Every place in the current tab side by side, with comparisons such as hottest, coldest, windiest and highest UV.
-- **Climate Corner.** A third tab with a filterable activity gallery that opens into a full-size viewer, plus an events calendar of school events and global climate days such as Earth Hour, Earth Day and World Environment Day. Each event can be added to your calendar as an `.ics` file.
+- **Climate Change Corner.** A third tab with a filterable activity gallery that opens into a full-size viewer, plus an events calendar of school events and global climate days such as Earth Hour, Earth Day and World Environment Day. Each event can be added to your calendar as an `.ics` file.
 - **No build step.** Everything is in one HTML file and works offline. When the live feed can't be reached, the page falls back to typical values for the month and time of day.
 
 ## Places
@@ -28,7 +28,7 @@ Animated, live-weather wallpapers that show what the climate is doing right now 
 | Belait | Seria, Lumut Beach, Belait Beach |
 | Temburong | Ulu Temburong National Park, Temburong Bridge |
 
-## Editing the Climate Corner
+## Editing the Climate Change Corner
 
 The gallery and school events are stored in the `CORNER` list near the end of `index.html`. Entries marked `sample:true` are placeholders and show a **Sample** badge until you remove that flag.
 
