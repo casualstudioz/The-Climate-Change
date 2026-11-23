@@ -241,6 +241,100 @@ button.hc{cursor:pointer;width:100%}
 .dist small{font-weight:700;font-size:11px;background:rgba(255,255,255,.22);border-radius:999px;padding:2px 7px;text-shadow:none}
 .dist[aria-pressed=true]{background:#fff;color:#10201f;text-shadow:none}.dist[aria-pressed=true] small{background:#10201f;color:#fff}
 .dist:hover{border-color:#fff}.dist:focus-visible{outline:3px solid #fff;outline-offset:2px}
+/* ---------- Climate Corner ---------- */
+body.incorner .stage,body.incorner .dock,body.incorner #prev,body.incorner #play,body.incorner #next,body.incorner #bdb,body.incorner #fsb{display:none}
+body.incorner #wall{filter:saturate(1.1) brightness(.7)}
+.cn{overflow-y:auto;overscroll-behavior:contain;color:#fff;scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.35) transparent}
+.cn[hidden]{display:none}
+.cnw{max-width:1240px;margin:0 auto;padding:8px max(3vw,14px) 40px}
+.cne{font:700 12px Inter,sans-serif;letter-spacing:.16em;color:rgba(255,255,255,.75)}
+.cnh{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:20px;align-items:end;padding:28px 0 8px}
+.cn h2{font:800 clamp(36px,5.4vw,72px)/1 Sora,sans-serif;margin:10px 0 0;letter-spacing:-.02em;text-shadow:0 2px 20px rgba(0,0,0,.25)}
+.cn h2 em{font-style:normal;background:linear-gradient(90deg,#ff8a5c,#ffd34a 55%,#7cffb2);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cnlead{font-size:17px;max-width:46ch;color:rgba(255,255,255,.88);margin:14px 0 0}
+.cnn{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.cnbtn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid transparent;background:#ff5a3c;color:#fff;font:700 14px Inter,sans-serif;text-decoration:none;cursor:pointer}
+.cnbtn.ghost{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.4);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.cnbtn:hover{filter:brightness(1.08)}.cnbtn:focus-visible,.cnc:focus-visible,.cnchip:focus-visible,.cnday:focus-visible,.cnnav:focus-visible,.cnseg button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.cnglass,.cnx,.cnst>div,.cnc,.cncal,.cne2,.cnnote{background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.04)),rgba(12,18,28,.32);border:1px solid rgba(255,255,255,.24);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 10px 30px -18px rgba(0,0,0,.6)}
+.cnk{display:flex;flex-direction:column;gap:10px}
+.cnx{border-radius:20px;padding:18px 20px;display:grid;grid-template-columns:1fr auto;gap:2px 14px;align-items:center;border-left:4px solid var(--a)}
+.cnx span{grid-column:1/-1;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--a)}
+.cnx b{font:700 20px/1.25 Sora,sans-serif}.cnx em{font-style:normal;font-size:14px;color:rgba(255,255,255,.8);grid-column:1}
+.cnx strong{grid-row:2/4;grid-column:2;font:800 26px Sora,sans-serif;text-align:right;white-space:nowrap}
+.cnx .cnbtn{grid-column:1/-1;justify-self:start;margin-top:10px;min-height:38px;font-size:13px}
+.cnst{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.cnst>div{border-radius:16px;padding:12px 14px}.cnst b{display:block;font:800 26px/1.1 Sora,sans-serif}.cnst span{font-size:12.5px;color:rgba(255,255,255,.78)}
+.cns{margin-top:44px;scroll-margin-top:12px}
+.cnsh{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.cn h3{font:800 clamp(24px,3vw,34px)/1.1 Sora,sans-serif;margin:6px 0 0}
+.cnf{display:flex;gap:6px;flex-wrap:wrap}
+.cnchip{min-height:38px;padding:0 8px 0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;font:600 13px Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.cnchip small{font-size:11px;font-weight:700;background:rgba(255,255,255,.2);border-radius:999px;padding:2px 7px}
+.cnchip[aria-pressed=true]{background:#fff;color:#10201f;border-color:#fff}.cnchip[aria-pressed=true] small{background:var(--a);color:#10201f}
+.cngrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;grid-auto-flow:dense}
+.cnc{display:flex;flex-direction:column;padding:0;border-radius:20px;overflow:hidden;color:#fff;text-align:left;cursor:pointer;font:inherit;transition:transform .25s,box-shadow .25s}
+.cnc:hover{transform:translateY(-4px);box-shadow:0 18px 40px -18px rgba(0,0,0,.7)}
+.cnc.big{grid-column:span 2;grid-row:span 2}
+.cnart{position:relative;aspect-ratio:4/3;overflow:hidden;background:#1a2230}.cnc.big .cnart{aspect-ratio:auto;flex:1;min-height:240px}
+.cnart svg,.cnart img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .5s}.cnc:hover .cnart svg,.cnc:hover .cnart img{transform:scale(1.04)}
+.cnsm{position:absolute;top:10px;right:10px;font:700 11px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:rgba(10,14,20,.6);color:#fff;border:1px solid rgba(255,255,255,.35)}
+.cnsm.in{position:static;background:rgba(255,255,255,.14)}
+.cnph{position:absolute;left:10px;bottom:10px;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;background:rgba(10,14,20,.6)}
+.cncb{padding:14px 16px 16px}
+.cnmeta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;color:rgba(255,255,255,.78)}
+.cntag{font-weight:700;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:color-mix(in srgb,var(--a) 30%,transparent);color:color-mix(in srgb,var(--a) 50%,#fff);border:1px solid color-mix(in srgb,var(--a) 55%,transparent)}
+.cnc h4,.cne2 h4{font:700 18px/1.25 Sora,sans-serif;margin:8px 0 4px}.cnc.big h4{font-size:24px}
+.cnc p,.cne2 p{margin:0;font-size:14px;color:rgba(255,255,255,.85);line-height:1.5}
+.cnc:not(.big) .cncb>p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cnfs{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:13px;color:rgba(255,255,255,.75)}.cnfs b{color:#fff;font-family:Sora,sans-serif}
+.cnseg{display:inline-flex;padding:3px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3)}
+.cnseg button{min-height:36px;padding:0 16px;border-radius:999px;border:0;background:none;color:#fff;font:600 13px Inter,sans-serif;cursor:pointer}.cnseg button[aria-selected=true]{background:#fff;color:#10201f}
+.cnevw{display:grid;grid-template-columns:minmax(280px,340px) minmax(0,1fr);gap:16px;align-items:start}
+.cncal{border-radius:20px;padding:16px;position:sticky;top:0}
+.cnch{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.cnch b{font:700 16px Sora,sans-serif}
+.cnnav{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);color:#fff;font-size:20px;line-height:1;cursor:pointer}
+.cng7{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;text-align:center}
+.cnwd{font-size:11px;font-weight:700;color:rgba(255,255,255,.6);padding:4px 0}
+.cnday{position:relative;aspect-ratio:1;border-radius:10px;border:0;background:none;color:rgba(255,255,255,.55);font:600 13px Inter,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0}
+.cnday.has{color:#fff;background:rgba(255,255,255,.1);cursor:pointer}.cnday.has:hover{background:rgba(255,255,255,.2)}
+.cnday.today{box-shadow:inset 0 0 0 2px #ffd34a;color:#fff}.cnday.sel{background:#fff;color:#10201f}
+.cnday i{display:flex;gap:2px;height:5px}.cnday em{width:5px;height:5px;border-radius:50%}
+.cnleg{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:rgba(255,255,255,.78)}.cnleg em{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.cnlist{display:flex;flex-direction:column;gap:10px}
+.cnmo{font:700 13px Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.7);margin:10px 0 0}.cnmo:first-child{margin-top:0}
+.cne2{display:flex;gap:14px;border-radius:18px;padding:14px 16px;border-left:4px solid #ff5a3c}.cne2.gl{border-left-color:#3fd2c7}.cne2.hz{border-left-color:#9b7bff}
+.cndt{flex:none;width:62px;height:70px;border-radius:14px;background:rgba(255,255,255,.14);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05}
+.cndt b{font:800 24px Sora,sans-serif}.cndt span{font-size:12px;font-weight:700;text-transform:uppercase}.cndt small{font-size:11px;color:rgba(255,255,255,.7)}
+.cnei{flex:1;min-width:0}.cne2 h4{margin-top:6px}.cnwhen{font-size:13px!important;color:rgba(255,255,255,.72)!important;margin:0 0 6px!important}
+.cne2 .cnbtn{margin-top:10px;min-height:36px;font-size:12.5px;padding:0 14px}
+.cncd{margin-left:auto;font-weight:700;color:#ffd34a;white-space:nowrap}
+.cnfilt{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-weight:600}
+.cnempty{color:rgba(255,255,255,.75)}
+.cnnote{margin-top:40px;border-radius:16px;padding:14px 18px;font-size:13.5px;color:rgba(255,255,255,.85)}.cnnote code{font-size:12.5px;background:rgba(255,255,255,.14);padding:1px 6px;border-radius:6px}
+.lb{position:fixed;inset:0;z-index:70;background:rgba(6,9,14,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);display:grid;place-items:center;padding:max(2vh,12px) max(3vw,12px);color:#fff}
+.lb[hidden]{display:none}
+.lbw{position:relative;width:min(1040px,100%);max-height:100%;display:flex;flex-direction:column;gap:10px}
+.lbc{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);border-radius:22px;overflow:hidden;background:#141a24;border:1px solid rgba(255,255,255,.18);max-height:calc(100vh - 110px)}
+.lbart{position:relative;min-height:320px;background:#1a2230}.lbart svg,.lbart img{display:block;width:100%;height:100%;object-fit:cover}
+.lbb{padding:22px 24px;overflow:auto}.lbb h3{font:800 28px/1.15 Sora,sans-serif;margin:10px 0 2px}.lbb p{color:rgba(255,255,255,.85);line-height:1.55}
+.lbst{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}.lbst div{border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);padding:10px}.lbst b{display:block;font:800 20px Sora,sans-serif;color:color-mix(in srgb,var(--a) 45%,#fff)}.lbst span{font-size:12px;color:rgba(255,255,255,.75)}
+.lbb h5{font:700 13px Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.7);margin:16px 0 6px}.lbb ul{margin:0;padding-left:20px;line-height:1.55}.lbb li{margin-bottom:4px}
+.lbph{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:14px}.lbph img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px}
+.lbn{font-size:12.5px;color:rgba(255,255,255,.6)!important;margin-top:14px}
+.lbctl{display:flex;justify-content:flex-end;gap:8px}
+@media(max-width:900px){.cnh{grid-template-columns:minmax(0,1fr)}.cnevw{grid-template-columns:minmax(0,1fr)}.cncal{position:static}.lbc{grid-template-columns:minmax(0,1fr);overflow:auto}.lbart{min-height:220px;aspect-ratio:4/3}.lbb{overflow:visible}}
+@media(max-width:600px){.cnc.big{grid-column:auto;grid-row:auto}.cnc.big .cnart{aspect-ratio:4/3;min-height:0}.cnst b{font-size:20px}.cnx strong{font-size:20px}.lbst{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:430px){.tcc{display:none}}
+@media(prefers-reduced-motion:reduce){.cn{scroll-behavior:auto}.cnc,.cnart svg,.cnart img{transition:none}}
+.lbart img#lbimg{object-fit:contain;background:#0c1018;cursor:pointer}
+.lbcap{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:10px;padding:26px 14px 10px;background:linear-gradient(transparent,rgba(0,0,0,.7));font-size:13px;font-weight:600}
+.lbph{grid-template-columns:repeat(6,minmax(0,1fr))!important}
+.lbph button{padding:0;border:2px solid transparent;border-radius:9px;background:none;cursor:pointer;overflow:hidden;opacity:.7}
+.lbph button[aria-current=true]{border-color:#fff;opacity:1}.lbph button:hover{opacity:1}.lbph button:focus-visible{outline:3px solid #fff;outline-offset:1px}
+.lbph img{display:block;border-radius:6px}
+.cnacts{display:flex;gap:8px;flex-wrap:wrap}
+.cnc .cnart img{object-position:center 35%}
 </style>
 </head>
 <body>
@@ -249,7 +343,7 @@ button.hc{cursor:pointer;width:100%}
 <div class="ui">
  <header class="top">
   <div class="logo"><svg width="28" height="28" viewBox="0 0 30 30" aria-hidden="true"><path d="M15 3 27 10 15 17 3 10z" fill="#ff5a3c"/><path d="M3 14l12 7 12-7M3 19l12 7 12-7" fill="none" stroke="#fff" stroke-width="3"/></svg><span>The Climate Change</span></div>
-  <div class="tabs" role="tablist" aria-label="Category"><button class="tab" role="tab" data-c="world" aria-selected="false">World climates</button><button class="tab" role="tab" data-c="brunei" aria-selected="true">Brunei</button></div>
+  <div class="tabs" role="tablist" aria-label="Category"><button class="tab" role="tab" data-c="world" aria-selected="false">World climates</button><button class="tab" role="tab" data-c="brunei" aria-selected="true">Brunei</button><button class="tab" role="tab" data-c="corner" aria-selected="false"><span class="tcc">Climate </span>Corner</button></div>
   <div class="stat off" id="stat"><i></i><span id="statt">Connecting to live weather…</span></div>
   <div class="ctl">
    <button class="ib" id="prev" aria-label="Previous wallpaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
@@ -288,10 +382,39 @@ button.hc{cursor:pointer;width:100%}
   </section>
  </div>
 
+ <section class="cn" id="cn" hidden aria-labelledby="cnt">
+  <div class="cnw">
+   <div class="cnh">
+    <div class="cnhl">
+     <div class="cne">CLIMATE CHANGE CORNER</div>
+     <h2 id="cnt">Small actions, <em>big change.</em></h2>
+     <p class="cnlead">What our students are doing about climate change, and the days coming up when everyone can join in.</p>
+     <div class="cnn"><a class="cnbtn" href="#cng">Activity gallery</a><a class="cnbtn ghost" href="#cnev">Events calendar</a></div>
+    </div>
+    <div class="cnk" id="cnk"></div>
+   </div>
+   <section class="cns" id="cng" aria-labelledby="cngt">
+    <div class="cnsh"><div><div class="cne">ACTIVITY GALLERY</div><h3 id="cngt">What we have done</h3></div><div class="cnf" id="cnf" role="group" aria-label="Filter activities"></div></div>
+    <div class="cngrid" id="cngrid"></div>
+   </section>
+   <section class="cns" id="cnev" aria-labelledby="cnevt">
+    <div class="cnsh"><div><div class="cne">EVENTS</div><h3 id="cnevt">Mark your calendar</h3></div><div class="cnseg" role="group" aria-label="Show events"><button data-v="up" aria-selected="true">Upcoming</button><button data-v="past" aria-selected="false">Past</button></div></div>
+    <div class="cnevw"><div class="cncal" id="cncal"></div><div class="cnlist" id="cnlist"></div></div>
+   </section>
+   <p class="cnnote">Entries marked <b>Sample</b> are placeholders. Replace them with your own activities, photos and events by editing the <code>CORNER</code> list in <code>index.html</code>. Global climate days, including Earth Hour, are worked out automatically every year.</p>
+  </div>
+ </section>
+
  <div class="dock">
   <div class="dists" id="dists" role="group" aria-label="Filter Brunei places by district"></div>
   <p class="hint">Tap a wallpaper to switch. Tap the selected one again for full screen. Click the climate card (or press E) for the exploded view. On the Brunei tab, filter by district or beaches. Weather data: <a href="https://open-meteo.com/" target="_blank" rel="noopener" style="color:inherit">Open-Meteo</a>.</p>
   <div class="slider" id="slider" role="listbox" aria-label="Climate wallpapers"></div>
+ </div>
+</div>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-labelledby="lbt">
+ <div class="lbw"><div class="lbc" id="lbc"></div>
+  <div class="lbctl"><button class="ib" id="lbp" aria-label="Previous activity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button><button class="ib" id="lbn" aria-label="Next activity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button><button class="ib" id="lbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span>Close</span></button></div>
  </div>
 </div>
 
@@ -830,7 +953,7 @@ $('rainyr').innerHTML=s.rain?`<b>${s.rain.toLocaleString()} mm</b> rain a year`:
 function mini(){const s=S[cur],u=cu(cur),p=lp(s.tz);$('mt').textContent=tempOf(cur).toFixed(1)+'°C';$('mc').textContent=`${s.city}`;$('ms').textContent=`${u?WX(u.weather_code):'Typical estimate'} · ${p.txt} local · ${s.co}`}
 function go(i){if(i===cur)return;tr={from:cur,t0:performance.now()};cur=i;apT0=performance.now();info();layer()}
 function step(d){const L=list(),k=L.indexOf(cur);go(L[(k+d+L.length)%L.length])}
-function setCat(c){if(c===cat)return;cat=c;document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.c===c));renderDists();renderSlider();const L=list();cur!==L[0]&&go(L[0]);layer();info()}
+function setCat(c){if(c==='corner'){openCorner();return}const was=CN;closeCorner();if(c===cat){if(was)syncTabs();return}cat=c;syncTabs();renderDists();renderSlider();const L=list();cur!==L[0]&&go(L[0]);layer();info()}
 
 /* ---------- live board ---------- */
 function board(){if($('board').hidden)return;const br=cat==='brunei',L=list(),ds=L.map(i=>[i,D(i)]),feed=LIVE?'Live readings from Open-Meteo':'Live feed unavailable here, showing typical estimates';
@@ -962,6 +1085,188 @@ addEventListener('resize',()=>{if(XO)xvLayout(false)});
 const SC=document.createElement('canvas');SC.width=SC.height=12;const SG=SC.getContext('2d',{willReadFrequently:true});let GT=.22;
 function tint(){if(XO||document.hidden)return;const r=$('card').getBoundingClientRect();if(!r.width||!r.height)return;try{SG.drawImage(cv,r.left*dpr,r.top*dpr,r.width*dpr,r.height*dpr,0,0,12,12);const d=SG.getImageData(0,0,12,12).data;let L=0;for(let i=0;i<d.length;i+=4)L+=(.2126*d[i]+.7152*d[i+1]+.0722*d[i+2])/255;L/=d.length/4;const tg=.12+Math.max(0,L-.3)*.62;GT+=(tg-GT)*.5;$('card').style.setProperty('--gt',GT.toFixed(3))}catch(e){}}
 setInterval(tint,700);
+/* ---------- Climate Corner: activity gallery and events ----------
+   EDIT HERE: replace the sample activities and events with your own.
+   Dates are YYYY-MM-DD. Times are 24-hour, e.g. '07:30–10:00'.
+   photos: add image paths (e.g. 'photos/cleanup-1.jpg'); the first photo becomes the card cover.
+   Remove  sample:true  once an entry is real. Global climate days are generated automatically. */
+const CORNER={
+ activities:[
+  {id:'eposter-2026',title:'Create a 5-page e-poster: Climate Change',cat:'Workshop',art:'poster',date:'2026-11-23',place:'F14 BAT Lab, Lower Campus',
+   photos:['photos/eposter-2026/eposter-01.jpg','photos/eposter-2026/eposter-02.jpg','photos/eposter-2026/eposter-03.jpg','photos/eposter-2026/eposter-04.jpg','photos/eposter-2026/eposter-05.jpg','photos/eposter-2026/eposter-06.jpg','photos/eposter-2026/eposter-07.jpg','photos/eposter-2026/eposter-08.jpg','photos/eposter-2026/eposter-09.jpg','photos/eposter-2026/eposter-10.jpg','photos/eposter-2026/eposter-11.jpg','photos/eposter-2026/eposter-12.jpg','photos/eposter-2026/eposter-13.jpg','photos/eposter-2026/eposter-14.jpg','photos/eposter-2026/eposter-15.jpg','photos/eposter-2026/eposter-16.jpg','photos/eposter-2026/eposter-17.jpg','photos/eposter-2026/eposter-18.jpg'],
+   captions:['Presenting their finished e-poster','The event poster: five pages, from cover to solutions','Cover page','Signs of climate change','Causes of climate change','Solutions to climate change','Cover page design','Causes and effects','Effects of climate change','Ways to support climate solutions','Designing pages in Canva','Writing the causes page','Showing a finished cover page','Editing the cover in PowerPoint','Presenting the e-poster','Climate change and its causes','Effects of climate change','The solutions page'],
+   blurb:'Lower secondary students designed five-page climate change e-posters in PowerPoint and Canva.',
+   detail:'Organised by the Humanities Department for lower secondary students during Blocks 1 and 2, under the theme "Climate Change: Understand, Act, Build a Sustainable Future". Each e-poster had five pages: a cover, then the signs, causes, effects and solutions of climate change.',
+   stats:[['5','pages per e-poster'],['4','climate topics'],['18','photos']],
+   learn:['Signs of climate change include rising temperatures, melting ice, rising sea levels and more extreme weather.','Burning fossil fuels, transport, deforestation and farming add greenhouse gases that trap heat.','Solutions start with everyday choices: plant trees, save energy, reduce, reuse and recycle, and use greener transport.']},
+  {title:'Muara Beach clean-up',cat:'Clean-up',art:'cleanup',date:'2026-10-17',place:'Muara Beach, Brunei-Muara',sample:true,photos:[],
+   blurb:'Students and teachers cleared plastic and fishing line from the shore before high tide.',
+   detail:'We split into teams along the beach, sorted what we found into plastic, glass, metal and other, and weighed each bag before it went to the right bin.',
+   stats:[['38','volunteers'],['64 kg','rubbish collected'],['3 h','on the beach']],
+   learn:['Most of the rubbish was single-use plastic: bottles, cups and food wrappers.','Rubbish collects along the high-tide line, where the sea drops it.']},
+  {title:'Mangrove planting',cat:'Planting',art:'mangrove',date:'2026-09-26',place:'Brunei Bay (sample location)',sample:true,photos:[],
+   blurb:'We planted mangrove seedlings in the mud at low tide to help protect the coast.',
+   detail:'Seedlings were pushed into soft mud between existing trees, then marked so the club can check how many survive each month.',
+   stats:[['120','seedlings'],['25','students'],['1','low tide']],
+   learn:['Mangroves store large amounts of carbon in their roots and the mud around them.','Their tangled roots slow down waves and help stop coastal erosion.']},
+  {title:'Plastic bottle recycling drive',cat:'Campaign',art:'recycle',date:'2026-08-14',place:'School canteen',sample:true,photos:[],
+   blurb:'A two-week drive to collect, rinse and sort plastic bottles from every class.',
+   detail:'Each class had its own collection box, and a weekly chart showed which class was leading. Clean, sorted bottles went to a recycling collector.',
+   stats:[['1,250','bottles collected'],['2','weeks'],['24','classes']],
+   learn:['Clean, sorted plastic is much easier to recycle than mixed rubbish.','The best bottle is the one you never buy: refillable bottles cut waste the most.']},
+  {title:'School weather station',cat:'Science',art:'weather',date:'2026-07-20',place:'School field',sample:true,photos:[],
+   blurb:'The science club built a simple weather station and compared it with this site\'s live data.',
+   detail:'We recorded temperature, humidity, rainfall and wind at the same time each day, then compared our readings with the live Open-Meteo data for our area.',
+   stats:[['14','days of readings'],['4','instruments'],['2','data sources']],
+   learn:['A thermometer in direct sun reads too high, so it belongs in a shaded, ventilated box.','Our humidity followed the same daily pattern as the live feed: highest at dawn and lowest in the afternoon.']},
+  {title:'Upcycled tote bags',cat:'Workshop',art:'upcycle',date:'2026-06-27',place:'Art room',sample:true,photos:[],
+   blurb:'Old T-shirts became reusable shopping bags, with no sewing machine needed.',
+   detail:'Students cut and knotted old T-shirts into tote bags, then decorated them with climate messages to use at the shops.',
+   stats:[['46','bags made'],['0','new fabric bought'],['2 h','workshop']],
+   learn:['Making new clothes uses a lot of water and energy, so reusing fabric saves both.','A reusable bag only helps if you remember to take it with you.']},
+  {title:'Lights-off energy challenge',cat:'Campaign',art:'energy',date:'2026-05-18',place:'All classrooms',sample:true,photos:[],
+   blurb:'For a week, classes competed to switch off lights, fans and air-conditioning whenever rooms were empty.',
+   detail:'Energy monitors checked each classroom at break and lunch time and gave points to rooms that were switched off.',
+   stats:[['5','school days'],['22','classes took part'],['1','winning class']],
+   learn:['Switching off at break time is the easiest energy saving.','Air-conditioning uses far more electricity than lights do.']},
+  {title:'Climate poster competition',cat:'Campaign',art:'poster',date:'2026-04-22',place:'School hall',sample:true,photos:[],
+   blurb:'An Earth Day poster competition on the theme of climate action in Brunei.',
+   detail:'Entries were shown in the school hall for a week, and students voted for their favourites alongside a teacher panel.',
+   stats:[['57','entries'],['6','winners'],['1','week on show']],
+   learn:['Clear, simple messages work best on a poster.','Local examples, like Brunei\'s rainforest and coast, made the posters more powerful.']},
+  {title:'Native tree planting',cat:'Planting',art:'tree',date:'2026-03-21',place:'School garden',sample:true,photos:[],
+   blurb:'For the International Day of Forests, each class planted and adopted a native tree.',
+   detail:'Every tree has a name tag and a watering rota, and the class that looks after it measures its height each term.',
+   stats:[['30','native trees'],['4','classes'],['1','watering rota']],
+   learn:['Trees cool the ground around them by giving shade and releasing water vapour.','Native trees are better suited to local rain and soil, and support local wildlife.']},
+  {title:'Zero-waste canteen day',cat:'Campaign',art:'zerowaste',date:'2026-01-23',place:'School canteen',sample:true,photos:[],
+   blurb:'Everyone brought their own lunch box, cup and cutlery for a day with no disposable packaging.',
+   detail:'Canteen staff served food straight into reusable containers, and the student council weighed the day\'s rubbish against a normal day.',
+   stats:[['80%','less packaging'],['300','reusable boxes'],['1','day']],
+   learn:['Most canteen rubbish is packaging, not food.','Small habits, repeated by many people, add up quickly.']}
+ ],
+ events:[
+  {title:'Create a 5-page e-poster: Climate Change',date:'2026-11-23',time:'Blocks 1 & 2',place:'F14 BAT Lab, Lower Campus',act:'eposter-2026',blurb:'Organised by the Humanities Department for lower secondary students. Theme: Understand, Act, Build a Sustainable Future.'},
+  {title:'Mangrove planting',date:'2026-09-26',time:'07:00–11:00',place:'Brunei Bay (sample location)',sample:true,blurb:'Planting seedlings at low tide.'},
+  {title:'Muara Beach clean-up',date:'2026-10-17',time:'07:30–10:30',place:'Muara Beach',sample:true,blurb:'Beach clean-up with the environment club.'},
+  {title:'Climate Corner launch and poster exhibition',date:'2026-11-28',time:'08:00–12:00',place:'School hall',sample:true,blurb:'Opening of the Climate Corner, with the poster exhibition and a live weather demo.'},
+  {title:'Compost workshop for World Soil Day',date:'2026-12-05',time:'14:00–16:00',place:'School garden',sample:true,blurb:'Turn canteen food scraps into compost for the school garden.'},
+  {title:'Beach clean-up: Serasa Beach',date:'2026-12-12',time:'07:30–10:00',place:'Serasa Beach',sample:true,blurb:'Bring a hat, water and closed shoes. Gloves and bags provided.'},
+  {title:'Mangrove planting trip',date:'2027-01-23',time:'07:00–11:00',place:'Brunei Bay (location to be confirmed)',sample:true,blurb:'Second planting session, plus checking last term\'s seedlings.'},
+  {title:'Weather station data day',date:'2027-02-20',time:'09:00–12:00',place:'Science lab',sample:true,blurb:'Compare our weather station readings with live data from around Brunei.'},
+  {title:'Earth Hour assembly',date:'2027-03-19',time:'07:30–08:00',place:'School hall',sample:true,blurb:'Getting ready for Earth Hour on Saturday night.'},
+  {title:'Earth Day upcycling fair',date:'2027-04-22',time:'08:00–13:00',place:'School hall',sample:true,blurb:'Stalls selling upcycled crafts, with proceeds going to the club\'s tree fund.'},
+  {title:'World Environment Day eco-walk',date:'2027-06-05',time:'07:30–10:30',place:'Tasek Merimbun, Tutong',sample:true,blurb:'A guided walk around Brunei\'s largest lake.'}
+ ]
+};
+/* Global climate days: [title, month, day, why it matters] */
+const CN_GD=[
+ ['World Wetlands Day',2,2,'Wetlands such as mangroves and peat swamps store carbon and protect coasts from storms.'],
+ ['International Day of Forests',3,21,'Forests take in carbon dioxide and keep the land cool and moist.'],
+ ['World Water Day',3,22,'A warmer climate brings heavier downpours and longer dry spells.'],
+ ['World Meteorological Day',3,23,'A day to celebrate the scientists who measure and forecast our weather and climate.'],
+ ['Earth Day',4,22,'The world\'s biggest day of action for the planet.'],
+ ['International Day for Biological Diversity',5,22,'Healthy ecosystems help nature and people cope with a changing climate.'],
+ ['World Environment Day',6,5,'The UN\'s main day for encouraging action to protect the environment.'],
+ ['World Oceans Day',6,8,'The ocean soaks up much of the extra heat that greenhouse gases trap.'],
+ ['International Day of Clean Air for blue skies',9,7,'Cleaner air is good for both health and the climate.'],
+ ['World Soil Day',12,5,'Healthy soil stores carbon and grows our food.'],
+ ['International Mountain Day',12,11,'Mountains hold glaciers and snow that supply fresh water downstream.']];
+const CN_CAT={'Clean-up':'#4fb3ff','Planting':'#3fbf6f','Campaign':'#ff8a3d','Workshop':'#ff5fa2','Science':'#9b7bff'};
+let CN=false,CNF='All',CNV='up',CNSEL=null,CNM=null,LBI=-1;
+const cnD=s=>{const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c)},cnToday=()=>{const n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate())},
+ cnKey=d=>d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(),cnEsc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),
+ cnFmt=(d,o)=>d.toLocaleDateString('en-GB',o||{day:'numeric',month:'short',year:'numeric'});
+function cnEaster(y){const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mo=Math.floor((h+l-7*m+114)/31),da=(h+l-7*m+114)%31+1;return new Date(y,mo-1,da)}
+function cnEarthHour(y){const d=new Date(y,2,31);d.setDate(31-((d.getDay()+1)%7));const hs=cnEaster(y);hs.setDate(hs.getDate()-1);if(cnKey(d)===cnKey(hs))d.setDate(d.getDate()-7);return d}
+function cnEvents(){const T=cnToday(),Y=T.getFullYear(),out=CORNER.events.map(e=>({...e,d:cnD(e.date),type:'school'}));
+ for(let y=Y-1;y<=Y+1;y++){CN_GD.forEach(([t,m,d,w])=>out.push({title:t,d:new Date(y,m-1,d),type:'global',blurb:w,place:'Worldwide'}));out.push({title:'Earth Hour',d:cnEarthHour(y),time:'20:30–21:30',type:'global',place:'Worldwide, at home',blurb:'Switch off non-essential lights for one hour, then keep going with a real climate action.'})}
+ const lo=new Date(T);lo.setFullYear(Y-1);const hi=new Date(T);hi.setFullYear(Y+1);return out.filter(e=>e.d>=lo&&e.d<=hi).sort((a,b)=>a.d-b.d)}
+let AN=0;
+function cnArt(k){const n='g'+(AN++),G=(id,a,b)=>`<linearGradient id="${n+id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>`,u=id=>`url(#${n+id})`;let d='',b='';
+ if(k==='cleanup'){d=G('s','#7fcdf0','#e6f6fd')+G('w','#43a9d6','#1f6f99')+G('d','#f6e2b6','#e2c48d');
+  b=`<rect width="400" height="300" fill="${u('s')}"/><circle cx="320" cy="62" r="26" fill="#fff6d6"/><rect y="140" width="400" height="62" fill="${u('w')}"/><path d="M0 160q25-8 50 0t50 0 50 0 50 0 50 0 50 0 50 0 50 0" stroke="#fff" stroke-opacity=".55" stroke-width="3" fill="none"/><path d="M0 196q100-22 200-8t200-10V300H0z" fill="${u('d')}"/><path d="M0 206q100-16 200-6t200-8" stroke="#fff" stroke-opacity=".7" stroke-width="3" fill="none"/>
+  <path d="M92 262c-22 0-30-34-12-52 6-6 4-14 12-16 8 2 6 10 12 16 18 18 10 52-12 52z" fill="#2e5a3c"/><rect x="146" y="240" width="12" height="28" rx="3" fill="#7cc4ff" transform="rotate(-70 152 254)"/><rect x="188" y="248" width="10" height="20" rx="3" fill="#ff7a59" transform="rotate(20 193 258)"/><circle cx="228" cy="262" r="5" fill="#ffd34a"/>
+  <g fill="#253244"><circle cx="276" cy="168" r="10"/><path d="M266 182h20l5 42h-7l-4 36h-8l-2-36h-8z"/></g><path d="M290 200l36 58" stroke="#253244" stroke-width="4" stroke-linecap="round"/><path d="M334 236h30l-5 28h-20z" fill="#ffcf3f"/><path d="M336 236q13-16 26 0" stroke="#d9a400" stroke-width="3" fill="none"/>`}
+ else if(k==='mangrove'){d=G('s','#a7e8d8','#effcf8')+G('w','#3fae9e','#1d6f66');let p='';[70,135,200,265,330].forEach((x,i)=>{const h=70+(i%2)*18,y=232-h;p+=`<path d="M${x} 206q-16 10-22 30M${x} 206q16 10 22 30M${x} 216q-7 9-9 20M${x} 216q7 9 9 20" stroke="#7a5a3a" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M${x} 232V${y}" stroke="#5c7a3a" stroke-width="4" stroke-linecap="round"/><ellipse cx="${x-13}" cy="${y+8}" rx="15" ry="6" fill="#3f9a4f" transform="rotate(-28 ${x-13} ${y+8})"/><ellipse cx="${x+13}" cy="${y+4}" rx="15" ry="6" fill="#56b061" transform="rotate(28 ${x+13} ${y+4})"/><ellipse cx="${x}" cy="${y-6}" rx="6" ry="13" fill="#3f9a4f"/>`});
+  b=`<rect width="400" height="300" fill="${u('s')}"/><circle cx="86" cy="58" r="22" fill="#fff4cc"/><path d="M0 150q60-30 120-8t140-6 140 10V300H0z" fill="#7cc3a8" opacity=".5"/><rect y="176" width="400" height="124" fill="${u('w')}"/><path d="M20 196h60M150 190h80M280 198h90" stroke="#fff" stroke-opacity=".5" stroke-width="3" stroke-linecap="round"/><path d="M0 236q100-14 200 0t200 0V300H0z" fill="#6b5844"/>${p}`}
+ else if(k==='recycle'){d=G('s','#ffe7cc','#ffc8a3');let p='';const cs=['#7cc4ff','#5fd0a8','#a8e1ff','#3fa7d6','#8fe0b8','#59b6f0','#b9ecff'];for(let i=0;i<7;i++){const x=64+i*45,h=86+((i*37)%44),y=262-h;p+=`<rect x="${x-15}" y="${y}" width="30" height="${h}" rx="9" fill="${cs[i]}"/><rect x="${x-6}" y="${y-14}" width="12" height="16" rx="3" fill="${cs[i]}"/><rect x="${x-7}" y="${y-20}" width="14" height="8" rx="2" fill="#ff7a59"/><rect x="${x-15}" y="${y+h*.35}" width="30" height="${h*.22}" fill="#fff" opacity=".55"/>`}
+  let r='';for(let a=0;a<3;a++){const a0=(a*120+18)*Math.PI/180,a1=(a*120+96)*Math.PI/180,R=34,X=t=>(200+R*Math.cos(t)).toFixed(1),Y=t=>(78+R*Math.sin(t)).toFixed(1),ex=200+R*Math.cos(a1),ey=78+R*Math.sin(a1),tx=-Math.sin(a1),ty=Math.cos(a1);r+=`<path d="M${X(a0)} ${Y(a0)}A${R} ${R} 0 0 1 ${X(a1)} ${Y(a1)}" stroke="#ff5a3c" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M${(ex+tx*13).toFixed(1)} ${(ey+ty*13).toFixed(1)}L${(ex-Math.cos(a1)*10).toFixed(1)} ${(ey-Math.sin(a1)*10).toFixed(1)}L${(ex+Math.cos(a1)*10).toFixed(1)} ${(ey+Math.sin(a1)*10).toFixed(1)}z" fill="#ff5a3c"/>`}
+  b=`<rect width="400" height="300" fill="${u('s')}"/><rect y="262" width="400" height="38" fill="#e9a77c"/>${r}${p}`}
+ else if(k==='weather'){d=G('s','#d6ceff','#f4f1ff');let sl='';for(let i=0;i<6;i++)sl+=`<path d="M236 ${184+i*10}h72" stroke="#c9c3e0" stroke-width="3"/>`;
+  b=`<rect width="400" height="300" fill="${u('s')}"/><path d="M0 240q200-40 400 0V300H0z" fill="#7fc98f"/><rect x="118" y="96" width="8" height="160" rx="3" fill="#585273"/>
+  <g transform="translate(122 92)"><g><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="2.4s" repeatCount="indefinite"/><path d="M-34 0H34M0 -34V34" stroke="#585273" stroke-width="3"/><path d="M34 0a8 8 0 0 1 0 14z" fill="#ff5a3c"/><path d="M-34 0a8 8 0 0 0 0-14z" fill="#ff5a3c"/><path d="M0 34a8 8 0 0 0 14 0z" fill="#ff5a3c"/><path d="M0 -34a8 8 0 0 1-14 0z" fill="#ff5a3c"/></g><circle r="5" fill="#585273"/></g>
+  <rect x="228" y="172" width="88" height="72" rx="4" fill="#fff"/>${sl}<path d="M222 172l50-22 50 22z" fill="#fff"/><path d="M240 244v20M304 244v20" stroke="#585273" stroke-width="4"/>
+  <rect x="262" y="28" width="116" height="74" rx="10" fill="#fff" opacity=".9"/><path d="M274 86l18-16 16 8 18-24 18 10 22-18" stroke="#9b7bff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`}
+ else if(k==='upcycle'){d=G('s','#ffe1ef','#ffd0e4');let st='';for(let i=0;i<8;i++)st+=`<rect x="${100+i*26}" y="100" width="13" height="180" fill="#ff8fb8"/>`;
+  b=`<rect width="400" height="300" fill="${u('s')}"/><defs><clipPath id="${n}c"><path d="M112 128h176l-14 140H126z"/></clipPath></defs><path d="M150 132q0-54 50-54t50 54" stroke="#e85d8f" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M112 128h176l-14 140H126z" fill="#ffd8e8"/><g clip-path="url(#${n}c)">${st}</g><circle cx="200" cy="196" r="28" fill="#fff" opacity=".85"/><path d="M200 182c-10 0-16 8-16 14 0 10 16 18 16 18s16-8 16-18c0-6-6-14-16-14z" fill="#3fbf6f"/>
+  <g transform="translate(320 220) rotate(-30)"><circle cx="-18" cy="22" r="11" fill="none" stroke="#585273" stroke-width="5"/><circle cx="18" cy="22" r="11" fill="none" stroke="#585273" stroke-width="5"/><path d="M-10 14L14 -40M10 14L-14 -40" stroke="#9aa3b5" stroke-width="6" stroke-linecap="round"/></g>
+  <rect x="44" y="206" width="36" height="46" rx="5" fill="#ffcf3f"/><rect x="38" y="200" width="48" height="10" rx="3" fill="#c48a2c"/><rect x="38" y="250" width="48" height="10" rx="3" fill="#c48a2c"/>`}
+ else if(k==='energy'){d=G('s','#211d4a','#3a2f7a')+`<radialGradient id="${n}r"><stop offset="0" stop-color="#ffe27a" stop-opacity=".9"/><stop offset="1" stop-color="#ffe27a" stop-opacity="0"/></radialGradient>`;let s='';const q=rng(7);for(let i=0;i<30;i++)s+=`<circle cx="${(q()*400).toFixed(0)}" cy="${(q()*160).toFixed(0)}" r="${(q()*1.6+.4).toFixed(1)}" fill="#fff" opacity=".8"/>`;
+  b=`<rect width="400" height="300" fill="${u('s')}"/>${s}<circle cx="200" cy="120" r="110" fill="url(#${n}r)"/><path d="M200 50c-38 0-62 28-62 60 0 26 18 40 24 56h76c6-16 24-30 24-56 0-32-24-60-62-60z" fill="#fff6c8"/><path d="M200 82c-20 8-28 30-20 52 22-4 34-24 20-52z" fill="#3fbf6f"/><path d="M182 132q10-20 18-42" stroke="#2c8a4a" stroke-width="3" fill="none"/><rect x="164" y="170" width="72" height="12" rx="5" fill="#b9b4d6"/><rect x="168" y="186" width="64" height="12" rx="5" fill="#9d97c2"/><rect x="180" y="202" width="40" height="12" rx="5" fill="#827bab"/>
+  <rect x="300" y="200" width="56" height="78" rx="10" fill="#e8e5f6"/><rect x="316" y="214" width="24" height="44" rx="6" fill="#b9b4d6"/><rect x="319" y="238" width="18" height="17" rx="4" fill="#ff5a3c"/>`}
+ else if(k==='poster'){d=G('s','#fff3d9','#ffe2b0');
+  b=`<rect width="400" height="300" fill="${u('s')}"/><path d="M140 290l60-230 60 230M200 60v240" stroke="#a06a3c" stroke-width="7" stroke-linecap="round"/><rect x="112" y="64" width="176" height="150" rx="6" fill="#fff" stroke="#e6d3b0" stroke-width="3"/><circle cx="170" cy="138" r="40" fill="#4fb3ff"/><path d="M146 122c10-12 26-8 30 2s-8 20 4 28c-14 8-30-4-34-14s-6-12 0-16zM184 112c10 0 18 8 14 16-8 2-16-2-14-16z" fill="#3fbf6f"/><rect x="236" y="92" width="16" height="80" rx="8" fill="#fff" stroke="#ff5a3c" stroke-width="3"/><circle cx="244" cy="180" r="14" fill="#ff5a3c"/><rect x="240" y="120" width="8" height="56" fill="#ff5a3c"/><path d="M128 196h108" stroke="#c9b48e" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="60" cy="70" r="16" fill="#ff5fa2" opacity=".8"/><circle cx="342" cy="96" r="22" fill="#9b7bff" opacity=".7"/><circle cx="330" cy="236" r="14" fill="#4fb3ff" opacity=".8"/><circle cx="66" cy="210" r="20" fill="#ffd34a" opacity=".85"/>`}
+ else if(k==='tree'){d=G('s','#9ad7f5','#e8f8ff');
+  b=`<rect width="400" height="300" fill="${u('s')}"/><circle cx="330" cy="66" r="28" fill="#fff0b3"/><path d="M0 230q200-60 400 0V300H0z" fill="#79c27f"/><path d="M0 262q200-30 400 0V300H0z" fill="#5aa862"/><rect x="190" y="150" width="20" height="96" rx="6" fill="#8a5a36"/><circle cx="200" cy="120" r="52" fill="#3f9a4f"/><circle cx="164" cy="146" r="34" fill="#4fae5a"/><circle cx="238" cy="144" r="36" fill="#56b061"/><circle cx="200" cy="86" r="30" fill="#4fae5a"/>
+  <path d="M60 250v-26M84 250v-26M108 250v-26M52 232h64" stroke="#e9d6b0" stroke-width="5" stroke-linecap="round"/><g transform="translate(300 214)"><path d="M0 0h44l-6 40H6z" fill="#4fb3ff"/><path d="M44 8l26-16" stroke="#4fb3ff" stroke-width="7" stroke-linecap="round"/><path d="M6 0q16-22 32 0" stroke="#2f7fbf" stroke-width="5" fill="none"/><path d="M74 -12l8 10M74 -4l10 4" stroke="#7cc4ff" stroke-width="3" stroke-linecap="round"/></g>`}
+ else{d=G('s','#e2f6e7','#c9ecd3');
+  b=`<rect width="400" height="300" fill="${u('s')}"/><rect y="250" width="400" height="50" fill="#a9d9b5"/><path d="M80 120h100l10 136H70z" fill="#d8b27d"/><path d="M80 120l14-20h72l14 20z" fill="#c29a62"/><path d="M110 140q20 22 40 0" stroke="#8a6a3c" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M130 180c-16 0-22 12-18 24 14 0 26-10 18-24z" fill="#3fbf6f"/>
+  <rect x="216" y="110" width="44" height="146" rx="14" fill="#4fb3ff"/><rect x="224" y="94" width="28" height="22" rx="6" fill="#2f7fbf"/><rect x="216" y="160" width="44" height="30" fill="#fff" opacity=".5"/>
+  <rect x="282" y="196" width="94" height="60" rx="12" fill="#ff8a3d"/><rect x="278" y="184" width="102" height="20" rx="8" fill="#ffb27a"/><path d="M300 222h58" stroke="#fff" stroke-opacity=".6" stroke-width="5" stroke-linecap="round"/>`}
+ return`<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>${d}</defs>${b}</svg>`}
+function cnCover(a){return a.photos&&a.photos.length?`<img src="${cnEsc(a.photos[0])}" alt="${cnEsc(a.title)}" loading="lazy">`:cnArt(a.art)}
+function cnActs(){return CORNER.activities.map((a,i)=>({...a,i,d:cnD(a.date)})).sort((a,b)=>b.d-a.d)}
+function renderCorner(){const T=cnToday(),EV=cnEvents(),up=EV.filter(e=>e.d>=T),next=up[0],acts=cnActs(),dd=next?Math.round((next.d-T)/864e5):0,n3=up.filter(e=>(e.d-T)/864e5<=92).length;
+ $('cnk').innerHTML=(next?`<div class="cnx" style="--a:${next.type==='global'?'#3fd2c7':'#ff5a3c'}"><span>Next up</span><b>${cnEsc(next.title)}</b><em>${cnFmt(next.d,{weekday:'long',day:'numeric',month:'long'})}${next.time?' · '+next.time:''}</em><strong>${dd===0?'Today':dd===1?'Tomorrow':'in '+dd+' days'}</strong><button class="cnbtn" data-ics="${EV.indexOf(next)}">Add to calendar</button></div>`:'')
+  +`<div class="cnst"><div><b>${acts.length}</b><span>activities in the gallery</span></div><div><b>${n3}</b><span>events in the next 3 months</span></div><div><b>${CN_GD.length+1}</b><span>global climate days a year</span></div></div>`;
+ const cats=['All',...Object.keys(CN_CAT).filter(c=>acts.some(a=>a.cat===c))];
+ $('cnf').innerHTML=cats.map(c=>`<button class="cnchip" data-f="${c}" aria-pressed="${CNF===c}" style="--a:${CN_CAT[c]||'#fff'}">${c}<small>${c==='All'?acts.length:acts.filter(a=>a.cat===c).length}</small></button>`).join('');
+ const sh=acts.filter(a=>CNF==='All'||a.cat===CNF);
+ $('cngrid').innerHTML=sh.map((a,k)=>`<button class="cnc${k===0&&CNF==='All'?' big':''}" data-a="${a.i}" style="--a:${CN_CAT[a.cat]}"><div class="cnart">${cnCover(a)}${a.sample?'<span class="cnsm">Sample</span>':''}${a.photos&&a.photos.length>1?`<span class="cnph">${a.photos.length} photos</span>`:''}</div><div class="cncb"><div class="cnmeta"><span class="cntag">${a.cat}</span><span>${cnFmt(a.d)}</span></div><h4>${cnEsc(a.title)}</h4><p>${cnEsc(a.blurb)}</p><div class="cnfs">${a.stats.slice(0,2).map(([v,l])=>`<span><b>${cnEsc(v)}</b> ${cnEsc(l)}</span>`).join('')}</div></div></button>`).join('')||'<p class="cnempty">No activities in this category yet.</p>';
+ renderCal(EV);renderList(EV)}
+function renderCal(EV){const T=cnToday();if(!CNM)CNM=new Date(T.getFullYear(),T.getMonth(),1);const y=CNM.getFullYear(),m=CNM.getMonth(),first=(new Date(y,m,1).getDay()+6)%7,days=new Date(y,m+1,0).getDate(),by={};EV.forEach(e=>{if(e.d.getFullYear()===y&&e.d.getMonth()===m)(by[e.d.getDate()]=by[e.d.getDate()]||[]).push(e)});
+ let c=`<div class="cnch"><button class="cnnav" data-m="-1" aria-label="Previous month">‹</button><b>${CNM.toLocaleDateString('en-GB',{month:'long',year:'numeric'})}</b><button class="cnnav" data-m="1" aria-label="Next month">›</button></div><div class="cng7">${['M','T','W','T','F','S','S'].map(x=>`<span class="cnwd">${x}</span>`).join('')}`;
+ for(let i=0;i<first;i++)c+='<span></span>';
+ for(let d=1;d<=days;d++){const es=by[d]||[],dt=new Date(y,m,d),k=cnKey(dt);c+=`<button class="cnday${cnKey(T)===k?' today':''}${CNSEL===k?' sel':''}${es.length?' has':''}" data-day="${k}" ${es.length?'':'disabled'} aria-label="${cnFmt(dt,{day:'numeric',month:'long'})}${es.length?': '+es.map(e=>cnEsc(e.title)).join(', '):''}">${d}<i>${es.slice(0,3).map(e=>`<em style="background:${e.type==='global'?'#3fd2c7':'#ff5a3c'}"></em>`).join('')}</i></button>`}
+ c+=`</div><div class="cnleg"><span><em style="background:#ff5a3c"></em>School event</span><span><em style="background:#3fd2c7"></em>Global climate day</span></div>`;$('cncal').innerHTML=c}
+function renderList(EV){const T=cnToday();let L=CNSEL?EV.filter(e=>cnKey(e.d)===CNSEL):CNV==='up'?EV.filter(e=>e.d>=T):EV.filter(e=>e.d<T).reverse();
+ document.querySelectorAll('.cnseg button').forEach(b=>b.setAttribute('aria-selected',!CNSEL&&b.dataset.v===CNV));
+ let h=CNSEL?`<div class="cnfilt">Showing ${L[0]?cnFmt(L[0].d,{weekday:'long',day:'numeric',month:'long'}):'this day'}<button class="cnbtn ghost" data-clear="1">Show all events</button></div>`:'',mo='';
+ L.forEach(e=>{const ml=e.d.toLocaleDateString('en-GB',{month:'long',year:'numeric'});if(ml!==mo&&!CNSEL){h+=`<h5 class="cnmo">${ml}</h5>`;mo=ml}const dd=Math.round((e.d-T)/864e5),g=e.type==='global';
+  h+=`<article class="cne2${g?' gl':''}"><div class="cndt"><b>${e.d.getDate()}</b><span>${e.d.toLocaleDateString('en-GB',{month:'short'})}</span><small>${e.d.toLocaleDateString('en-GB',{weekday:'short'})}</small></div><div class="cnei"><div class="cnmeta"><span class="cntag" style="--a:${g?'#3fd2c7':'#ff5a3c'}">${g?'Global climate day':'School event'}</span>${e.sample?'<span class="cnsm in">Sample</span>':''}${dd>=0?`<span class="cncd">${dd===0?'Today':dd===1?'Tomorrow':'in '+dd+' days'}</span>`:''}</div><h4>${cnEsc(e.title)}</h4><p class="cnwhen">${[e.time,e.place].filter(Boolean).map(cnEsc).join(' · ')}</p><p>${cnEsc(e.blurb)}</p><div class="cnacts">${e.act?`<button class="cnbtn" data-act="${e.act}">View photos</button>`:''}${dd>=0?`<button class="cnbtn ghost" data-ics="${EV.indexOf(e)}">Add to calendar</button>`:''}</div></div></article>`});
+ if(!L.length)h+='<p class="cnempty">Nothing here yet.</p>';
+ if(CNV==='up'&&!CNSEL)h+=`<article class="cne2 hz"><div class="cndt"><b>COP</b><span>2027</span></div><div class="cnei"><div class="cnmeta"><span class="cntag" style="--a:#9b7bff">On the horizon</span></div><h4>UN Climate Change Conference (COP32)</h4><p class="cnwhen">Addis Ababa, Ethiopia · dates to be announced</p><p>Countries meet every year at a COP to agree how to tackle climate change. In 2027 the conference goes to Africa.</p></div></article>`;
+ $('cnlist').innerHTML=h;CNEV=EV}
+let CNEV=[];
+function cnIcs(e){const p=n=>String(n).padStart(2,'0'),ds=d=>d.getFullYear()+p(d.getMonth()+1)+p(d.getDate()),m=(e.time||'').match(/(\d{1,2}):(\d{2})\s*[–-]\s*(\d{1,2}):(\d{2})/),esc=s=>String(s||'').replace(/[\\;,]/g,x=>'\\'+x).replace(/\n/g,'\\n');let st,en;
+ if(m){st='DTSTART:'+ds(e.d)+'T'+p(m[1])+m[2]+'00';en='DTEND:'+ds(e.d)+'T'+p(m[3])+m[4]+'00'}else{const n=new Date(e.d);n.setDate(n.getDate()+1);st='DTSTART;VALUE=DATE:'+ds(e.d);en='DTEND;VALUE=DATE:'+ds(n)}
+ const txt=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//The Climate Change//Climate Corner//EN','BEGIN:VEVENT','UID:'+ds(e.d)+'-'+e.title.replace(/\W+/g,'-').toLowerCase()+'@the-climate-change','DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z',st,en,'SUMMARY:'+esc(e.title),'LOCATION:'+esc(e.place),'DESCRIPTION:'+esc(e.blurb),'END:VEVENT','END:VCALENDAR'].join('\r\n');
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/calendar'}));a.download=e.title.replace(/[^\w]+/g,'-').replace(/^-|-$/g,'')+'.ics';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},800)}
+function openLB(i){const A=cnActs().filter(a=>CNF==='All'||a.cat===CNF),k=A.findIndex(a=>a.i===i);if(k<0)return;LBI=i;const a=A[k];
+ const ph=a.photos||[],cp=a.captions||[];$('lbc').innerHTML=`<div class="lbart">${ph.length?`<img id="lbimg" src="${cnEsc(ph[0])}" alt="${cnEsc(cp[0]||a.title)}"><div class="lbcap"><span id="lbcp">${cnEsc(cp[0]||'')}</span><span id="lbct">1 / ${ph.length}</span></div>`:cnArt(a.art)}${a.sample?'<span class="cnsm">Sample</span>':''}</div><div class="lbb" style="--a:${CN_CAT[a.cat]}"><div class="cnmeta"><span class="cntag">${a.cat}</span><span>${cnFmt(a.d,{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</span></div><h3 id="lbt">${cnEsc(a.title)}</h3><p class="cnwhen">${cnEsc(a.place)}</p><p>${cnEsc(a.detail||a.blurb)}</p><div class="lbst">${a.stats.map(([v,l])=>`<div><b>${cnEsc(v)}</b><span>${cnEsc(l)}</span></div>`).join('')}</div>${a.learn&&a.learn.length?`<h5>What we learned</h5><ul>${a.learn.map(x=>`<li>${cnEsc(x)}</li>`).join('')}</ul>`:''}${ph.length>1?`<h5>Photos</h5><div class="lbph">${ph.map((p,j)=>`<button data-ph="${j}" aria-label="Photo ${j+1}: ${cnEsc(cp[j]||'')}" aria-current="${j===0}"><img src="${cnEsc(p)}" alt="" loading="lazy"></button>`).join('')}</div>`:''}<p class="lbn">${k+1} of ${A.length}</p></div>`;
+ LBP=0;$('lb').hidden=false;$('lbx').focus()}
+function stepLB(d){const A=cnActs().filter(a=>CNF==='All'||a.cat===CNF),k=A.findIndex(a=>a.i===LBI);if(k<0)return;openLB(A[(k+d+A.length)%A.length].i)}
+function closeLB(){if($('lb').hidden)return;$('lb').hidden=true;const c=document.querySelector(`.cnc[data-a="${LBI}"]`);c&&c.focus();LBI=-1}
+function openCorner(){if(CN)return;CN=true;closeBoard();if(XO)closeXV();document.body.classList.add('incorner');$('cn').hidden=false;syncTabs();renderCorner();$('cn').scrollTop=0}
+function closeCorner(){if(!CN)return;CN=false;closeLB();document.body.classList.remove('incorner');$('cn').hidden=true}
+function syncTabs(){document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',CN?b.dataset.c==='corner':b.dataset.c===cat))}
+function cnKeyH(e){if(!$('lb').hidden){const a=CORNER.activities[LBI],hp=a&&a.photos&&a.photos.length>1&&!e.shiftKey;if(e.key==='Escape')closeLB();else if(e.key==='ArrowRight')hp?lbPhoto(LBP+1):stepLB(1);else if(e.key==='ArrowLeft')hp?lbPhoto(LBP-1):stepLB(-1)}}
+$('cn').addEventListener('click',e=>{const t=e.target;let b;
+ if(b=t.closest('.cnchip')){CNF=b.dataset.f;renderCorner();return}
+ if(b=t.closest('.cnc')){openLB(+b.dataset.a);return}
+ if(b=t.closest('[data-ics]')){const ev=CNEV[+b.dataset.ics];ev&&cnIcs(ev);return}
+ if(b=t.closest('[data-act]')){const a=CORNER.activities.findIndex(x=>x.id===b.dataset.act);if(a>=0){CNF='All';openLB(a)}return}
+ if(b=t.closest('.cnnav')){CNM=new Date(CNM.getFullYear(),CNM.getMonth()+ +b.dataset.m,1);renderCal(CNEV);return}
+ if(b=t.closest('.cnday')){CNSEL=CNSEL===b.dataset.day?null:b.dataset.day;renderCal(CNEV);renderList(CNEV);$('cnlist').scrollIntoView({behavior:RM?'auto':'smooth',block:'nearest'});return}
+ if(b=t.closest('[data-clear]')){CNSEL=null;renderCal(CNEV);renderList(CNEV);return}
+ if(b=t.closest('.cnseg button')){CNV=b.dataset.v;CNSEL=null;renderCal(CNEV);renderList(CNEV);return}
+ if(b=t.closest('a[href^="#cn"]')){e.preventDefault();$(b.getAttribute('href').slice(1)).scrollIntoView({behavior:RM?'auto':'smooth'})}});
+$('lb').addEventListener('click',e=>{if(e.target===$('lb')){closeLB();return}const b=e.target.closest('[data-ph]');if(b){lbPhoto(+b.dataset.ph);return}if(e.target.id==='lbimg')lbPhoto(LBP+1)});
+function lbPhoto(j){const a=CORNER.activities[LBI];if(!a||!a.photos||!a.photos.length)return;const n=a.photos.length;j=(j+n)%n;const im=$('lbimg');im.src=a.photos[j];im.alt=(a.captions||[])[j]||a.title;$('lbcp').textContent=(a.captions||[])[j]||'';$('lbct').textContent=(j+1)+' / '+n;LBP=j;document.querySelectorAll('.lbph button').forEach((x,k)=>x.setAttribute('aria-current',k===j))}
+let LBP=0;$('lbx').onclick=closeLB;$('lbp').onclick=()=>stepLB(-1);$('lbn').onclick=()=>stepLB(1);
+
 /* ---------- controls ---------- */
 function enterFS(){document.body.classList.add('fs');$('fsui').setAttribute('aria-hidden','false');mini();try{const p=document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();if(p&&p.catch)p.catch(()=>{})}catch(e){}}
 function exitFS(){document.body.classList.remove('fs');$('fsui').setAttribute('aria-hidden','true');try{if(document.fullscreenElement){const p=document.exitFullscreen();if(p&&p.catch)p.catch(()=>{})}}catch(e){}}
@@ -973,7 +1278,7 @@ $('prev').onclick=()=>step(-1);$('next').onclick=()=>step(1);$('fsp').onclick=()
 $('play').onclick=()=>setPlay(!AP);$('fsb').onclick=enterFS;$('fsx').onclick=exitFS;$('bdb').onclick=openBoard;$('bx').onclick=closeBoard;
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setCat(b.dataset.c));
 $('more').onclick=()=>{const o=$('card').classList.toggle('open');$('more').setAttribute('aria-expanded',o);$('more').textContent=o?'Hide climate details':'Show climate details'};
-document.addEventListener('keydown',e=>{if(XO){if(e.key==='Escape')closeXV();else if(e.key==='ArrowRight')step(1);else if(e.key==='ArrowLeft')step(-1);return}if(!$('board').hidden){if(e.key==='Escape')closeBoard();return}
+document.addEventListener('keydown',e=>{if(CN){cnKeyH(e);return}if(XO){if(e.key==='Escape')closeXV();else if(e.key==='ArrowRight')step(1);else if(e.key==='ArrowLeft')step(-1);return}if(!$('board').hidden){if(e.key==='Escape')closeBoard();return}
  if((e.key==='e'||e.key==='E')&&!e.ctrlKey&&!e.metaKey){openXV();return}
  if(e.key==='ArrowRight')step(1);else if(e.key==='ArrowLeft')step(-1);else if(e.key==='f'||e.key==='F')document.body.classList.contains('fs')?exitFS():enterFS();else if(e.key==='Escape')exitFS();else if(e.key===' '&&!(e.target.closest&&e.target.closest('button'))){e.preventDefault();setPlay(!AP)}});
 addEventListener('pointermove',e=>{if(e.pointerType==='mouse')mx=e.clientX/innerWidth*2-1});
