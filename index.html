@@ -439,6 +439,8 @@ body.incorner #wall{filter:saturate(1.1) brightness(.7)}
 .cact li b{display:block;font-size:14px}.cact li em{font-style:normal;color:#b8f5a8;font-weight:700}
 .calcr .cnn{margin-top:14px;flex-wrap:wrap}
 @media(max-width:900px){.st{grid-template-columns:minmax(0,1fr);gap:0}.stv{top:6px;height:44vh;z-index:1}.stp{min-height:72vh;padding:4vh 0}.stp:first-child{min-height:56vh}.stc{background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.03)),rgba(12,18,28,.82)}.calc{grid-template-columns:minmax(0,1fr)}.calcr{position:static}}
+.stvm{display:none}
+@media(max-width:900px){.stv{display:none}.st{display:block;margin-top:14px}.stp,.stp:first-child,.stp:last-child{min-height:0;padding:0;margin-bottom:16px;display:block}.stc{opacity:1;transform:none;padding:14px 14px 18px;background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.03)),rgba(12,18,28,.78)}.stc>.cne,.stc>h3,.stc>p,.stc>.cnn{padding:0 4px}.stvm{display:block;margin-bottom:14px;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.2);background:radial-gradient(120% 100% at 0% 0%,rgba(255,138,92,.22),transparent 60%),rgba(10,16,26,.55)}.stvm .stvi{position:static;animation:none;padding:14px}.stvm .stvi svg{flex:none;height:auto}.stvm .stvi .big{font-size:clamp(34px,11vw,48px)}.stvm .stph img{aspect-ratio:4/3;height:auto}.stvm .stg{gap:8px}.stvm .stg>div{padding:10px 12px}.stvm .stg b{font-size:20px}.stprog{display:none}.stvm svg text{font-size:22px}.stvm .cfml{font-size:23px!important}}
 /* ---------- About ---------- */
 .abw{max-width:980px}
 .abcard{margin-top:26px;border-radius:24px;padding:clamp(20px,3vw,32px);border:1px solid rgba(255,255,255,.26);background:radial-gradient(120% 120% at 0% 0%,rgba(255,90,60,.25),transparent 55%),linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.04)),rgba(12,18,28,.42);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3)}
@@ -1896,7 +1898,8 @@ function cfPage(p){CFP=p;cfStop();document.querySelectorAll('#cftabs button').fo
 const ST_PHOTOS=["photos/eposter-2026/eposter-02.jpg", "photos/eposter-2026/eposter-11.jpg", "photos/eposter-2026/eposter-16.jpg", "photos/eposter-2026/eposter-06.jpg"];
 function stInit(){if(!STO){$('stprog').innerHTML=[...document.querySelectorAll('.stp')].map(()=>'<i></i>').join('');
   STO=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)stShow(+e.target.dataset.s)})},{root:$('cf'),rootMargin:'-45% 0px -45% 0px',threshold:0});
-  document.querySelectorAll('.stp').forEach(s=>STO.observe(s))}
+  document.querySelectorAll('.stp').forEach(s=>STO.observe(s));
+  document.querySelectorAll('.stp').forEach(s=>{const k=+s.dataset.s;STK=-1;stShow(k);const m=document.createElement('div');m.className='stvm';m.setAttribute('aria-hidden','true');m.innerHTML=$('stv').innerHTML.replace(/stgr/g,'stgr'+k);s.querySelector('.stc').prepend(m)});STK=-1;stShow(0)}
  if(STK<0)stShow(0)}
 function stMap(hl,pins){const D=$('cfdist').innerHTML.replace(/class="cfd[^"]*"/g,'class="stdm"').replace(/ tabindex="0" role="button" aria-label="[^"]*"/g,'').replace(/ style="[^"]*"/g,'');
  return `<svg viewBox="40 20 720 430" role="img"><path d="${document.querySelector('#cfsvg path').getAttribute('d')}" fill="#3b4a3f" opacity=".7"/>${D.replace(/data-d="([^"]+)"/g,(m,n)=>`data-d="${n}" fill="${hl[n]||'rgba(255,255,255,.12)'}" stroke="#fff" stroke-width="1.5"`)}${pins.map(p=>`<g><circle cx="${p[0]}" cy="${p[1]}" r="10" fill="${p[3]||'#ffd34a'}" stroke="#fff" stroke-width="3"/><text x="${p[0]+(p[4]==='end'?-16:16)}" y="${p[1]+6}" text-anchor="${p[4]||'start'}" class="cfml" style="font-size:19px">${p[2]}</text></g>`).join('')}</svg>`}
@@ -1915,7 +1918,7 @@ function stShow(k){if(k===STK)return;STK=k;document.querySelectorAll('.stp').for
   <div style="--a:#4fb3ff"><b>≈ 1.1 m</b><span>higher seas possible by 2100, says the Ministry of Development</span></div>
   <div style="--a:#ffd34a"><b>38 °C</b><span>Brunei's hottest day so far, on 28 March 1983</span></div></div>`}
  else if(k===3){h=`<div class="k">Coastal communities</div>`+stMap({'Brunei-Muara':'rgba(79,179,255,.55)',Tutong:'rgba(79,179,255,.3)',Belait:'rgba(79,179,255,.3)'},[[528,123,'Kampong Ayer','#4fb3ff'],[523,67,'Berakas coast','#ffd34a','end'],[140,282,'Kuala Belait','#ffd34a']])+`<div class="bsub">Low coastal plains, where most people live, face rising seas and erosion.</div>`}
- else if(k===4){h=`<div class="k">Floods</div>`+stMap({Tutong:'#1f4e9c',Belait:'#4a90d9','Brunei-Muara':'#4a90d9',Temburong:'#9ecae1'},FLOODS.map(f=>[f.x,f.yy,f.m,'#ff5a3c','start']))+`<div class="bsub">Darker blue: higher flood vulnerability. Red: floods reported since 2017.</div>`}
+ else if(k===4){h=`<div class="k">Floods</div>`+stMap({Tutong:'#1f4e9c',Belait:'#4a90d9','Brunei-Muara':'#4a90d9',Temburong:'#9ecae1'},FLOODS.map(f=>[f.x,f.yy,f.m,'#ff5a3c',f.x>560?'end':'start']))+`<div class="bsub">Darker blue: higher flood vulnerability. Red: floods reported since 2017.</div>`}
  else if(k===5){h=`<div class="k">People and nature</div><div class="stg">
   <div style="--a:#ff7a59"><b>Heat</b><span>Humid heat makes 32 °C feel like 40 °C, harder for sport and outdoor work</span></div>
   <div style="--a:#b18cff"><b>Dengue</b><span>Warmer, wetter weather helps the mosquitoes that spread it</span></div>
