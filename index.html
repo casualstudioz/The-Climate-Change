@@ -375,6 +375,70 @@ body.incorner #wall{filter:saturate(1.1) brightness(.7)}
 @media(max-width:600px){.cfml{font-size:30px;stroke-width:6px}.cfmv{font-size:32px;stroke-width:6px}.cfml.cfpl{font-size:26px}.cfsea{font-size:24px}}
 .cfml.cfpl{font-size:14px}
 @media(max-width:900px){.cfgrid{grid-template-columns:minmax(0,1fr)}.cffpg{grid-template-columns:minmax(0,1fr)}}
+/* ---------- Carbon Footprint: story and calculator ---------- */
+#cftabs{margin-top:18px}
+.sthead{margin-top:34px;max-width:70ch}.sth{font:800 clamp(24px,3vw,34px)/1.1 Sora,sans-serif;margin:6px 0 0}.sthead p{color:rgba(255,255,255,.86);font-size:15.5px;line-height:1.55;margin:8px 0 0}
+.stprog{display:flex;gap:4px;margin-top:14px}.stprog i{flex:1;height:5px;border-radius:5px;background:rgba(255,255,255,.2);transition:background .4s}.stprog i.on{background:linear-gradient(90deg,#ff8a5c,#ffd34a)}
+.st{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:28px;margin-top:20px;align-items:start}
+.stv{position:sticky;top:18px;height:min(600px,calc(100vh - 150px));border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,.24);background:radial-gradient(120% 100% at 0% 0%,rgba(255,138,92,.22),transparent 60%),linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.03)),rgba(10,16,26,.62);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3)}
+.stvi{position:absolute;inset:0;padding:clamp(16px,2.4vw,28px);display:flex;flex-direction:column;gap:12px;animation:stIn .6s ease both}
+@keyframes stIn{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.stvi{animation:none}}
+.stvi svg{width:100%;flex:1;min-height:0}
+.stvi .k{font:700 12px Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.stvi .big{font:800 clamp(40px,6vw,72px)/1 Sora,sans-serif}
+.stvi .bsub{font-size:14px;color:rgba(255,255,255,.82)}
+.stg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;flex:1;align-content:center}
+.stg>div{border-radius:18px;padding:14px 16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-top:3px solid var(--a,#ffd34a)}
+.stg b{display:block;font:800 clamp(22px,2.6vw,30px)/1.1 Sora,sans-serif;color:color-mix(in srgb,var(--a,#ffd34a) 55%,#fff)}
+.stg span{display:block;font-size:13px;line-height:1.4;margin-top:4px;color:rgba(255,255,255,.86)}
+.stph{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;flex:1;min-height:0}
+.stph img{width:100%;height:100%;object-fit:cover;border-radius:16px;border:1px solid rgba(255,255,255,.25);min-height:0}
+.sts{display:flex;flex-direction:column}
+.stp{min-height:78vh;display:flex;align-items:center;padding:6vh 0}
+.stp:first-child{min-height:60vh;padding-top:0}.stp:last-child{min-height:70vh}
+.stc{border-radius:22px;padding:22px 24px;border:1px solid rgba(255,255,255,.22);background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.04)),rgba(12,18,28,.55);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);opacity:.45;transform:scale(.97);transition:opacity .45s,transform .45s}
+.stp.on .stc{opacity:1;transform:none}
+.stc h3{font:800 clamp(22px,2.4vw,28px)/1.2 Sora,sans-serif;margin:6px 0 10px}
+.stc p{font-size:16px;line-height:1.65;margin:0;color:rgba(255,255,255,.92)}
+.stc .cnn{margin-top:16px;flex-wrap:wrap}
+.cclead{max-width:70ch;color:rgba(255,255,255,.86);font-size:15.5px;line-height:1.55;margin:8px 0 0}
+.calc{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;margin-top:16px;align-items:start;counter-reset:cq}
+.calcq{display:flex;flex-direction:column;gap:10px}
+.cgrp{font:700 12px Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7);margin:10px 0 0}
+.cq{margin:0;border-radius:18px;padding:14px 16px;border:1px solid rgba(255,255,255,.22);background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.03)),rgba(12,18,28,.45);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);counter-increment:cq}
+.cq label:not(.cch),.cq legend{font:600 15px/1.35 Inter,sans-serif;display:flex;gap:8px;align-items:baseline;padding:0;color:#fff}
+.cq.cqx{counter-increment:none;margin-top:-6px}.cq.cqx legend{padding-left:32px}
+.cqn::before{content:counter(cq);display:inline-grid;place-items:center;min-width:24px;height:24px;border-radius:50%;background:#ff5a3c;font:800 12px Sora,sans-serif}
+.cq small{display:block;font-size:12.5px;color:rgba(255,255,255,.7);margin:4px 0 0 32px}
+.cqr{display:flex;align-items:center;gap:12px;margin-top:8px}
+.cqr input{flex:1;accent-color:#ff5a3c;height:28px}
+.cqr output{min-width:5.2em;text-align:right;font:800 16px Sora,sans-serif}
+.cchs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.cch{position:relative;cursor:pointer}.cch input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.cch span{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);font:600 13.5px Inter,sans-serif}
+.cch input:checked+span{background:#fff;color:#10201f;border-color:#fff}
+.cch input:focus-visible+span,.cstep button:focus-visible,.cqr input:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.cfl2{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.12)}
+.cfl2 b{display:block;font-size:14.5px}.cfl2 small{margin:2px 0 0}
+.cstep{display:flex;align-items:center;gap:6px}
+.cstep button{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.1);color:#fff;font:700 18px Inter,sans-serif;cursor:pointer}
+.cstep input{width:48px;height:38px;text-align:center;border-radius:10px;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.25);color:#fff;font:700 16px Sora,sans-serif}
+.calcr{position:sticky;top:18px;border-radius:24px;padding:20px 22px;border:1px solid rgba(255,255,255,.26);background:radial-gradient(120% 100% at 100% 0%,rgba(124,219,106,.18),transparent 55%),linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.04)),rgba(10,16,26,.6);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3)}
+.calcr .tot{font:800 clamp(44px,5vw,60px)/1 Sora,sans-serif}.calcr .tot small{font-size:18px;font-weight:700;margin-left:6px}
+.calcr .tsub{font-size:13.5px;color:rgba(255,255,255,.8);margin-top:4px}
+.calcr h5{font:700 12px Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.65);margin:16px 0 8px}
+.cbar{display:flex;height:16px;border-radius:9px;overflow:hidden;background:rgba(255,255,255,.1)}.cbar i{display:block;height:100%;transition:width .4s}
+.cleg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px;margin-top:8px;font-size:13px}.cleg span{display:flex;align-items:center;gap:6px}.cleg i{width:10px;height:10px;border-radius:3px;flex:0 0 auto}.cleg b{margin-left:auto}
+.ccmp{display:flex;flex-direction:column;gap:7px}
+.ccmp div{display:grid;grid-template-columns:118px minmax(0,1fr) 56px;gap:8px;align-items:center;font-size:12.5px}
+.ccmp .t{height:12px;border-radius:7px;background:rgba(255,255,255,.1);overflow:hidden}.ccmp .t i{display:block;height:100%;border-radius:7px;transition:width .4s}
+.ccmp b{text-align:right;font-size:13px}
+.cact{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.cact li{border-radius:14px;padding:10px 12px;background:rgba(124,219,106,.12);border:1px solid rgba(124,219,106,.35);font-size:13.5px;line-height:1.45}
+.cact li b{display:block;font-size:14px}.cact li em{font-style:normal;color:#b8f5a8;font-weight:700}
+.calcr .cnn{margin-top:14px;flex-wrap:wrap}
+@media(max-width:900px){.st{grid-template-columns:minmax(0,1fr);gap:0}.stv{top:6px;height:44vh;z-index:1}.stp{min-height:72vh;padding:4vh 0}.stp:first-child{min-height:56vh}.stc{background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.03)),rgba(12,18,28,.82)}.calc{grid-template-columns:minmax(0,1fr)}.calcr{position:static}}
 /* ---------- About ---------- */
 .abw{max-width:980px}
 .abcard{margin-top:26px;border-radius:24px;padding:clamp(20px,3vw,32px);border:1px solid rgba(255,255,255,.26);background:radial-gradient(120% 120% at 0% 0%,rgba(255,90,60,.25),transparent 55%),linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.04)),rgba(12,18,28,.42);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3)}
@@ -547,8 +611,9 @@ body.incorner #wall{filter:saturate(1.1) brightness(.7)}
    <div class="cnh">
     <div class="cnhl">
      <div class="cne">CARBON FOOTPRINT</div>
-     <h2 id="cft">Climate impacts on <em>Brunei.</em></h2>
-     <p class="cnlead">What a warming climate means for Brunei, district by district, and how our carbon footprint is part of the story. Choose a map layer, tap a district, and drag the time slider to see change over time.</p>
+     <h2 id="cft">Brunei's climate &amp; <em>our footprint.</em></h2>
+     <p class="cnlead">See how the climate is changing in each district, follow Brunei's climate story from today to tomorrow, and work out your own carbon footprint.</p>
+     <div class="lhtabs" id="cftabs" role="tablist" aria-label="Carbon Footprint pages"><button role="tab" data-cp="map" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg>Climate impacts</button><button role="tab" data-cp="story" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2zM4 5v16M8 7h6M8 11h6"/></svg>Climate story</button><button role="tab" data-cp="calc" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M12 12h2M16 12v5M8 16h2M12 16h2"/></svg>Footprint calculator</button></div>
     </div>
     <div class="cnk"><div class="cnst">
      <div><b>+0.25 °C</b><span>warming per decade in Brunei (BDMD)</span></div>
@@ -556,6 +621,7 @@ body.incorner #wall{filter:saturate(1.1) brightness(.7)}
      <div><b>38 °C</b><span>hottest day on record, 28 March 1983</span></div>
     </div></div>
    </div>
+   <div class="lhpg" id="cfp-map">
    <section class="cns" aria-labelledby="cfmt">
     <div class="cnsh"><div><div class="cne">DATA SNAPSHOTS</div><h3 id="cfmt">Brunei climate map</h3></div></div>
     <div class="cfl" id="cfl" role="tablist" aria-label="Map layers"></div>
@@ -574,8 +640,8 @@ body.incorner #wall{filter:saturate(1.1) brightness(.7)}
       <div><b>80%</b><span>of Brunei's carbon emissions come from the energy sector, mainly oil and gas and power generation.</span><small>Brunei Climate Change Secretariat</small></div>
       <div><b>~200 trees</b><span>are needed to offset the yearly footprint of one person in Brunei, about 10 tonnes of carbon dioxide.</span><small>Brunei Climate Change Secretariat</small></div>
      </div>
-     <p>The more greenhouse gases the world emits, the faster the changes on the map above will happen. Brunei's own emissions are a tiny share of the global total, but per person they are among the highest in ASEAN, so every household's choices count. Work out your own footprint with the official calculator, then try the tips below.</p>
-     <div class="cnn" style="margin-top:14px"><a class="cnbtn" href="https://climatechange.gov.bn/SitePages/Pages/carbon-calculator.aspx" target="_blank" rel="noopener">Calculate your carbon footprint</a><a class="cnbtn ghost" href="https://climatechange.gov.bn/SitePages/Pages/bnccp-goals.aspx" target="_blank" rel="noopener">Brunei's 10 climate strategies</a></div>
+     <p>The more greenhouse gases the world emits, the faster the changes on the map above will happen. Brunei's own emissions are a tiny share of the global total, but per person they are among the highest in ASEAN, so every household's choices count. Work out your own footprint with our Brunei calculator, then try the tips below.</p>
+     <div class="cnn" style="margin-top:14px"><button class="cnbtn" data-cpgo="calc">Calculate your carbon footprint</button><a class="cnbtn ghost" href="https://climatechange.gov.bn/SitePages/Pages/carbon-calculator.aspx" target="_blank" rel="noopener">Official BCCS calculator</a><a class="cnbtn ghost" href="https://climatechange.gov.bn/SitePages/Pages/bnccp-goals.aspx" target="_blank" rel="noopener">Brunei's 10 climate strategies</a></div>
      <ul class="cftips">
       <li><b>Switch off</b>Turn off lights, fans and air-conditioning when you leave a room, and set the air-conditioner a little warmer.</li>
       <li><b>Move smarter</b>Walk, cycle or share rides for short trips; Brunei aims for 60% of new car sales to be electric by 2035.</li>
@@ -585,7 +651,25 @@ body.incorner #wall{filter:saturate(1.1) brightness(.7)}
      </ul>
     </div>
    </section>
-   <p class="cnnote">Temperature and rainfall layers use yearly averages from the ERA5 climate reanalysis (Copernicus Climate Change Service, via Open-Meteo) for one 0.25° grid square in each district (for Temburong, the forested uplands), compared with the 1961–1990 average. They are estimates on a roughly 25 km grid, so they may differ from Brunei Darussalam Meteorological Department (BDMD) station records. Flood and coastal layers summarise published studies and news reports and are not official hazard maps. District boundaries: Natural Earth.</p>
+   </div>
+   <div class="lhpg" id="cfp-story" hidden>
+    <div class="sthead"><div class="cne">CLIMATE STORY</div><h3 class="sth">Brunei's climate story</h3><p>From what our climate is like today, to how it is changing, who is affected, what is being done and what you can do. Scroll down to follow the story.</p><div class="stprog" id="stprog" aria-hidden="true"></div></div>
+    <section class="st" aria-label="Brunei's climate story">
+     <div class="stv" id="stv" aria-hidden="true"></div>
+     <div class="sts"><article class="stp" data-s="0"><div class="stc"><div class="cne">CHAPTER 1 · TODAY</div><h3>What Brunei's climate is like today</h3><p>Brunei sits just north of the equator, so it is hot, humid and wet all year. Average temperatures in the capital stay between about 27 °C and 28.5 °C in every month, with about 3,000 mm of rain a year. The northeast monsoon, from about November to March, is usually the wettest time.</p></div></article><article class="stp" data-s="1"><div class="stc"><div class="cne">CHAPTER 2 · CHANGING</div><h3>It is getting warmer</h3><p>Each stripe is one year in Brunei-Muara since 1960, from blue (cooler) to red (warmer). Brunei's Meteorological Department measures warming of about 0.25 °C every decade, and 2023 was Brunei's second-warmest year since its records began in 1970.</p></div></article><article class="stp" data-s="2"><div class="stc"><div class="cne">CHAPTER 2 · CHANGING</div><h3>Heavier rain, higher seas</h3><p>Rainfall is rising too, by about 100 mm per decade, with heavier downpours. If world emissions stay very high, Brunei could be about 4 °C warmer by 2100, and the Ministry of Development has warned that the sea could rise by about 1.1 m by the end of the century.</p></div></article><article class="stp" data-s="3"><div class="stc"><div class="cne">CHAPTER 3 · WHO IS AFFECTED</div><h3>Coastal communities</h3><p>Most people in Brunei live on low coastal plains. Families in Kampong Ayer, the water village on the Brunei River, and communities along the coast face higher tides, storm surges and erosion as the sea rises. When high tide and heavy rain arrive together, water levels rise quickly.</p></div></article><article class="stp" data-s="4"><div class="stc"><div class="cne">CHAPTER 3 · WHO IS AFFECTED</div><h3>Villages, farms and roads</h3><p>Heavy downpours bring flash floods. Studies rate Tutong as the most flood-vulnerable district, especially its low-lying rural areas, where floods can damage crops, homes and roads. In January 2026, flash floods hit Gadong, Berakas and parts of Tutong.</p></div></article><article class="stp" data-s="5"><div class="stc"><div class="cne">CHAPTER 3 · WHO IS AFFECTED</div><h3>Our health and our nature</h3><p>Hotter, more humid days are harder on students playing sport, outdoor workers and older people, and warmer, wetter weather helps the mosquitoes that spread dengue. Nature feels it too: mangroves, coral reefs and rainforest wildlife such as the proboscis monkey depend on a stable climate.</p></div></article><article class="stp" data-s="6"><div class="stc"><div class="cne">CHAPTER 4 · WHAT IS BEING DONE</div><h3>Brunei's climate plan</h3><p>Brunei's National Climate Change Policy, launched in 2020, sets out 10 strategies to cut emissions, grow forests and adapt. Brunei has also set a goal of net zero emissions by 2050, and aims to cut waste to 1 kg per person per day and recycle 30% of it by 2035.</p></div></article><article class="stp" data-s="7"><div class="stc"><div class="cne">CHAPTER 5 · WHAT YOU CAN DO</div><h3>Your turn</h3><p>Every one of us has a carbon footprint, and in Brunei it is among the highest in ASEAN. Our students have already started: at the Climate Change E-Poster event they researched the causes, effects and solutions of climate change. What will you do?</p><div class="cnn"><button class="cnbtn" data-cpgo="calc">Calculate my footprint</button><button class="cnbtn ghost" data-gotab="corner">See student activities</button><button class="cnbtn ghost" data-gotab="learn">Explore the Learning Hub</button></div></div></article></div>
+    </section>
+    <p class="cnnote">Story sources: Brunei Darussalam Meteorological Department and Brunei Climate Change Secretariat (climatechange.gov.bn), BDMD 2023 Climate Review, OECD (2024), Borneo Bulletin and The Star. Warming stripes use ERA5 reanalysis data (Copernicus). Photos: Climate Change E-Poster event, Maktab Anthony Abell.</p>
+   </div>
+   <div class="lhpg" id="cfp-calc" hidden>
+    <div class="cnsh" style="margin-top:34px"><div><div class="cne">FOOTPRINT CALCULATOR</div><h3>Your carbon footprint in Brunei</h3></div></div>
+    <p class="cclead">Answer 12 quick questions about your home, travel, food and waste. Your result updates as you go and is worked out on this page only: nothing is saved or sent anywhere.</p>
+    <div class="calc">
+     <form class="calcq" id="calcf" onsubmit="return false"><h4 class="cgrp">At home</h4><div class="cq"><label for="q_ppl"><span class="cqn"></span>How many people live in your home?</label><div class="cqr"><input type="range" id="q_ppl" min="1" max="12" step="1" value="5"><output for="q_ppl" data-u=" people"></output></div></div><div class="cq"><label for="q_ac"><span class="cqn"></span>How many air-conditioners are used on a normal day?</label><div class="cqr"><input type="range" id="q_ac" min="0" max="8" step="1" value="3"><output for="q_ac" data-u=" units"></output></div></div><div class="cq"><label for="q_ach"><span class="cqn"></span>About how many hours a day does each one run?</label><small>Air-conditioning uses about 60% of household electricity in Brunei.</small><div class="cqr"><input type="range" id="q_ach" min="0" max="24" step="1" value="8"><output for="q_ach" data-u=" h"></output></div></div><div class="cq"><label for="q_wh"><span class="cqn"></span>How many electric water heaters do you use?</label><div class="cqr"><input type="range" id="q_wh" min="0" max="4" step="1" value="1"><output for="q_wh" data-u=""></output></div></div><div class="cq"><label for="q_fr"><span class="cqn"></span>How many fridges and freezers?</label><div class="cqr"><input type="range" id="q_fr" min="1" max="4" step="1" value="2"><output for="q_fr" data-u=""></output></div></div><h4 class="cgrp">Getting around</h4><fieldset class="cq"><legend><span class="cqn"></span>How do you usually get to school or work?</legend><div class="cchs"><label class="cch"><input type="radio" name="q_mode" value="car1"><span>Car, on my own</span></label><label class="cch"><input type="radio" name="q_mode" value="car3" checked><span>Family car or carpool</span></label><label class="cch"><input type="radio" name="q_mode" value="bus"><span>Bus</span></label><label class="cch"><input type="radio" name="q_mode" value="ev"><span>Electric car</span></label><label class="cch"><input type="radio" name="q_mode" value="walk"><span>Walk or cycle</span></label></div></fieldset><div class="cq"><label for="q_km"><span class="cqn"></span>How far is it, one way?</label><div class="cqr"><input type="range" id="q_km" min="0" max="60" step="1" value="10"><output for="q_km" data-u=" km"></output></div></div><div class="cq"><label for="q_days"><span class="cqn"></span>How many days a week?</label><div class="cqr"><input type="range" id="q_days" min="0" max="7" step="1" value="5"><output for="q_days" data-u=" days"></output></div></div><div class="cq"><label for="q_other"><span class="cqn"></span>Other car trips each week (shopping, visiting family, weekends)</label><div class="cqr"><input type="range" id="q_other" min="0" max="500" step="10" value="80"><output for="q_other" data-u=" km"></output></div></div><fieldset class="cq"><legend><span class="cqn"></span>Return flights in the past year</legend><small>Count each return trip once.</small><div class="cfl2"><span><b>Regional</b><small>e.g. Kuala Lumpur, Singapore, Kota Kinabalu</small></span><div class="cstep"><button type="button" data-st="q_fl1" data-d="-1" aria-label="Fewer Regional">−</button><input id="q_fl1" type="number" min="0" max="20" value="0" aria-label="Regional"><button type="button" data-st="q_fl1" data-d="1" aria-label="More Regional">+</button></div></div><div class="cfl2"><span><b>Medium</b><small>e.g. Jeddah for umrah, Australia, Korea</small></span><div class="cstep"><button type="button" data-st="q_fl2" data-d="-1" aria-label="Fewer Medium">−</button><input id="q_fl2" type="number" min="0" max="20" value="0" aria-label="Medium"><button type="button" data-st="q_fl2" data-d="1" aria-label="More Medium">+</button></div></div><div class="cfl2"><span><b>Long</b><small>e.g. London, Europe, USA</small></span><div class="cstep"><button type="button" data-st="q_fl3" data-d="-1" aria-label="Fewer Long">−</button><input id="q_fl3" type="number" min="0" max="20" value="0" aria-label="Long"><button type="button" data-st="q_fl3" data-d="1" aria-label="More Long">+</button></div></div></fieldset><h4 class="cgrp">Food and waste</h4><fieldset class="cq"><legend><span class="cqn"></span>Which best describes what you eat?</legend><div class="cchs"><label class="cch"><input type="radio" name="q_diet" value="hi"><span>Meat at most meals</span></label><label class="cch"><input type="radio" name="q_diet" value="med" checked><span>Meat about once a day</span></label><label class="cch"><input type="radio" name="q_diet" value="lo"><span>A little meat</span></label><label class="cch"><input type="radio" name="q_diet" value="fish"><span>Fish, but no meat</span></label><label class="cch"><input type="radio" name="q_diet" value="veg"><span>Vegetarian</span></label><label class="cch"><input type="radio" name="q_diet" value="vgn"><span>Vegan</span></label></div></fieldset><div class="cq"><label for="q_bags"><span class="cqn"></span>How many bags of rubbish does your home throw away each week?</label><div class="cqr"><input type="range" id="q_bags" min="0" max="20" step="1" value="6"><output for="q_bags" data-u=" bags"></output></div></div><fieldset class="cq cqx"><legend>How often does your home recycle paper, plastic, cans and food waste?</legend><div class="cchs"><label class="cch"><input type="radio" name="q_rec" value="no"><span>Rarely</span></label><label class="cch"><input type="radio" name="q_rec" value="some" checked><span>Sometimes</span></label><label class="cch"><input type="radio" name="q_rec" value="most"><span>Most of the time</span></label></div></fieldset></form>
+     <aside class="calcr" id="calcr" aria-live="polite"></aside>
+    </div>
+    <p class="cnnote">How it works: home electricity uses Brunei's grid factor of about 0.717 kg CO₂e per kWh (ADEME Base Carbone) and appliance use from the Brunei Household Energy Consumption Survey (ERIA and BNERI, 2020), shared between the people in your home. Cars, buses and flights use UK Government (DEFRA) 2025 factors; flights include the extra warming effect of contrails. Food uses average diets from Scarborough et al. (2014), and waste uses about 0.5 kg CO₂e per kg sent to landfill. Shopping, clothes and other goods are not included, so treat your result as an estimate for learning.</p>
+   </div>
+   <p class="cnnote cfmapnote">Temperature and rainfall layers use yearly averages from the ERA5 climate reanalysis (Copernicus Climate Change Service, via Open-Meteo) for one 0.25° grid square in each district (for Temburong, the forested uplands), compared with the 1961–1990 average. They are estimates on a roughly 25 km grid, so they may differ from Brunei Darussalam Meteorological Department (BDMD) station records. Flood and coastal layers summarise published studies and news reports and are not official hazard maps. District boundaries: Natural Earth.</p>
   </div>
  </section>
  <section class="cn ab" id="ab" hidden aria-labelledby="abt">
@@ -1738,7 +1822,7 @@ function cfFmt(v){return CFL==='temp'?(v>=0?'+':'−')+Math.abs(v).toFixed(1)+' 
 function cfInit(){if(!CFINIT){CFINIT=true;
  $('cfl').innerHTML=CF_LAYERS.map(l=>`<button role="tab" data-cl="${l.k}" aria-selected="${l.k===CFL}" style="--a:${l.a}"><i></i>${l.n}</button>`).join('');
  const yr=$('cfyr');yr.min=CF_Y0;yr.max=CF_Y0+CLIM['Brunei-Muara'].T.length-1;}
- cfRender()}
+ if(CFP==='map')cfRender();else if(CFP==='story')stInit();else calcInit()}
 function cfRender(){const L=CFL,lay=CF_LAYERS.find(x=>x.k===L);
  document.querySelectorAll('#cfl button').forEach(b=>b.setAttribute('aria-selected',b.dataset.cl===L));
  const clim=L==='temp'||L==='rain',yr=$('cfyr');$('cfchart').hidden=!clim;$('cftime').hidden=L==='coast';
@@ -1787,6 +1871,90 @@ $('cf').addEventListener('click',e=>{let b;
 $('cf').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest('.cfd,.cfpt')){e.preventDefault();e.target.closest('.cfd,.cfpt').dispatchEvent(new MouseEvent('click',{bubbles:true}))}});
 $('cfyr').addEventListener('input',e=>{cfStop();const v=+e.target.value;if(CFL==='flood')CFF=v;else CFY=v;cfRender()});
 function cfKey(e){if(e.target.closest&&e.target.closest('input'))return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){const d=e.key==='ArrowRight'?1:-1;if(CFL==='temp'||CFL==='rain'){CFY=Math.max(CF_Y0,Math.min(+$('cfyr').max,CFY+d));cfRender()}else if(CFL==='flood'){CFF=Math.max(0,Math.min(FLOODS.length-1,CFF+d));cfRender()}}}
+
+/* ---------- Carbon Footprint sub-pages: climate impacts, climate story, footprint calculator ---------- */
+let CFP='map',STK=-1,STO=null;
+function cfPage(p){CFP=p;cfStop();document.querySelectorAll('#cftabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.cp===p));
+ $('cfp-map').hidden=p!=='map';$('cfp-story').hidden=p!=='story';$('cfp-calc').hidden=p!=='calc';document.querySelector('.cfmapnote').hidden=p!=='map';
+ if(p==='map')cfRender();else if(p==='story')stInit();else calcInit();
+ const tb=$('cftabs'),c=$('cf'),r=tb.getBoundingClientRect().top-c.getBoundingClientRect().top;if(r<0)c.scrollTo({top:c.scrollTop+r-12,behavior:'auto'})}
+/* --- story --- */
+const ST_PHOTOS=["photos/eposter-2026/eposter-02.jpg", "photos/eposter-2026/eposter-11.jpg", "photos/eposter-2026/eposter-16.jpg", "photos/eposter-2026/eposter-06.jpg"];
+function stInit(){if(!STO){$('stprog').innerHTML=[...document.querySelectorAll('.stp')].map(()=>'<i></i>').join('');
+  STO=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)stShow(+e.target.dataset.s)})},{root:$('cf'),rootMargin:'-45% 0px -45% 0px',threshold:0});
+  document.querySelectorAll('.stp').forEach(s=>STO.observe(s))}
+ if(STK<0)stShow(0)}
+function stMap(hl,pins){const D=$('cfdist').innerHTML.replace(/class="cfd[^"]*"/g,'class="stdm"').replace(/ tabindex="0" role="button" aria-label="[^"]*"/g,'').replace(/ style="[^"]*"/g,'');
+ return `<svg viewBox="40 20 720 430" role="img"><path d="${document.querySelector('#cfsvg path').getAttribute('d')}" fill="#3b4a3f" opacity=".7"/>${D.replace(/data-d="([^"]+)"/g,(m,n)=>`data-d="${n}" fill="${hl[n]||'rgba(255,255,255,.12)'}" stroke="#fff" stroke-width="1.5"`)}${pins.map(p=>`<g><circle cx="${p[0]}" cy="${p[1]}" r="10" fill="${p[3]||'#ffd34a'}" stroke="#fff" stroke-width="3"/><text x="${p[0]+(p[4]==='end'?-16:16)}" y="${p[1]+6}" text-anchor="${p[4]||'start'}" class="cfml" style="font-size:19px">${p[2]}</text></g>`).join('')}</svg>`}
+function stShow(k){if(k===STK)return;STK=k;document.querySelectorAll('.stp').forEach(s=>s.classList.toggle('on',+s.dataset.s===k));
+ document.querySelectorAll('#stprog i').forEach((b,i)=>b.classList.toggle('on',i<=k));
+ const B=BRM,bi=S.indexOf(B),live=LIVE&&LIVE[bi]&&LIVE[bi].current?LIVE[bi].current.temperature_2m:null,mo='JFMAMJJASOND';let h='';
+ if(k===0){const m=B.m,mn=26,mx=29,W=600,H=300,bw=W/12;
+  h=`<div class="k">Bandar Seri Begawan</div><div class="big">${live!=null?live.toFixed(1)+' °C':m[new Date().getMonth()].toFixed(1)+' °C'}</div><div class="bsub">${live!=null?'Right now, live from Open-Meteo':'Typical for this month'} · about 3,000 mm of rain a year</div>
+  <svg viewBox="0 0 ${W} ${H+30}" role="img" aria-label="Average temperature each month">${m.map((v,i)=>{const hh=(v-mn)/(mx-mn)*H;return `<rect x="${i*bw+6}" y="${H-hh}" width="${bw-12}" height="${hh}" rx="8" fill="url(#stgr)"/><text x="${i*bw+bw/2}" y="${H-hh-8}" text-anchor="middle" fill="#fff" font-size="15" font-weight="700" font-family="Inter,sans-serif">${v.toFixed(1)}</text><text x="${i*bw+bw/2}" y="${H+22}" text-anchor="middle" fill="rgba(255,255,255,.75)" font-size="15" font-family="Inter,sans-serif">${mo[i]}</text>`}).join('')}<defs><linearGradient id="stgr" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ffb23c"/><stop offset="1" stop-color="#ff5a3c"/></linearGradient></defs></svg><div class="bsub">Average temperature each month (°C): warm in every month of the year.</div>`}
+ else if(k===1){const T=CLIM['Brunei-Muara'].T,base=CF_BASE['Brunei-Muara'].T,n=T.length,W=600,H=320,bw=W/n,an=T[n-1]-base;
+  h=`<div class="k">Brunei-Muara · ${CF_Y0}–${CF_Y0+n-1}</div><div class="big" style="color:${cfTempCol(an)}">+${an.toFixed(1)} °C</div><div class="bsub">warmer in ${CF_Y0+n-1} than the 1961–1990 average</div>
+  <svg viewBox="0 0 ${W} ${H+28}" role="img" aria-label="Warming stripes">${T.map((v,i)=>`<rect x="${(i*bw).toFixed(2)}" y="0" width="${(bw+.6).toFixed(2)}" height="${H}" fill="${cfTempCol(v-base)}"${RM?'':` style="opacity:0;animation:stIn .5s ${(i*18)}ms ease forwards"`}/>`).join('')}${[1960,1980,2000,2020].map(y=>`<text x="${(y-CF_Y0)*bw+2}" y="${H+22}" fill="rgba(255,255,255,.75)" font-size="15" font-family="Inter,sans-serif">${y}</text>`).join('')}</svg>`}
+ else if(k===2){h=`<div class="k">The future depends on emissions</div><div class="stg">
+  <div style="--a:#3fd2c7"><b>+100 mm</b><span>more rain each decade, with heavier downpours</span></div>
+  <div style="--a:#ff7a59"><b>≈ 4 °C</b><span>warmer by 2100 if world emissions stay very high</span></div>
+  <div style="--a:#4fb3ff"><b>≈ 1.1 m</b><span>higher seas possible by 2100, says the Ministry of Development</span></div>
+  <div style="--a:#ffd34a"><b>38 °C</b><span>Brunei's hottest day so far, on 28 March 1983</span></div></div>`}
+ else if(k===3){h=`<div class="k">Coastal communities</div>`+stMap({'Brunei-Muara':'rgba(79,179,255,.55)',Tutong:'rgba(79,179,255,.3)',Belait:'rgba(79,179,255,.3)'},[[528,123,'Kampong Ayer','#4fb3ff'],[523,67,'Berakas coast','#ffd34a','end'],[140,282,'Kuala Belait','#ffd34a']])+`<div class="bsub">Low coastal plains, where most people live, face rising seas and erosion.</div>`}
+ else if(k===4){h=`<div class="k">Floods</div>`+stMap({Tutong:'#1f4e9c',Belait:'#4a90d9','Brunei-Muara':'#4a90d9',Temburong:'#9ecae1'},FLOODS.map(f=>[f.x,f.yy,f.m,'#ff5a3c','start']))+`<div class="bsub">Darker blue: higher flood vulnerability. Red: floods reported since 2017.</div>`}
+ else if(k===5){h=`<div class="k">People and nature</div><div class="stg">
+  <div style="--a:#ff7a59"><b>Heat</b><span>Humid heat makes 32 °C feel like 40 °C, harder for sport and outdoor work</span></div>
+  <div style="--a:#b18cff"><b>Dengue</b><span>Warmer, wetter weather helps the mosquitoes that spread it</span></div>
+  <div style="--a:#8bd450"><b>Mangroves</b><span>Natural sea walls along Brunei Bay that store carbon</span></div>
+  <div style="--a:#ff8ab3"><b>Coral reefs</b><span>Bleach and can die when the sea stays too warm</span></div></div>`}
+ else if(k===6){h=`<div class="k">Brunei National Climate Change Policy</div><div class="stg">
+  <div style="--a:#ffd34a"><b>30%</b><span>renewable power, mainly solar, by 2035</span></div>
+  <div style="--a:#7cdb6a"><b>60%</b><span>of new car sales electric by 2035</span></div>
+  <div style="--a:#8bd450"><b>500,000</b><span>new trees planted by 2035</span></div>
+  <div style="--a:#ff7a59"><b>Zero</b><span>routine flaring in industry</span></div>
+  <div style="--a:#4fb3ff"><b>30%</b><span>of waste recycled by 2035</span></div>
+  <div style="--a:#b18cff"><b>Net zero</b><span>emissions by 2050</span></div></div>`}
+ else{h=`<div class="k">Climate Change E-Poster, Maktab Anthony Abell</div><div class="stph">${ST_PHOTOS.map(p=>`<img src="${p}" alt="" loading="lazy">`).join('')}</div>`}
+ $('stv').innerHTML=`<div class="stvi">${h}</div>`}
+/* --- calculator --- */
+const CF_F={grid:.717,ac:1.0,wh:1149,fr:947,base:700,car:.163,bus:.108,ev:.17*.717,fl:[2*1400*.13,2*7000*.117,2*11000*.117],diet:{hi:7.19,med:5.63,lo:4.67,fish:3.91,veg:3.81,vgn:2.89},bag:5,waste:.5,rec:{no:1,some:.85,most:.7},weeks:42};
+let CALCI=false;
+function cqv(id){return +$(id).value}function cqr(n){const r=document.querySelector(`input[name="${n}"]:checked`);return r?r.value:null}
+function calcInit(){if(!CALCI){CALCI=true;
+  $('calcf').addEventListener('input',calcRun);$('calcf').addEventListener('change',calcRun);
+  $('calcf').addEventListener('click',e=>{const b=e.target.closest('[data-st]');if(!b)return;const i=$(b.dataset.st);i.value=Math.max(0,Math.min(20,(+i.value||0)+ +b.dataset.d));calcRun()})}
+ calcRun()}
+function calcRun(){document.querySelectorAll('#calcf .cqr output').forEach(o=>{const i=$(o.htmlFor+'')||o.previousElementSibling;o.textContent=i.value+(o.dataset.u||'')});
+ const F=CF_F,ppl=cqv('q_ppl'),ac=cqv('q_ac'),ach=cqv('q_ach'),mode=cqr('q_mode'),diet=cqr('q_diet'),rec=cqr('q_rec');
+ const kwh=ac*ach*365*F.ac+cqv('q_wh')*F.wh+cqv('q_fr')*F.fr+F.base,acKg=ac*ach*365*F.ac*F.grid/ppl;
+ const home=kwh*F.grid/ppl;
+ const mf={car1:F.car,car3:F.car/3,bus:F.bus,ev:F.ev,walk:0}[mode];
+ const comm=cqv('q_km')*2*cqv('q_days')*F.weeks*mf,other=cqv('q_other')*52*F.car/2,travel=comm+other;
+ const fl=[cqv('q_fl1'),cqv('q_fl2'),cqv('q_fl3')],flights=fl.reduce((s,n,i)=>s+n*F.fl[i],0);
+ const food=F.diet[diet]*365,waste=cqv('q_bags')*F.bag*52*F.waste*F.rec[rec]/ppl;
+ const parts=[['Home energy',home,'#ffb23c'],['Travel',travel,'#4fb3ff'],['Flights',flights,'#b18cff'],['Food',food,'#8bd450'],['Waste',waste,'#c9a27a']],tot=parts.reduce((s,p)=>s+p[1],0),tt=tot/1000;
+ const cmp=[['You',tt,'#ff5a3c'],['Brunei person*',10,'#ffd34a'],['World average†',4.73,'#4fb3ff'],['1.5 °C target, 2030‡',2.5,'#7cdb6a']],cmax=Math.max(...cmp.map(c=>c[1]));
+ // actions
+ const A=[];
+ if(ac*ach>0)A.push([Math.min(ach,2)*ac*365*F.ac*F.grid/ppl,'Use the air-conditioning 2 hours less a day',`Switch off when rooms are empty and set it to about 25 °C.`]);
+ if(mode==='car1')A.push([comm*2/3,'Share the ride to school or work','Carpooling with two others cuts your commute emissions by two-thirds.']);
+ if(mode==='car3'||mode==='car1')A.push([comm-cqv('q_km')*2*cqv('q_days')*F.weeks*F.bus,'Take the bus some days','Or walk and cycle for short trips.']);
+ if(diet==='hi'||diet==='med')A.push([(F.diet[diet]-F.diet.lo)*365,'Eat a little less meat','Try fish, eggs, beans or vegetables for some meals.']);
+ if(rec!=='most')A.push([cqv('q_bags')*F.bag*52*F.waste*(F.rec[rec]-F.rec.most)/ppl,'Recycle and compost more','Separate paper, plastic, cans and food waste.']);
+ if(fl[0]+fl[1]+fl[2]>0){const i=fl[2]?2:fl[1]?1:0;A.push([F.fl[i],'Take one fewer flight','Choose a holiday closer to home, or travel by land to Sabah and Sarawak.'])}
+ if(cqv('q_other')>0)A.push([other*.3,'Combine car trips','Plan errands together to drive about 30% less.']);
+ A.sort((a,b)=>b[0]-a[0]);const top=A.filter(a=>a[0]>5).slice(0,3);
+ const f1=v=>v>=1000?(v/1000).toFixed(1)+' t':Math.round(v)+' kg';
+ $('calcr').innerHTML=`<div class="k" style="font:700 12px Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7)">Your yearly footprint</div><div class="tot">${tt.toFixed(1)}<small>tonnes CO₂e</small></div><div class="tsub">About ${Math.round(tot/365)} kg a day · it would take about <b>${Math.round(tot/50)} trees</b> a year to soak it up</div>
+ <h5>Where it comes from</h5><div class="cbar">${parts.map(p=>`<i style="width:${(p[1]/tot*100).toFixed(1)}%;background:${p[2]}" title="${p[0]}"></i>`).join('')}</div><div class="cleg">${parts.map(p=>`<span><i style="background:${p[2]}"></i>${p[0]}<b>${f1(p[1])}</b></span>`).join('')}</div>
+ <h5>How you compare</h5><div class="ccmp">${cmp.map(c=>`<div><span>${c[0]}</span><span class="t"><i style="width:${(c[1]/cmax*100).toFixed(1)}%;background:${c[2]}"></i></span><b>${c[1].toFixed(1)} t</b></div>`).join('')}</div>
+ <h5>Your best next steps</h5><ul class="cact">${top.map(a=>`<li><b>${a[1]}</b>${a[2]} Saves about <em>${f1(a[0])} CO₂e a year</em>.</li>`).join('')||'<li><b>Great work!</b>Your footprint is already low. Share your ideas with friends and family.</li>'}</ul>
+ <div class="cnn"><button class="cnbtn" data-gotab="corner">Join a school activity</button><button class="cnbtn ghost" data-cpgo="story">Read Brunei's climate story</button></div>
+ <p style="font-size:11.5px;line-height:1.5;color:rgba(255,255,255,.62);margin:12px 0 0">* Brunei Climate Change Secretariat estimate for one person's yearly footprint. † Average CO₂ per person worldwide in 2024 (Global Carbon Budget). ‡ Per-person level for 2030 consistent with limiting warming to 1.5 °C (Hot or Cool Institute, 2021).</p>`}
+$('cf').addEventListener('click',e=>{let b;
+ if(b=e.target.closest('#cftabs [data-cp]')){cfPage(b.dataset.cp);return}
+ if(b=e.target.closest('[data-cpgo]')){cfPage(b.dataset.cpgo);return}
+ if(b=e.target.closest('[data-gotab]')){setCat(b.dataset.gotab);return}},true);
 /* ---------- extra full pages: Carbon Footprint and About ---------- */
 let PG=null;const PGS={footprint:'cf',about:'ab'};
 function openPg(c){if(PG===c)return;closePg();closeCorner();closeLearn();PG=c;closeBoard();if(XO)closeXV();document.body.classList.add('incorner');$(PGS[c]).hidden=false;syncTabs();if(c==='footprint')cfInit();$(PGS[c]).scrollTop=0}
