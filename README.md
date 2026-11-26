@@ -12,9 +12,11 @@ Animated, live-weather wallpapers that show what the climate is doing right now 
 - **Dashboard.** Glass cards in a Home Assistant style: a weather card with hourly and daily forecasts, gauges, sensor tiles and a temperature graph. The glass darkens a little over bright scenes so the text stays readable.
 - **Exploded view.** Press **E** or click the dashboard to pull a place's climate apart into six layers: sun and light, clouds and rain, wind, air quality, heat and humidity, and land. Each layer has its own charts and a short explanation.
 - **Live board.** Every place in the current tab side by side, with comparisons such as hottest, coldest, windiest and highest UV.
+- **Carbon Footprint.** The first tab shows climate impacts on Brunei on a district map, in the style of NOAA's Data Snapshots. Four layers: temperature and rainfall (yearly ERA5 averages for each district since 1960, compared with 1961–1990, with a time slider, play button and warming stripes), flood risk (relative vulnerability from published studies, with a timeline of reported floods since 2017) and coastal erosion (studied hotspots and sea defences). Below the map: where Brunei's emissions come from, a link to the official carbon footprint calculator and tips to cut your footprint.
 - **Climate Change Corner.** A third tab with a filterable activity gallery that opens into a full-size viewer, plus an events calendar of school events and global climate days such as Earth Hour, Earth Day and World Environment Day. Each event can be added to your calendar as an `.ics` file.
 - **Learning Hub.** A Climate Change A to Z with 78 key words, each explained simply for secondary students and, where relevant, linked to Brunei. Search the list, filter it by topic (Science, Weather, Impacts, Nature, Solutions, Policy) or jump to a letter. Each word opens a card with related words, and a quick quiz lets students test themselves. A word of the day changes daily, and the words a student has opened are ticked on that device.
   The **Global issues** page covers 11 big issues (record heat, greenhouse gases, rising seas, melting ice, coral reefs, forests, wildlife, displacement, air pollution, clean energy and the COP talks). Each has the latest figure, why it matters, what it means for Brunei and ASEAN, what can be done, related A to Z words and a link to its source. Figures were checked in November 2026.
+- **About.** The last tab credits the Humanities Department of Maktab Anthony Abell and gives the contact for enquiries.
 - **No build step.** Everything is in one HTML file and works offline. When the live feed can't be reached, the page falls back to typical values for the month and time of day.
 
 ## Places
@@ -47,6 +49,10 @@ The words are stored in the `LEARN` list in `index.html`. Each word has a term `
 
 Global issues are stored in the `ISSUES` list. Update the figures (`v`, `u`, `s`) and the source (`src`) when new reports come out.
 
+## Updating the Carbon Footprint map
+
+Yearly climate values are stored in the `CLIM` list in `index.html` (`T` = mean temperature in °C, `P` = rainfall in mm, one value per year from 1960). Add a new year's values to the end of each list. Reported floods are in `FLOODS` and coastal hotspots in `COAST`; each has a short description and a source link.
+
 ## Controls
 
 | Key or action | What it does |
@@ -73,4 +79,5 @@ Download the files and open `index.html` in a modern browser (Chrome, Edge, Fire
 - Weather and air-quality data: [Open-Meteo](https://open-meteo.com/), licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Its free API is for non-commercial use.
 - Fonts: [Sora](https://fonts.google.com/specimen/Sora), [Inter](https://fonts.google.com/specimen/Inter) and [Roboto](https://fonts.google.com/specimen/Roboto), from Google Fonts.
 - Beach and place information: Brunei Tourism, Wikipedia and Lonely Planet.
+- Climate history for the Carbon Footprint map: ERA5 reanalysis from the Copernicus Climate Change Service, via Open-Meteo. District boundaries: [Natural Earth](https://www.naturalearthdata.com/) (public domain).
 - All illustrations are original and drawn in code.
