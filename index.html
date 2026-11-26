@@ -535,7 +535,7 @@ body.incorner #wall{filter:saturate(1.1) brightness(.7)}
 .lbph button[aria-current=true]{border-color:#fff;opacity:1}.lbph button:hover{opacity:1}.lbph button:focus-visible{outline:3px solid #fff;outline-offset:1px}
 .lbph img{display:block;border-radius:6px}
 .cnacts{display:flex;gap:8px;flex-wrap:wrap}
-.cnc .cnart img{object-position:center 35%}
+.cnc .cnart img{object-position:center 35%}.cnsl{position:absolute;inset:0;overflow:hidden}.cnslt{display:flex;width:100%;height:100%;transition:transform .9s cubic-bezier(.4,0,.2,1)}.cnslt img{flex:0 0 100%;min-width:100%}.cnph b{font-weight:800}.lbpl{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:rgba(10,14,20,.6);color:#fff;display:inline-grid;place-items:center;cursor:pointer;flex:0 0 auto}.lbpl svg{width:14px;height:14px}.lbpl:focus-visible{outline:3px solid #fff;outline-offset:2px}.lbart img#lbimg{transition:opacity .35s}.lbart img#lbimg.fade{opacity:.15}@media(prefers-reduced-motion:reduce){.cnslt,.lbart img#lbimg{transition:none}}
 </style>
 </head>
 <body>
@@ -1367,7 +1367,7 @@ function frame(now){const dt=RM?0:Math.min(.05,(now-last)/1000);last=now;const t
 /* ---------- slider ---------- */
 function thumb(s){const c=document.createElement('canvas');c.width=360;c.height=226;const x=c.getContext('2d');try{s.draw(x,360,226,4,(d,f)=>{x.save();f();x.restore()})}catch(e){}return c.toDataURL('image/jpeg',.85)}
 const TH=S.map(thumb);
-function renderSlider(){$('slider').innerHTML=list().map(i=>{const s=S[i];return`<button class="wp" data-i="${i}" role="option" aria-selected="false" aria-label="${s.name}, ${s.city}"><img alt="" src="${TH[i]}"><span class="wt" id="wt${i}"></span><span class="wl"><b>${s.name}</b><em>${s.city}</em></span><i class="pg"></i></button>`}).join('');cards=[...document.querySelectorAll('.wp')];temps()}
+function renderSlider(){$('slider').innerHTML=list().map(i=>{const s=S[i];return`<button class="wp" data-i="${i}" role="option" aria-selected="false" aria-label="${s.cat==='brunei'?s.city+', '+s.co.split(', ').pop():s.name+', '+s.city}"><img alt="" src="${TH[i]}"><span class="wt" id="wt${i}"></span><span class="wl">${s.cat==='brunei'?`<b>${s.city}</b><em>${s.co.split(', ').pop()}</em>`:`<b>${s.name}</b><em>${s.city}</em>`}</span><i class="pg"></i></button>`}).join('');cards=[...document.querySelectorAll('.wp')];temps()}
 function temps(){cards.forEach(c=>{const i=+c.dataset.i;$('wt'+i).textContent=Math.round(tempOf(i))+'°'})}
 function layer(){const L=list(),k=L.indexOf(cur);cards.forEach(c=>{const i=+c.dataset.i,p=L.indexOf(i)-k,d=Math.abs(p);c.classList.toggle('on',i===cur);c.setAttribute('aria-selected',i===cur);c.style.zIndex=30-d;c.style.setProperty('--d',d);c.style.setProperty('--r',Math.sign(p)*Math.min(d,3)*1.2)});
  const c=cards[k];if(c){const sl=$('slider');sl.scrollTo({left:c.offsetLeft-sl.clientWidth/2+c.offsetWidth/2,behavior:RM?'auto':'smooth'})}}
@@ -1375,7 +1375,7 @@ $('slider').addEventListener('click',e=>{const b=e.target.closest('.wp');if(!b)r
 
 /* ---------- card ---------- */
 function info(){const s=S[cur],p=lp(s.tz),o=D(cur),T=o.temp,el=EL[cur]=elev(s.la,s.lo,new Date()),br=s.cat==='brunei',L=list(),si=sunInfo(cur,o),e=o.live?'':'~',day=el>0;
- $('kn').textContent=`${br?'Brunei'+(dlab()?' · '+dlab():''):s.cat==='asean'?'ASEAN':'World climates'} · ${L.indexOf(cur)+1} of ${L.length} · ${s.name}`;$('city').textContent=s.city;$('ctry').textContent=s.co;
+ $('kn').textContent=`${br?'Brunei'+(dlab()?' · '+dlab():''):s.cat==='asean'?'ASEAN':'World climates'} · ${L.indexOf(cur)+1} of ${L.length}${s.cat==='brunei'?'':' · '+s.name}`;$('city').textContent=s.city;$('ctry').textContent=s.co;
  $('kc').textContent=s.k;$('kt').textContent=s.kt;
  $('chips').innerHTML=chip(IC.clock,'#03a9f4',`<span id="clock">${p.txt}</span><span>local</span>`)+chip(IC.dot,o.live?'#4caf50':'#ff9800',o.live?'Live':'Typical estimate')+chip(IC.globe,'#9c27b0',s.k)+chip(IC.leaf,'#009688',s.ss[s.sm[p.mo]].split(':')[0]);
  const fl=o.feels!=null?o.feels:heatIdx(T,o.hum),cond=o.live?WX(o.code):`Typical ${MN[p.mo]} ${day?'day':'night'}`,hi=o.DY?o.DY[0].hi:s.m[p.mo]+s.amp,lo=o.DY?o.DY[0].lo:s.m[p.mo]-s.amp;
@@ -1664,7 +1664,7 @@ function cnArt(k){const n='g'+(AN++),G=(id,a,b)=>`<linearGradient id="${n+id}" x
   <rect x="216" y="110" width="44" height="146" rx="14" fill="#4fb3ff"/><rect x="224" y="94" width="28" height="22" rx="6" fill="#2f7fbf"/><rect x="216" y="160" width="44" height="30" fill="#fff" opacity=".5"/>
   <rect x="282" y="196" width="94" height="60" rx="12" fill="#ff8a3d"/><rect x="278" y="184" width="102" height="20" rx="8" fill="#ffb27a"/><path d="M300 222h58" stroke="#fff" stroke-opacity=".6" stroke-width="5" stroke-linecap="round"/>`}
  return`<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>${d}</defs>${b}</svg>`}
-function cnCover(a){return a.photos&&a.photos.length?`<img src="${cnEsc(a.photos[0])}" alt="${cnEsc(a.title)}" loading="lazy">`:cnArt(a.art)}
+function cnCover(a){const p=a.photos||[];if(p.length>1)return `<div class="cnsl"><div class="cnslt" data-n="${p.length}" data-k="0">${p.map((s,j)=>`<img src="${cnEsc(s)}" alt="${j?'':cnEsc(a.title)}" loading="${j<2?'eager':'lazy'}">`).join('')}</div></div>`;return p.length?`<img src="${cnEsc(p[0])}" alt="${cnEsc(a.title)}" loading="lazy">`:cnArt(a.art)}
 function cnActs(){return CORNER.activities.map((a,i)=>({...a,i,d:cnD(a.date)})).sort((a,b)=>b.d-a.d)}
 function renderCorner(){const T=cnToday(),EV=cnEvents(),up=EV.filter(e=>e.d>=T),next=up[0],acts=cnActs(),dd=next?Math.round((next.d-T)/864e5):0,n3=up.filter(e=>(e.d-T)/864e5<=92).length;
  $('cnk').innerHTML=(next?`<div class="cnx" style="--a:${next.type==='global'?'#3fd2c7':'#ff5a3c'}"><span>Next up</span><b>${cnEsc(next.title)}</b><em>${cnFmt(next.d,{weekday:'long',day:'numeric',month:'long'})}${next.time?' · '+next.time:''}</em><strong>${dd===0?'Today':dd===1?'Tomorrow':'in '+dd+' days'}</strong><button class="cnbtn" data-ics="${EV.indexOf(next)}">Add to calendar</button></div>`:'')
@@ -1672,7 +1672,7 @@ function renderCorner(){const T=cnToday(),EV=cnEvents(),up=EV.filter(e=>e.d>=T),
  const cats=['All',...Object.keys(CN_CAT).filter(c=>acts.some(a=>a.cat===c))];
  $('cnf').innerHTML=cats.map(c=>`<button class="cnchip" data-f="${c}" aria-pressed="${CNF===c}" style="--a:${CN_CAT[c]||'#fff'}">${c}<small>${c==='All'?acts.length:acts.filter(a=>a.cat===c).length}</small></button>`).join('');
  const sh=acts.filter(a=>CNF==='All'||a.cat===CNF);
- $('cngrid').innerHTML=sh.map((a,k)=>`<button class="cnc${k===0&&CNF==='All'?' big':''}" data-a="${a.i}" style="--a:${CN_CAT[a.cat]}"><div class="cnart">${cnCover(a)}${a.sample?'<span class="cnsm">Sample</span>':''}${a.photos&&a.photos.length>1?`<span class="cnph">${a.photos.length} photos</span>`:''}</div><div class="cncb"><div class="cnmeta"><span class="cntag">${a.cat}</span><span>${cnFmt(a.d)}</span></div><h4>${cnEsc(a.title)}</h4><p>${cnEsc(a.blurb)}</p><div class="cnfs">${a.stats.slice(0,2).map(([v,l])=>`<span><b>${cnEsc(v)}</b> ${cnEsc(l)}</span>`).join('')}</div></div></button>`).join('')||'<p class="cnempty">No activities in this category yet.</p>';
+ $('cngrid').innerHTML=sh.map((a,k)=>`<button class="cnc${k===0&&CNF==='All'?' big':''}" data-a="${a.i}" style="--a:${CN_CAT[a.cat]}"><div class="cnart">${cnCover(a)}${a.sample?'<span class="cnsm">Sample</span>':''}${a.photos&&a.photos.length>1?`<span class="cnph"><b class="cnpi">1</b> / ${a.photos.length} photos</span>`:''}</div><div class="cncb"><div class="cnmeta"><span class="cntag">${a.cat}</span><span>${cnFmt(a.d)}</span></div><h4>${cnEsc(a.title)}</h4><p>${cnEsc(a.blurb)}</p><div class="cnfs">${a.stats.slice(0,2).map(([v,l])=>`<span><b>${cnEsc(v)}</b> ${cnEsc(l)}</span>`).join('')}</div></div></button>`).join('')||'<p class="cnempty">No activities in this category yet.</p>';
  renderCal(EV);renderList(EV)}
 function renderCal(EV){const T=cnToday();if(!CNM)CNM=new Date(T.getFullYear(),T.getMonth(),1);const y=CNM.getFullYear(),m=CNM.getMonth(),first=(new Date(y,m,1).getDay()+6)%7,days=new Date(y,m+1,0).getDate(),by={};EV.forEach(e=>{if(e.d.getFullYear()===y&&e.d.getMonth()===m)(by[e.d.getDate()]=by[e.d.getDate()]||[]).push(e)});
  let c=`<div class="cnch"><button class="cnnav" data-m="-1" aria-label="Previous month">‹</button><b>${CNM.toLocaleDateString('en-GB',{month:'long',year:'numeric'})}</b><button class="cnnav" data-m="1" aria-label="Next month">›</button></div><div class="cng7">${['M','T','W','T','F','S','S'].map(x=>`<span class="cnwd">${x}</span>`).join('')}`;
@@ -1693,8 +1693,8 @@ function cnIcs(e){const p=n=>String(n).padStart(2,'0'),ds=d=>d.getFullYear()+p(d
  const txt=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//The Climate Change//Climate Change Corner//EN','BEGIN:VEVENT','UID:'+ds(e.d)+'-'+e.title.replace(/\W+/g,'-').toLowerCase()+'@the-climate-change','DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z',st,en,'SUMMARY:'+esc(e.title),'LOCATION:'+esc(e.place),'DESCRIPTION:'+esc(e.blurb),'END:VEVENT','END:VCALENDAR'].join('\r\n');
  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/calendar'}));a.download=e.title.replace(/[^\w]+/g,'-').replace(/^-|-$/g,'')+'.ics';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},800)}
 function openLB(i){const A=cnActs().filter(a=>CNF==='All'||a.cat===CNF),k=A.findIndex(a=>a.i===i);if(k<0)return;LBI=i;const a=A[k];
- const ph=a.photos||[],cp=a.captions||[];$('lbc').innerHTML=`<div class="lbart">${ph.length?`<img id="lbimg" src="${cnEsc(ph[0])}" alt="${cnEsc(cp[0]||a.title)}"><div class="lbcap"><span id="lbcp">${cnEsc(cp[0]||'')}</span><span id="lbct">1 / ${ph.length}</span></div>`:cnArt(a.art)}${a.sample?'<span class="cnsm">Sample</span>':''}</div><div class="lbb" style="--a:${CN_CAT[a.cat]}"><div class="cnmeta"><span class="cntag">${a.cat}</span><span>${cnFmt(a.d,{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</span></div><h3 id="lbt">${cnEsc(a.title)}</h3><p class="cnwhen">${cnEsc(a.place)}</p><p>${cnEsc(a.detail||a.blurb)}</p><div class="lbst">${a.stats.map(([v,l])=>`<div><b>${cnEsc(v)}</b><span>${cnEsc(l)}</span></div>`).join('')}</div>${a.learn&&a.learn.length?`<h5>What we learned</h5><ul>${a.learn.map(x=>`<li>${cnEsc(x)}</li>`).join('')}</ul>`:''}${ph.length>1?`<h5>Photos</h5><div class="lbph">${ph.map((p,j)=>`<button data-ph="${j}" aria-label="Photo ${j+1}: ${cnEsc(cp[j]||'')}" aria-current="${j===0}"><img src="${cnEsc(p)}" alt="" loading="lazy"></button>`).join('')}</div>`:''}<p class="lbn">${k+1} of ${A.length}</p></div>`;
- LBP=0;$('lb').hidden=false;$('lbx').focus()}
+ const ph=a.photos||[],cp=a.captions||[];$('lbc').innerHTML=`<div class="lbart">${ph.length?`<img id="lbimg" src="${cnEsc(ph[0])}" alt="${cnEsc(cp[0]||a.title)}"><div class="lbcap"><span id="lbcp">${cnEsc(cp[0]||'')}</span><span id="lbct">1 / ${ph.length}</span>${ph.length>1?`<button class="lbpl" id="lbpl" type="button"></button>`:''}</div>`:cnArt(a.art)}${a.sample?'<span class="cnsm">Sample</span>':''}</div><div class="lbb" style="--a:${CN_CAT[a.cat]}"><div class="cnmeta"><span class="cntag">${a.cat}</span><span>${cnFmt(a.d,{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</span></div><h3 id="lbt">${cnEsc(a.title)}</h3><p class="cnwhen">${cnEsc(a.place)}</p><p>${cnEsc(a.detail||a.blurb)}</p><div class="lbst">${a.stats.map(([v,l])=>`<div><b>${cnEsc(v)}</b><span>${cnEsc(l)}</span></div>`).join('')}</div>${a.learn&&a.learn.length?`<h5>What we learned</h5><ul>${a.learn.map(x=>`<li>${cnEsc(x)}</li>`).join('')}</ul>`:''}${ph.length>1?`<h5>Photos</h5><div class="lbph">${ph.map((p,j)=>`<button data-ph="${j}" aria-label="Photo ${j+1}: ${cnEsc(cp[j]||'')}" aria-current="${j===0}"><img src="${cnEsc(p)}" alt="" loading="lazy"></button>`).join('')}</div>`:''}<p class="lbn">${k+1} of ${A.length}</p></div>`;
+ LBP=0;LBLAST=Date.now();$('lb').hidden=false;lbPlaySet(!RM);$('lbx').focus()}
 function stepLB(d){const A=cnActs().filter(a=>CNF==='All'||a.cat===CNF),k=A.findIndex(a=>a.i===LBI);if(k<0)return;openLB(A[(k+d+A.length)%A.length].i)}
 function closeLB(){if($('lb').hidden)return;$('lb').hidden=true;const c=document.querySelector(`.cnc[data-a="${LBI}"]`);c&&c.focus();LBI=-1}
 function openCorner(){if(CN)return;CN=true;closeBoard();if(XO)closeXV();document.body.classList.add('incorner');$('cn').hidden=false;syncTabs();renderCorner();$('cn').scrollTop=0}
@@ -1712,7 +1712,21 @@ $('cn').addEventListener('click',e=>{const t=e.target;let b;
  if(b=t.closest('.cnseg button')){CNV=b.dataset.v;CNSEL=null;renderCal(CNEV);renderList(CNEV);return}
  if(b=t.closest('a[href^="#cn"]')){e.preventDefault();$(b.getAttribute('href').slice(1)).scrollIntoView({behavior:RM?'auto':'smooth'})}});
 $('lb').addEventListener('click',e=>{if(e.target===$('lb')){closeLB();return}const b=e.target.closest('[data-ph]');if(b){lbPhoto(+b.dataset.ph);return}if(e.target.id==='lbimg')lbPhoto(LBP+1)});
-function lbPhoto(j){const a=CORNER.activities[LBI];if(!a||!a.photos||!a.photos.length)return;const n=a.photos.length;j=(j+n)%n;const im=$('lbimg');im.src=a.photos[j];im.alt=(a.captions||[])[j]||a.title;$('lbcp').textContent=(a.captions||[])[j]||'';$('lbct').textContent=(j+1)+' / '+n;LBP=j;document.querySelectorAll('.lbph button').forEach((x,k)=>x.setAttribute('aria-current',k===j))}
+function lbPhoto(j){const a=CORNER.activities[LBI];if(!a||!a.photos||!a.photos.length)return;const n=a.photos.length;j=(j+n)%n;const im=$('lbimg');LBLAST=Date.now();if(!RM){im.classList.add('fade');setTimeout(()=>im.classList.remove('fade'),180)}im.src=a.photos[j];im.alt=(a.captions||[])[j]||a.title;$('lbcp').textContent=(a.captions||[])[j]||'';$('lbct').textContent=(j+1)+' / '+n;LBP=j;document.querySelectorAll('.lbph button').forEach((x,k)=>x.setAttribute('aria-current',k===j))}
+
+/* ---------- Corner: photo covers and viewer slide on their own ----------
+   Covers move to the next photo every few seconds (paused while hovered or focused, and off when the
+   viewer prefers reduced motion). The viewer plays as a slideshow with a pause button. */
+let LBLAST=0,LBPLAY=false;const CN_SLIDE=3500,LB_SLIDE=4000;
+function lbPlaySet(on){LBPLAY=on;const b=$('lbpl');if(!b)return;b.innerHTML=on?'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>':'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';b.setAttribute('aria-label',on?'Pause slideshow':'Play slideshow');LBLAST=Date.now()}
+setInterval(()=>{if(!CN||document.hidden)return;
+ if(!$('lb').hidden){if(LBPLAY&&$('lbimg')&&Date.now()-LBLAST>=LB_SLIDE){const a=CORNER.activities[LBI];if(a&&a.photos&&a.photos.length>1)lbPhoto(LBP+1)}return}
+ if(RM)return;
+ document.querySelectorAll('.cnc').forEach(c=>{const tr=c.querySelector('.cnslt');if(!tr||c.matches(':hover')||c.contains(document.activeElement))return;
+  const n=+tr.dataset.n,now=Date.now();if(!tr.dataset.t){tr.dataset.t=now;return}if(now-tr.dataset.t<CN_SLIDE-50)return;tr.dataset.t=now;
+  const k=((+tr.dataset.k||0)+1)%n;tr.dataset.k=k;const nx=tr.children[(k+1)%n];if(nx)nx.loading='eager';
+  tr.style.transform=`translateX(${-k*100}%)`;const pi=c.querySelector('.cnpi');if(pi)pi.textContent=k+1})},500);
+document.addEventListener('click',e=>{if(e.target.closest('#lbpl')){e.stopPropagation();lbPlaySet(!LBPLAY)}},true);
 let LBP=0;$('lbx').onclick=closeLB;$('lbp').onclick=()=>stepLB(-1);$('lbn').onclick=()=>stepLB(1);
 
 /* ---------- Learning Hub: Climate change A to Z ----------
