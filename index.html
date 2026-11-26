@@ -323,6 +323,70 @@ body.incorner #wall{filter:saturate(1.1) brightness(.7)}
 .lbph{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:14px}.lbph img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px}
 .lbn{font-size:12.5px;color:rgba(255,255,255,.6)!important;margin-top:14px}
 .lbctl{display:flex;justify-content:flex-end;gap:8px}
+/* ---------- Carbon Footprint: climate impacts on Brunei ---------- */
+.cfl{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 14px}
+.cfl button{min-height:42px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);color:#fff;font:700 14px Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.cfl button i{width:12px;height:12px;border-radius:50%;background:var(--a)}
+.cfl button[aria-selected=true]{background:#fff;color:#10201f;border-color:#fff}
+.cfl button:focus-visible,.cfd:focus-visible,.cfpt:focus-visible,.cftime button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.cfgrid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:14px;align-items:stretch}
+.cfmap,.cfside,.cftime,.cfchart,.cffp{border-radius:22px;border:1px solid rgba(255,255,255,.24);background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.03)),rgba(12,18,28,.42);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3)}
+.cfmap{margin:0;padding:12px;position:relative}
+.cfmap svg{display:block;width:100%;height:auto;border-radius:14px;background:linear-gradient(180deg,#0f3b5c,#0b2b44)}
+.cfd{stroke:#fff;stroke-width:1.6;cursor:pointer;transition:fill .35s}
+.cfd:hover{stroke-width:3}.cfd.sel{stroke:#ffd34a;stroke-width:3.5}
+.cfml{font:700 15px Inter,sans-serif;fill:#fff;paint-order:stroke;stroke:rgba(0,0,0,.65);stroke-width:4px;pointer-events:none}
+.cfmv{font:800 17px Sora,sans-serif;fill:#fff;paint-order:stroke;stroke:rgba(0,0,0,.7);stroke-width:4px;pointer-events:none}
+.cfsea{font:italic 600 15px Inter,sans-serif;fill:rgba(255,255,255,.55);letter-spacing:.2em}
+.cfpt{cursor:pointer}.cfpt circle{stroke:#fff;stroke-width:2.5}
+.cfpt.on circle.r{animation:cfp 1.6s ease-out infinite}
+@keyframes cfp{from{r:9;opacity:.9}to{r:28;opacity:0}}
+.cfmap figcaption{font-size:12.5px;color:rgba(255,255,255,.7);margin:8px 4px 0}
+.cflegend{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 4px 0;font-size:12.5px;color:rgba(255,255,255,.85)}
+.cflegend .bar{flex:1 1 160px;height:10px;border-radius:6px}
+.cflegend .sw{display:inline-flex;align-items:center;gap:6px;margin-right:8px}.cflegend .sw i{width:14px;height:14px;border-radius:4px;background:var(--a);border:1px solid rgba(255,255,255,.5)}
+.cfside{padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.cfside h4{font:800 22px/1.2 Sora,sans-serif;margin:0}
+.cfside .big{font:800 clamp(34px,4vw,46px)/1 Sora,sans-serif}
+.cfside .sub{font-size:13px;color:rgba(255,255,255,.75)}
+.cfside p{margin:0;font-size:14.5px;line-height:1.55;color:rgba(255,255,255,.9)}
+.cfside h5{font:700 12px Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.65);margin:6px 0 0}
+.cfside ul{margin:0;padding-left:18px;font-size:14px;line-height:1.5}
+.cfside .src{font-size:12.5px;color:rgba(255,255,255,.65)}.cfside a{color:#fff}
+.cftime{display:flex;align-items:center;gap:14px;margin-top:14px;padding:12px 16px}
+.cftime[hidden]{display:none}
+.cftime input{flex:1;accent-color:#ff5a3c;height:28px}
+.cftime output{font:800 28px Sora,sans-serif;min-width:3.2em;text-align:right}
+.cftime .lbl{font-size:12.5px;color:rgba(255,255,255,.7)}
+.cfchart{margin-top:14px;padding:14px 16px}.cfchart[hidden]{display:none}
+.cfchart svg{display:block;width:100%;height:auto}
+.cfchart .h{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,.8);margin-bottom:8px}
+.cfchart .h b{color:#fff}
+.cffp{padding:20px}
+.cffpg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.cffpg>div{border-radius:16px;padding:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18)}
+.cffpg b{display:block;font:800 34px/1.05 Sora,sans-serif;color:#ffd34a}
+.cffpg span{display:block;font-size:13.5px;line-height:1.45;margin-top:6px;color:rgba(255,255,255,.88)}
+.cffpg small{display:block;font-size:12px;color:rgba(255,255,255,.6);margin-top:6px}
+.cffp p{font-size:15px;line-height:1.6;color:rgba(255,255,255,.9);margin:14px 0 0}
+.cftips{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:14px;padding:0;list-style:none}
+.cftips li{border-radius:14px;padding:12px 14px;background:rgba(124,219,106,.12);border:1px solid rgba(124,219,106,.35);font-size:14px;line-height:1.45}
+.cftips li b{display:block;font-size:14.5px;margin-bottom:2px}
+@media(max-width:600px){.cfml{font-size:30px;stroke-width:6px}.cfmv{font-size:32px;stroke-width:6px}.cfml.cfpl{font-size:26px}.cfsea{font-size:24px}}
+.cfml.cfpl{font-size:14px}
+@media(max-width:900px){.cfgrid{grid-template-columns:minmax(0,1fr)}.cffpg{grid-template-columns:minmax(0,1fr)}}
+/* ---------- About ---------- */
+.abw{max-width:980px}
+.abcard{margin-top:26px;border-radius:24px;padding:clamp(20px,3vw,32px);border:1px solid rgba(255,255,255,.26);background:radial-gradient(120% 120% at 0% 0%,rgba(255,90,60,.25),transparent 55%),linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.04)),rgba(12,18,28,.42);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3)}
+.abcard p{font-size:clamp(16px,1.6vw,19px);line-height:1.7;margin:0;color:#fff}
+.abcard a{color:#ffd9a8;text-underline-offset:3px;word-break:break-word}
+.abteam{display:flex;align-items:center;gap:16px;margin-top:22px;flex-wrap:wrap}
+.abav{width:64px;height:64px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(135deg,#ff5a3c,#ffb23c);font:800 24px Sora,sans-serif;color:#fff;flex:0 0 auto}
+.abteam b{display:block;font:700 17px Sora,sans-serif}.abteam span{font-size:14px;color:rgba(255,255,255,.78)}
+.abgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:14px}
+.abgrid>div{border-radius:18px;padding:16px;border:1px solid rgba(255,255,255,.22);background:rgba(12,18,28,.38);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.abgrid b{display:block;font:700 16px Sora,sans-serif;margin-bottom:4px}.abgrid span{font-size:13.5px;line-height:1.5;color:rgba(255,255,255,.85)}
+.abcred{font-size:13.5px;line-height:1.6;color:rgba(255,255,255,.8);margin-top:12px}.abcred a{color:#fff}
 /* ---------- Learning Hub ---------- */
 .lh h2 em{white-space:nowrap}
 .lhtabs{display:inline-flex;flex-wrap:wrap;gap:4px;margin-top:20px;padding:4px;border-radius:999px;background:rgba(10,14,20,.38);border:1px solid rgba(255,255,255,.3);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
@@ -416,7 +480,7 @@ body.incorner #wall{filter:saturate(1.1) brightness(.7)}
 <div class="ui">
  <header class="top">
   <div class="logo"><svg width="28" height="28" viewBox="0 0 30 30" aria-hidden="true"><path d="M15 3 27 10 15 17 3 10z" fill="#ff5a3c"/><path d="M3 14l12 7 12-7M3 19l12 7 12-7" fill="none" stroke="#fff" stroke-width="3"/></svg><span>The Climate Change</span></div>
-  <div class="tabs" role="tablist" aria-label="Category"><button class="tab" role="tab" data-c="world" aria-selected="false">World<span class="tcw"> climates</span></button><button class="tab" role="tab" data-c="asean" aria-selected="false">ASEAN</button><button class="tab" role="tab" data-c="brunei" aria-selected="true">Brunei</button><button class="tab" role="tab" data-c="corner" aria-selected="false"><span class="tcc">Climate Change </span>Corner</button><button class="tab" role="tab" data-c="learn" aria-selected="false">Learn<span class="tcl">ing Hub</span></button></div>
+  <div class="tabs" role="tablist" aria-label="Category"><button class="tab" role="tab" data-c="footprint" aria-selected="false">Carbon Footprint</button><button class="tab" role="tab" data-c="world" aria-selected="false">World<span class="tcw"> climates</span></button><button class="tab" role="tab" data-c="asean" aria-selected="false">ASEAN</button><button class="tab" role="tab" data-c="brunei" aria-selected="true">Brunei</button><button class="tab" role="tab" data-c="corner" aria-selected="false"><span class="tcc">Climate Change </span>Corner</button><button class="tab" role="tab" data-c="learn" aria-selected="false">Learn<span class="tcl">ing Hub</span></button><button class="tab" role="tab" data-c="about" aria-selected="false">About</button></div>
   <div class="stat off" id="stat"><i></i><span id="statt">Connecting to live weather…</span></div>
   <div class="ctl">
    <button class="ib" id="prev" aria-label="Previous wallpaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
@@ -475,6 +539,76 @@ body.incorner #wall{filter:saturate(1.1) brightness(.7)}
     <div class="cnevw"><div class="cncal" id="cncal"></div><div class="cnlist" id="cnlist"></div></div>
    </section>
    <p class="cnnote">Entries marked <b>Sample</b> are placeholders. Replace them with your own activities, photos and events by editing the <code>CORNER</code> list in <code>index.html</code>. Global climate days, including Earth Hour, are worked out automatically every year.</p>
+  </div>
+ </section>
+
+ <section class="cn cf" id="cf" hidden aria-labelledby="cft">
+  <div class="cnw">
+   <div class="cnh">
+    <div class="cnhl">
+     <div class="cne">CARBON FOOTPRINT</div>
+     <h2 id="cft">Climate impacts on <em>Brunei.</em></h2>
+     <p class="cnlead">What a warming climate means for Brunei, district by district, and how our carbon footprint is part of the story. Choose a map layer, tap a district, and drag the time slider to see change over time.</p>
+    </div>
+    <div class="cnk"><div class="cnst">
+     <div><b>+0.25 °C</b><span>warming per decade in Brunei (BDMD)</span></div>
+     <div><b>+100 mm</b><span>more rain per decade (BDMD)</span></div>
+     <div><b>38 °C</b><span>hottest day on record, 28 March 1983</span></div>
+    </div></div>
+   </div>
+   <section class="cns" aria-labelledby="cfmt">
+    <div class="cnsh"><div><div class="cne">DATA SNAPSHOTS</div><h3 id="cfmt">Brunei climate map</h3></div></div>
+    <div class="cfl" id="cfl" role="tablist" aria-label="Map layers"></div>
+    <div class="cfgrid">
+     <figure class="cfmap"><svg id="cfsvg" viewBox="0 0 800 599" role="group" aria-label="Map of Brunei's four districts"><defs><clipPath id="cfclip"><rect width="800" height="599" rx="14"/></clipPath></defs><g clip-path="url(#cfclip)"><path d="M834.1 89.6 L784.8 84.3 L815.9 50.3 L843.6 40.3 L853.3 32.8 L853.3 88.4 L834.1 89.6ZM839.3 -47.5 L825 -53.5 L853.3 -53.5 L853.3 -47.1 L839.3 -47.5ZM752.4 422.7 L751.1 411.7 L743.4 400.2 L712.3 366.2 L705.3 345.1 L702.3 322.6 L707.7 271.1 L705.4 258.4 L670.6 157.5 L657.2 138.4 L638.3 125.4 L638 113.1 L655.1 112.3 L661 108.3 L666.1 90.5 L672.3 85.7 L679.7 86.5 L687.3 97.7 L712.2 101 L722.1 114.4 L742.6 117.8 L757.5 111.8 L784.8 84.3 L834.1 89.6 L853.3 88.4 L853.3 636.4 L847.4 641.5 L847.1 652.5 L-53.3 652.5 L-53.3 519.7 L-1.7 452.5 L9.5 426.7 L5.7 405.7 L17 387.9 L22.5 365.2 L22.3 339.9 L10.4 289.6 L13.8 280.9 L26 277.5 L60.9 294.1 L90.1 298.6 L138.2 327.2 L142.3 338.2 L157.6 341.5 L161.1 352.8 L169.9 364.9 L174 394.8 L181.3 405.8 L184.9 429.6 L174 444.4 L177.4 457.3 L218.9 463.2 L250.6 459.9 L257.3 466.9 L268.4 500.8 L281.3 521.5 L330.3 564.6 L339.5 587.5 L361.5 590.1 L386.6 575.4 L435.7 528.5 L446.5 488.2 L462.5 460.1 L460.7 450.8 L444 457.6 L443.7 446.6 L468.8 416.9 L477.7 387.7 L478.9 372.4 L456.6 367.3 L447 352.3 L439.4 258.4 L422.1 217.7 L422.4 208.9 L456.2 190.1 L483.1 167.6 L495 164.3 L524 166.3 L532.5 161 L538.1 135.7 L568.4 108.9 L575.9 160.1 L572.1 202.5 L574.3 246 L578.9 266.7 L602.6 329.5 L609 382.2 L613.2 389.8 L650.6 405.8 L677.7 406.6 L690.5 415.2 L706.3 417.2 L733 430.7 L744.7 431.2 L752.4 422.7Z" fill="#3b4a3f" stroke="rgba(255,255,255,.25)" stroke-width="1"/><text class="cfsea" x="150" y="80">SOUTH CHINA SEA</text><text class="cfsea" x="640" y="545" style="letter-spacing:.12em">SARAWAK</text><g id="cfdist"><path class="cfd" data-d="Temburong" d="M638 113.1 L638.3 125.4 L643.2 130.3 L650.3 133.7 L657.2 138.4 L670.6 157.5 L705.4 258.4 L707.7 271.1 L706.9 280.4 L702.6 301.5 L702.3 322.6 L705.3 345.1 L712.3 366.2 L724.6 382.6 L743.4 400.2 L751.1 411.7 L752.4 422.7 L744.7 431.2 L733 430.7 L720.6 425.3 L711 418.9 L706.3 417.2 L696.1 417.6 L690.5 415.2 L682.2 408.2 L677.7 406.6 L661.8 408.2 L650.6 405.8 L620.3 394.5 L613.2 389.8 L609 382.2 L602.6 329.5 L596.3 308.4 L578.9 266.7 L574.3 246 L572.1 202.5 L575.9 160.1 L585.7 170.2 L595.4 163.9 L606 152.1 L617.9 145.7 L629.5 143.3 L629.8 137.1 L625.2 128.7 L622.1 119.8 L623.3 115.7 L626.8 113.6 L631.8 112.9 L637.8 113.1 L638 113.1Z" tabindex="0" role="button" aria-label="Temburong district"/><path class="cfd" data-d="Brunei-Muara" d="M550.2 123.5 L538.1 135.7 L536.4 143.9 L535.9 152.9 L532.5 161 L524 166.3 L514.6 166.5 L504.8 164.8 L495 164.3 L483.1 167.6 L473.4 173.6 L456.2 190.1 L447.2 195.8 L427.6 204 L423 208.3 L423 208.1 L419.3 199 L423.3 181.8 L425.1 170.1 L429.7 159.3 L431.8 145.6 L432.9 130.9 L432.1 118.3 L521.8 63.9 L590.8 35.2 L604.2 33.6 L614.3 37.5 L615 44.5 L607.3 50 L590.6 57.4 L586.2 64.6 L577.3 85.9 L575.8 92.3 L572.2 99.6 L555.6 115 L550.2 123.5Z" tabindex="0" role="button" aria-label="Brunei-Muara district"/><path class="cfd" data-d="Tutong" d="M423 208.3 L422.4 208.9 L422.1 217.7 L426 227.6 L436.3 247.4 L439.4 258.4 L441.2 270.3 L443.8 332.8 L447 352.3 L456.6 367.3 L467 371.1 L474.9 369.8 L478.9 372.4 L477.7 387.7 L472.8 407.9 L468.8 416.9 L463.1 426 L450.2 438.4 L450.1 438.3 L448.8 437.7 L431 427.8 L421.1 413.9 L416.9 397.6 L408.5 382 L398.3 369.2 L385.3 356.7 L373.8 342.2 L361.6 330 L345 319.6 L341.8 306.3 L344.3 290 L337.3 279.2 L325 278.4 L315.2 277.1 L308.3 268.1 L300.2 259.8 L294.9 247.5 L290.4 234.7 L309 227.9 L320.2 216.9 L328.4 201.4 L347.6 181.9 L412.1 130.5 L432.1 118.3 L432.9 130.9 L431.8 145.6 L429.7 159.3 L425.1 170.1 L423.3 181.8 L419.3 199 L423 208.1 L423 208.3Z" tabindex="0" role="button" aria-label="Tutong district"/><path class="cfd" data-d="Belait" d="M218.9 463.2 L195.6 458.6 L177.4 457.3 L174.9 452.4 L174 444.4 L175.7 441.3 L183.2 434.8 L184.9 429.6 L181.3 405.8 L174 394.8 L174 379.9 L169.9 364.9 L166.7 359 L161.1 352.8 L159.3 349.3 L158.8 345.1 L157.6 341.5 L153.8 340 L145.6 339.8 L142.3 338.2 L138.2 327.2 L131.9 323.1 L118.8 318.1 L101.4 304.5 L90.1 298.6 L60.9 294.1 L26 277.5 L160.9 282 L200.9 274.4 L237.7 253.6 L290.4 234.7 L294.9 247.5 L300.2 259.8 L308.3 268.1 L315.2 277.1 L325 278.4 L337.3 279.2 L344.3 290 L341.8 306.3 L345 319.6 L361.6 330 L373.8 342.2 L385.3 356.7 L398.3 369.2 L408.5 382 L416.9 397.6 L421.1 413.9 L431 427.8 L448.8 437.7 L450.1 438.3 L450.2 438.4 L446.9 441.7 L443.7 446.6 L444 457.6 L460.7 450.8 L462.5 460.1 L458.7 470 L446.5 488.2 L442.7 498.6 L439.7 520.7 L435.7 528.5 L386.6 575.4 L361.5 590.1 L339.5 587.5 L336.9 583.3 L332.9 570 L330.3 564.6 L326.1 560.5 L314.8 552.5 L281.3 521.5 L273.7 511.2 L268.4 500.8 L257.3 466.9 L250.6 459.9 L240.8 459.3 L218.9 463.2Z" tabindex="0" role="button" aria-label="Belait district"/></g><g id="cflab"><text class="cfml" x="250" y="395" text-anchor="middle">Belait</text><text class="cfmv" id="cfv-Belait" x="250" y="417" text-anchor="middle"></text><text class="cfml" x="400" y="300" text-anchor="middle">Tutong</text><text class="cfmv" id="cfv-Tutong" x="400" y="322" text-anchor="middle"></text><text class="cfml" x="500" y="170" text-anchor="middle">Brunei-Muara</text><text class="cfmv" id="cfv-Brunei-Muara" x="500" y="192" text-anchor="middle"></text><text class="cfml" x="655" y="330" text-anchor="middle">Temburong</text><text class="cfmv" id="cfv-Temburong" x="655" y="352" text-anchor="middle"></text></g><g id="cfpts"></g></g></svg><div class="cflegend" id="cfleg"></div><figcaption id="cfcap"></figcaption></figure>
+     <aside class="cfside" id="cfside" aria-live="polite"></aside>
+    </div>
+    <div class="cftime" id="cftime"><button class="ib" id="cfplay" aria-label="Play through the years"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button><span class="lbl" id="cfy0"></span><input type="range" id="cfyr" aria-label="Year"><span class="lbl" id="cfy1"></span><output id="cfyo" for="cfyr"></output></div>
+    <div class="cfchart" id="cfchart"></div>
+   </section>
+   <section class="cns" aria-labelledby="cfft">
+    <div class="cnsh"><div><div class="cne">OUR CARBON FOOTPRINT</div><h3 id="cfft">Where Brunei's emissions come from</h3></div></div>
+    <div class="cffp">
+     <div class="cffpg">
+      <div><b>32.3 t</b><span>of greenhouse gases (CO₂e) per person were emitted inside Brunei in 2024, counting industry, power and transport.</span><small>Our World in Data</small></div>
+      <div><b>80%</b><span>of Brunei's carbon emissions come from the energy sector, mainly oil and gas and power generation.</span><small>Brunei Climate Change Secretariat</small></div>
+      <div><b>~200 trees</b><span>are needed to offset the yearly footprint of one person in Brunei, about 10 tonnes of carbon dioxide.</span><small>Brunei Climate Change Secretariat</small></div>
+     </div>
+     <p>The more greenhouse gases the world emits, the faster the changes on the map above will happen. Brunei's own emissions are a tiny share of the global total, but per person they are among the highest in ASEAN, so every household's choices count. Work out your own footprint with the official calculator, then try the tips below.</p>
+     <div class="cnn" style="margin-top:14px"><a class="cnbtn" href="https://climatechange.gov.bn/SitePages/Pages/carbon-calculator.aspx" target="_blank" rel="noopener">Calculate your carbon footprint</a><a class="cnbtn ghost" href="https://climatechange.gov.bn/SitePages/Pages/bnccp-goals.aspx" target="_blank" rel="noopener">Brunei's 10 climate strategies</a></div>
+     <ul class="cftips">
+      <li><b>Switch off</b>Turn off lights, fans and air-conditioning when you leave a room, and set the air-conditioner a little warmer.</li>
+      <li><b>Move smarter</b>Walk, cycle or share rides for short trips; Brunei aims for 60% of new car sales to be electric by 2035.</li>
+      <li><b>Eat local</b>Locally grown fruit and vegetables travel less, so they usually have a lower footprint.</li>
+      <li><b>Buy less, waste less</b>Reuse, repair and recycle so less ends up in landfill, where rotting waste releases methane.</li>
+      <li><b>Plant trees</b>Join planting days supporting Brunei's goal of 500,000 new trees by 2035.</li>
+     </ul>
+    </div>
+   </section>
+   <p class="cnnote">Temperature and rainfall layers use yearly averages from the ERA5 climate reanalysis (Copernicus Climate Change Service, via Open-Meteo) for one 0.25° grid square in each district (for Temburong, the forested uplands), compared with the 1961–1990 average. They are estimates on a roughly 25 km grid, so they may differ from Brunei Darussalam Meteorological Department (BDMD) station records. Flood and coastal layers summarise published studies and news reports and are not official hazard maps. District boundaries: Natural Earth.</p>
+  </div>
+ </section>
+ <section class="cn ab" id="ab" hidden aria-labelledby="abt">
+  <div class="cnw abw">
+   <div class="cne">ABOUT</div>
+   <h2 id="abt">About <em>The Climate Change.</em></h2>
+   <div class="abcard">
+    <p>This website was developed by a dedicated team from the Humanities Department of Maktab Anthony Abell, led by the Head of Department, Cikgu Hajah Siti Zuriana Md Dan, founder of Insight Exchange (<a href="https://insightexchange.netlify.app" target="_blank" rel="noopener">https://insightexchange.netlify.app</a>). For further information or enquiries, please contact <a href="mailto:sitizuriana.dan@teacher.maktabanthonyabell.edu.moe.bn">sitizuriana.dan@teacher.maktabanthonyabell.edu.moe.bn</a>.</p>
+    <div class="abteam"><div class="abav" aria-hidden="true">HD</div><div><b>Humanities Department</b><span>Maktab Anthony Abell, Brunei Darussalam</span></div></div>
+    <div class="cnn" style="margin-top:20px"><a class="cnbtn" href="mailto:sitizuriana.dan@teacher.maktabanthonyabell.edu.moe.bn">Email an enquiry</a><a class="cnbtn ghost" href="https://insightexchange.netlify.app" target="_blank" rel="noopener">Visit Insight Exchange</a></div>
+   </div>
+   <section class="cns" aria-labelledby="abwt">
+    <div class="cnsh"><div><div class="cne">INSIDE THIS WEBSITE</div><h3 id="abwt">What you can explore</h3></div></div>
+    <div class="abgrid">
+     <div><b>Carbon Footprint</b><span>Climate impacts on Brunei by district, with a time slider, and where our emissions come from.</span></div>
+     <div><b>World climates</b><span>Animated live-weather wallpapers of very different climates around the world.</span></div>
+     <div><b>ASEAN</b><span>One live wallpaper for each of ASEAN's 11 member states.</span></div>
+     <div><b>Brunei</b><span>Live weather for all four districts and Brunei's famous beaches.</span></div>
+     <div><b>Climate Change Corner</b><span>Our students' climate activities and events.</span></div>
+     <div><b>Learning Hub</b><span>A Climate Change A to Z, a quick quiz and the biggest global issues.</span></div>
+    </div>
+    <p class="abcred">Live weather and air quality: <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a>. Climate history: ERA5 (Copernicus Climate Change Service). Map boundaries: <a href="https://www.naturalearthdata.com" target="_blank" rel="noopener">Natural Earth</a>. Brunei climate facts: <a href="https://climatechange.gov.bn/" target="_blank" rel="noopener">Brunei Climate Change Secretariat</a> and the Brunei Darussalam Meteorological Department.</p>
+   </section>
   </div>
  </section>
 
@@ -1183,7 +1317,7 @@ $('rainyr').innerHTML=s.rain?`<b>${s.rain.toLocaleString()} mm</b> rain a year`:
 function mini(){const s=S[cur],u=cu(cur),p=lp(s.tz);$('mt').textContent=tempOf(cur).toFixed(1)+'°C';$('mc').textContent=`${s.city}`;$('ms').textContent=`${u?WX(u.weather_code):'Typical estimate'} · ${p.txt} local · ${s.co}`}
 function go(i){if(i===cur)return;tr={from:cur,t0:performance.now()};cur=i;apT0=performance.now();info();layer()}
 function step(d){const L=list(),k=L.indexOf(cur);go(L[(k+d+L.length)%L.length])}
-function setCat(c){if(c==='corner'){closeLearn();openCorner();return}if(c==='learn'){openLearn();return}const was=CN||LH;closeCorner();closeLearn();if(c===cat){if(was)syncTabs();return}cat=c;syncTabs();renderDists();renderSlider();const L=list();cur!==L[0]&&go(L[0]);layer();info()}
+function setCat(c){if(PGS[c]){openPg(c);return}const wasP=!!PG;closePg();if(c==='corner'){closeLearn();openCorner();return}if(c==='learn'){openLearn();return}const was=CN||LH||wasP;closeCorner();closeLearn();if(c===cat){if(was)syncTabs();return}cat=c;syncTabs();renderDists();renderSlider();const L=list();cur!==L[0]&&go(L[0]);layer();info()}
 
 /* ---------- live board ---------- */
 function board(){if($('board').hidden)return;const br=cat==='brunei',L=list(),ds=L.map(i=>[i,D(i)]),feed=LIVE?'Live readings from Open-Meteo':'Live feed unavailable here, showing typical estimates';
@@ -1481,7 +1615,7 @@ function stepLB(d){const A=cnActs().filter(a=>CNF==='All'||a.cat===CNF),k=A.find
 function closeLB(){if($('lb').hidden)return;$('lb').hidden=true;const c=document.querySelector(`.cnc[data-a="${LBI}"]`);c&&c.focus();LBI=-1}
 function openCorner(){if(CN)return;CN=true;closeBoard();if(XO)closeXV();document.body.classList.add('incorner');$('cn').hidden=false;syncTabs();renderCorner();$('cn').scrollTop=0}
 function closeCorner(){if(!CN)return;CN=false;closeLB();document.body.classList.remove('incorner');$('cn').hidden=true}
-function syncTabs(){document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.c===(LH?'learn':CN?'corner':cat)))}
+function syncTabs(){document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.c===(PG||(LH?'learn':CN?'corner':cat))))}
 function cnKeyH(e){if(!$('lb').hidden){const a=CORNER.activities[LBI],hp=a&&a.photos&&a.photos.length>1&&!e.shiftKey;if(e.key==='Escape')closeLB();else if(e.key==='ArrowRight')hp?lbPhoto(LBP+1):stepLB(1);else if(e.key==='ArrowLeft')hp?lbPhoto(LBP-1):stepLB(-1)}}
 $('cn').addEventListener('click',e=>{const t=e.target;let b;
  if(b=t.closest('.cnchip')){CNF=b.dataset.f;renderCorner();return}
@@ -1572,6 +1706,92 @@ $('lh').addEventListener('click',e=>{let b;
  if(b=e.target.closest('[data-gf]')){GIF=b.dataset.gf;renderIssues();return}
  if(b=e.target.closest('[data-gi]')){openIssue(+b.dataset.gi);return}},true);
 
+/* ---------- Carbon Footprint page: climate impacts on Brunei ----------
+   CLIM: yearly ERA5 averages (Copernicus, via Open-Meteo) for one point per district, 1960 onwards.
+   T = mean temperature °C, P = rainfall mm. FLOODS and COAST summarise published reports. */
+const CLIM={"Brunei-Muara":{"T":[25.82,25.83,25.73,25.71,25.9,25.53,25.37,25.56,25.67,25.92,25.88,25.57,25.89,26.38,25.6,25.82,25.8,26.07,26.4,26.56,26.37,26.39,26.36,26.93,25.99,26.15,26.29,26.94,26.53,26.29,26.73,26.56,26.72,26.51,26.75,26.95,26.55,26.95,27.69,26.65,26.77,26.92,27.67,27.62,27.06,27.62,27.03,26.8,26.59,27.2,27.28,26.93,27.02,27.09,26.91,27.31,27.87,27.24,27.43,27.8,27.61,27.16,27.01,27.56,27.98,27.38],"P":[2520,2245,3007,2911,2386,2245,3583,2656,2557,3112,3230,2742,2663,3072,3023,2972,2904,2770,2450,2501,2688,2740,1917,2291,2949,2534,2319,1995,3043,2212,1906,2464,1924,2040,1802,2144,2655,1820,2133,2442,2262,2077,1237,1657,1656,1637,1894,3016,3256,2128,2513,2727,2583,2307,2527,2145,2091,2881,2386,2109,2277,2518,2993,2680,2547,2884]},"Tutong":{"T":[26.08,26.05,26.03,25.97,26.08,25.86,25.83,25.88,25.89,26.18,26.1,25.8,26.15,26.41,25.87,26.06,25.97,26.3,26.48,26.58,26.53,26.49,26.48,26.72,26.17,26.35,26.36,26.75,26.67,26.45,26.77,26.67,26.58,26.53,26.74,26.79,26.58,26.81,27.24,26.69,26.82,26.87,27.03,26.89,26.76,26.9,26.82,26.76,26.62,27.1,27.09,26.88,26.98,27.05,26.83,27.12,27.52,27.21,27.25,27.47,27.34,27.15,27.04,27.52,27.82,27.39],"P":[2678,2456,3322,3001,2706,2299,3569,2829,2633,3073,3370,2818,2560,3264,3118,3003,2964,2860,2760,2581,2644,2746,1980,2488,2870,2425,2499,2135,3037,2297,2082,2501,2162,2340,1998,2648,2990,2157,2625,2742,2369,2364,1782,2277,1978,2204,2189,3296,3431,2479,3204,2861,2600,2503,2828,2563,2483,3006,2640,2320,2749,3039,3520,2990,3162,3213]},"Belait":{"T":[26.02,25.99,25.98,25.92,25.99,25.82,25.8,25.86,25.82,26.09,26.01,25.71,26.07,26.3,25.81,25.98,25.88,26.23,26.4,26.47,26.45,26.42,26.42,26.58,26.09,26.28,26.28,26.6,26.53,26.34,26.68,26.58,26.47,26.46,26.62,26.64,26.45,26.7,27.04,26.54,26.67,26.71,26.88,26.7,26.64,26.72,26.62,26.57,26.43,26.91,26.86,26.66,26.78,26.87,26.65,26.9,27.28,26.99,27.02,27.22,27.11,26.97,26.84,27.34,27.61,27.2],"P":[2594,2502,3235,3181,2927,2272,3383,2788,2781,3111,3392,3026,2400,3214,3140,2924,2827,2984,2728,2518,2672,2828,1882,2585,2757,2366,2606,2096,3041,2348,2054,2447,2062,2255,2026,2766,2912,1930,2554,2902,2474,2572,1706,2105,1941,2063,2075,3111,3169,2491,3281,2925,2744,2550,2784,2491,2278,2920,2602,2251,2672,3080,3460,2650,2995,3329]},"Temburong":{"T":[23.4,23.35,23.39,23.33,23.46,23.16,23.01,23.2,23.24,23.52,23.51,23.19,23.56,23.85,23.24,23.42,23.42,23.69,23.94,24.04,23.98,23.94,23.89,24.25,23.64,23.74,23.89,24.22,24.17,23.88,24.26,24.09,24,23.92,24.2,24.21,24.12,24.24,24.85,24.18,24.32,24.39,24.42,24.37,24.19,24.38,24.25,24.43,24.26,24.65,24.7,24.51,24.6,24.65,24.47,24.69,25.18,24.87,25,25.1,25.01,24.71,24.62,25.16,25.55,25.01],"P":[4393,4061,5045,4845,4186,4141,5879,4126,4465,5280,5096,4337,4011,5095,5079,4724,4159,4669,4026,4605,4347,4548,3777,4299,5085,3900,4080,4003,5044,3233,3448,3959,3602,3810,3765,4117,4799,3724,4096,4001,4089,4320,3063,3441,3224,3055,4053,4737,5017,3636,5304,4482,4309,4356,4006,4234,3538,4553,4106,3689,4614,4541,5222,4187,4817,4513]}};
+const CF_Y0=1960,CF_DIST=['Belait','Tutong','Brunei-Muara','Temburong'];
+const CF_BASE={};CF_DIST.forEach(n=>{const c=CLIM[n];const m=a=>a.slice(1,31).reduce((s,v)=>s+v,0)/30;CF_BASE[n]={T:m(c.T),P:m(c.P)}});
+function cfTrend(a){const n=a.length,xs=a.map((_,i)=>i),mx=(n-1)/2,my=a.reduce((s,v)=>s+v,0)/n;let num=0,den=0;xs.forEach((x,i)=>{num+=(x-mx)*(a[i]-my);den+=(x-mx)**2});return num/den}
+const FLOODS=[
+ {y:2017,m:'December 2017',d:'Temburong',x:592,yy:240,t:'Temburong riverside floods',s:'Tropical Storm Kai-Tak brought strong winds and about 140 mm of rain overnight. Homes near riverbanks and in low-lying areas such as Mukim Bokok were flooded.',src:['The Scoop','https://thescoop.co/2017/12/21/flash-floods-inundate-brunei-temburong-district-worst-hit/']},
+ {y:2022,m:'December 2022',d:'Brunei-Muara',x:522,yy:80,t:'Flash floods in Kampong Sungai Tilong',s:'Heavy rain caused what residents called the worst flash floods of the year. Water reached knee level in Kampong Sungai Tilong and shops had to close.',src:['Borneo Bulletin','https://borneobulletin.com.bn/worst-flash-floods-this-year-2']},
+ {y:2023,m:'December 2023',d:'Belait',x:150,yy:285,t:'Heavy flooding in Belait',s:'Overnight rainfall caused heavy flooding in parts of the Belait district.',src:['The Star / Borneo Bulletin','https://www.thestar.com.my/aseanplus/aseanplus-news/2023/12/31/heavy-flooding-hits-brunei039s-belait-districts-after-overnight-rainfall']},
+ {y:2026,m:'January 2026',d:'Brunei-Muara',x:505,yy:112,t:'Flash floods across Brunei-Muara and Tutong',s:'Continuous heavy rain from 7 January raised water levels quickly. Flash floods hit Gadong, Berakas, Pengkalan Batu and Kilanas in Brunei-Muara, and parts of Tutong.',src:['The Star / Borneo Bulletin','https://www.thestar.com.my/aseanplus/aseanplus-news/2026/01/09/flash-floods-reported-across-brunei-following-prolonged-heavy-rain']},
+];
+const FLOOD_RISK={Tutong:[3,'Highest flood vulnerability','Studies rate Tutong as the most flood-vulnerable district, especially its low-lying rural areas.'],Belait:[2,'High','Flooding happens mainly in low-lying areas, especially in the Tutong and Belait districts.'],'Brunei-Muara':[2,'Flash-flood hotspots','Heavy downpours can overwhelm drains in built-up, low-lying neighbourhoods such as Gadong and Berakas.'],Temburong:[1,'Riverside areas','Homes near riverbanks can flood when storms bring very heavy rain.']};
+const COAST=[
+ {n:'Berakas cliffs',x:523,y:67,ls:'end',d:'Brunei-Muara',s:'Soft coastal cliffs are being worn away by rain, runoff and waves. An unprotected stretch retreated by about 4.6 m between 2009 and 2019, while a protected stretch nearby advanced by 8 m.',src:['Universiti Brunei Darussalam study','https://ubd.academia.edu/MahdiLatif']},
+ {n:'Muara coast',x:597,y:48,ls:'start',d:'Brunei-Muara',s:'Rock-armoured sea walls (revetments) line much of the Brunei-Muara coastline to curb erosion and keep channels to the sea open.',src:['Scientia Bruneiana','https://scibru.fos.ubd.edu.bn/index.php/scibru/article/download/152/69/']},
+ {n:'Tutong river mouth',x:373,y:166,ls:'end',d:'Tutong',s:'A sandbar blocking the river entrance led to training walls being built to stabilise the river mouth.',src:['Coastal Engineering Practice, 2011','https://ascelibrary.com/doi/10.1061/41190%28422%294']},
+ {n:'Kuala Belait beach',x:140,y:282,ls:'start',d:'Belait',s:'Sea walls have been built along the Kuala Belait coastline to reduce erosion.',src:['Wikipedia: Belait Beach','https://en.wikipedia.org/wiki/Belait_Beach']},
+];
+const CF_LAYERS=[
+ {k:'temp',n:'Temperature',a:'#ff7a59'},{k:'rain',n:'Rainfall',a:'#3fd2c7'},{k:'flood',n:'Flood risk',a:'#4fb3ff'},{k:'coast',n:'Coastal erosion',a:'#ffd34a'}];
+let CFL='temp',CFD='Brunei-Muara',CFY=CF_Y0+CLIM['Brunei-Muara'].T.length-1,CFT=null,CFF=FLOODS.length-1,CFC=0,CFINIT=false;
+function cfLerp(a,b,u){return a.map((v,i)=>Math.round(v+(b[i]-v)*u))}
+function cfDiv(v,lo,mid,hi){const u=Math.max(-1,Math.min(1,v));return u<0?cfLerp(mid,lo,-u):cfLerp(mid,hi,u)}
+function cfTempCol(a){const c=cfDiv(a/1.2,[49,102,196],[245,245,245],[214,47,39]);return `rgb(${c})`}
+function cfRainCol(p){const c=cfDiv(p/30,[166,97,26],[245,245,245],[1,133,113]);return `rgb(${c})`}
+function cfVal(n){const c=CLIM[n],i=CFY-CF_Y0;return CFL==='temp'?c.T[i]-CF_BASE[n].T:(c.P[i]/CF_BASE[n].P-1)*100}
+function cfFmt(v){return CFL==='temp'?(v>=0?'+':'−')+Math.abs(v).toFixed(1)+' °C':(v>=0?'+':'−')+Math.abs(Math.round(v))+'%'}
+function cfInit(){if(!CFINIT){CFINIT=true;
+ $('cfl').innerHTML=CF_LAYERS.map(l=>`<button role="tab" data-cl="${l.k}" aria-selected="${l.k===CFL}" style="--a:${l.a}"><i></i>${l.n}</button>`).join('');
+ const yr=$('cfyr');yr.min=CF_Y0;yr.max=CF_Y0+CLIM['Brunei-Muara'].T.length-1;}
+ cfRender()}
+function cfRender(){const L=CFL,lay=CF_LAYERS.find(x=>x.k===L);
+ document.querySelectorAll('#cfl button').forEach(b=>b.setAttribute('aria-selected',b.dataset.cl===L));
+ const clim=L==='temp'||L==='rain',yr=$('cfyr');$('cfchart').hidden=!clim;$('cftime').hidden=L==='coast';
+ if(clim){yr.min=CF_Y0;yr.max=CF_Y0+CLIM['Brunei-Muara'].T.length-1;yr.step=1;yr.value=CFY;$('cfyo').textContent=CFY;$('cfy0').textContent=yr.min;$('cfy1').textContent=yr.max}
+ else if(L==='flood'){yr.min=0;yr.max=FLOODS.length-1;yr.step=1;yr.value=CFF;$('cfyo').textContent=FLOODS[CFF].y;$('cfy0').textContent=FLOODS[0].y;$('cfy1').textContent=FLOODS[FLOODS.length-1].y}
+ document.querySelectorAll('.cfd').forEach(p=>{const n=p.dataset.d;p.classList.toggle('sel',clim&&n===CFD);
+  let f='#4b5a52';if(clim){const v=cfVal(n);f=L==='temp'?cfTempCol(v):cfRainCol(v)}else if(L==='flood'){f=['#4b5a52','#9ecae1','#4a90d9','#1f4e9c'][FLOOD_RISK[n][0]]}
+  p.style.fill=f;$('cfv-'+n).textContent=clim?cfFmt(cfVal(n)):''});
+ let pts='';
+ if(L==='flood')FLOODS.forEach((e,i)=>{if(i>CFF)return;const on=i===CFF;pts+=`<g class="cfpt${on?' on':''}" data-fe="${i}" tabindex="0" role="button" aria-label="${e.t}, ${e.m}"><circle class="r" cx="${e.x}" cy="${e.yy}" r="9" fill="none" stroke="#fff"/><circle cx="${e.x}" cy="${e.yy}" r="${on?11:8}" fill="${on?'#ff5a3c':'#ffb2a3'}"/></g>`});
+ if(L==='coast')COAST.forEach((c,i)=>{const on=i===CFC;pts+=`<g class="cfpt${on?' on':''}" data-ce="${i}" tabindex="0" role="button" aria-label="${c.n}"><circle class="r" cx="${c.x}" cy="${c.y}" r="9" fill="none" stroke="#fff"/><circle cx="${c.x}" cy="${c.y}" r="${on?11:8}" fill="${on?'#ffd34a':'#fff0b3'}"/><text class="cfml cfpl" x="${c.x+(c.ls==='end'?-16:16)}" y="${c.y+5}" text-anchor="${c.ls}">${c.n}</text></g>`});
+ $('cfpts').innerHTML=pts;$('cflab').style.display=L==='coast'?'none':'';
+ // legend + caption
+ if(L==='temp'){$('cfleg').innerHTML=`<span>−1.2 °C</span><span class="bar" style="background:linear-gradient(90deg,${cfTempCol(-1.2)},${cfTempCol(0)},${cfTempCol(1.2)})"></span><span>+1.2 °C</span>`;$('cfcap').textContent=`Average temperature in ${CFY} compared with the 1961–1990 average. Red is warmer, blue is cooler. Tap a district to see its history.`}
+ else if(L==='rain'){$('cfleg').innerHTML=`<span>−30%</span><span class="bar" style="background:linear-gradient(90deg,${cfRainCol(-30)},${cfRainCol(0)},${cfRainCol(30)})"></span><span>+30%</span>`;$('cfcap').textContent=`Total rainfall in ${CFY} compared with the 1961–1990 average. Green is wetter, brown is drier. Tap a district to see its history.`}
+ else if(L==='flood'){$('cfleg').innerHTML=['Riverside areas','Flash-flood hotspots / High','Highest'].map((s,i)=>`<span class="sw" style="--a:${['#9ecae1','#4a90d9','#1f4e9c'][i]}"><i></i>${s}</span>`).join('')+'<span class="sw" style="--a:#ff5a3c"><i style="border-radius:50%"></i>Reported flood</span>';$('cfcap').textContent='Relative flood vulnerability from published studies, with notable floods reported since 2017. Drag the slider to step through the events.'}
+ else{$('cfleg').innerHTML='<span class="sw" style="--a:#ffd34a"><i style="border-radius:50%"></i>Erosion hotspot or coastal defence</span>';$('cfcap').textContent='Places along Brunei\'s South China Sea coast where erosion has been studied or sea defences built. Tap a point to read more.'}
+ cfSide();if(clim)cfChart()}
+function cfSide(){const L=CFL;let h='';
+ if(L==='temp'||L==='rain'){const c=CLIM[CFD],arr=L==='temp'?c.T:c.P,i=CFY-CF_Y0,v=cfVal(CFD),tr=cfTrend(arr)*10;
+  h=`<span class="cntag" style="--a:${L==='temp'?'#ff7a59':'#3fd2c7'}">${CFD} · ${CFY}</span><h4>${L==='temp'?'How much warmer?':'Wetter or drier?'}</h4><div class="big" style="color:${L==='temp'?cfTempCol(v):cfRainCol(v)}">${cfFmt(v)}</div><div class="sub">${L==='temp'?`${arr[i].toFixed(1)} °C average in ${CFY}, compared with ${CF_BASE[CFD].T.toFixed(1)} °C in 1961–1990`:`${arr[i].toLocaleString()} mm of rain in ${CFY}, compared with ${Math.round(CF_BASE[CFD].P).toLocaleString()} mm a year in 1961–1990`}</div>`
+  +(L==='temp'?`<h5>The trend</h5><p>This district warmed by about <b>${tr>=0?'+':''}${tr.toFixed(2)} °C per decade</b> from ${CF_Y0} to ${CF_Y0+arr.length-1} in this dataset. Brunei's Meteorological Department measures about +0.25 °C per decade at its stations, and expects about 4 °C of warming by 2100 if emissions stay very high.</p><h5>What it means</h5><p>Hotter days raise the heat index, make outdoor sport and work harder, and help mosquitoes that spread dengue.</p>`
+  :`<h5>The trend</h5><p>In this dataset, rainfall here changed by about <b>${tr>=0?'+':''}${Math.round(tr)} mm per decade</b>. Brunei's Meteorological Department reports total rainfall rising by about 100 mm per decade, with heavier downpours.</p><h5>What it means</h5><p>More intense rain means more flash floods and landslides, especially when heavy rain meets high tide.</p>`)
+  +`<p class="src">Data: ERA5 reanalysis (Copernicus) via Open-Meteo; BDMD via <a href="https://climatechange.gov.bn/SitePages/Pages/how-climate-change-impact-brunei.aspx" target="_blank" rel="noopener">climatechange.gov.bn</a></p>`}
+ else if(L==='flood'){const e=FLOODS[CFF],r=FLOOD_RISK[e.d];
+  h=`<span class="cntag" style="--a:#4fb3ff">${e.m} · ${e.d}</span><h4>${cnEsc(e.t)}</h4><p>${cnEsc(e.s)}</p><p class="src">Source: <a href="${e.src[1]}" target="_blank" rel="noopener">${e.src[0]}</a></p><h5>${e.d} flood risk: ${r[1]}</h5><p>${r[2]}</p><h5>Why floods may get worse</h5><p>Rainfall in Brunei is rising by about 100 mm per decade, and most people live on low coastal plains. When high tides and heavy rain happen together, water levels rise quickly.</p><p class="src">Sources: OECD (2024); BDMD via climatechange.gov.bn</p>`}
+ else{const c=COAST[CFC];h=`<span class="cntag" style="--a:#ffd34a">${c.d}</span><h4>${cnEsc(c.n)}</h4><p>${cnEsc(c.s)}</p><p class="src">Source: <a href="${c.src[1]}" target="_blank" rel="noopener">${c.src[0]}</a></p><h5>Rising seas</h5><p>Most of Brunei's communities live near the coast. The Ministry of Development has warned that the sea could rise about 1.1 m by 2100 under high emissions, adding to erosion and flooding of coastal towns and Kampong Ayer.</p><h5>Natural defences</h5><p>Mangroves and healthy beaches absorb wave energy and can be cheaper than sea walls. Planting and protecting them helps.</p>`}
+ $('cfside').innerHTML=h}
+function cfChart(){const L=CFL,c=CLIM[CFD],arr=L==='temp'?c.T:c.P,n=arr.length,W=800,H=150,bw=W/n,base=CF_BASE[CFD][L==='temp'?'T':'P'];
+ let s='';arr.forEach((v,i)=>{const a=L==='temp'?v-base:(v/base-1)*100;s+=`<rect x="${(i*bw).toFixed(2)}" y="0" width="${(bw+.6).toFixed(2)}" height="${H-26}" fill="${L==='temp'?cfTempCol(a):cfRainCol(a)}"><title>${CF_Y0+i}: ${L==='temp'?v.toFixed(2)+' °C':v+' mm'}</title></rect>`});
+ const mn=Math.min(...arr),mx=Math.max(...arr),py=v=>8+(H-42)*(1-(v-mn)/(mx-mn||1));
+ s+=`<polyline fill="none" stroke="rgba(0,0,0,.55)" stroke-width="2.5" points="${arr.map((v,i)=>`${(i*bw+bw/2).toFixed(1)},${py(v).toFixed(1)}`).join(' ')}"/>`;
+ const xi=(CFY-CF_Y0)*bw+bw/2;s+=`<line x1="${xi}" x2="${xi}" y1="0" y2="${H-26}" stroke="#fff" stroke-width="2.5"/><circle cx="${xi}" cy="${py(arr[CFY-CF_Y0])}" r="5" fill="#fff" stroke="#10201f" stroke-width="2"/>`;
+ [1960,1980,2000,2020].forEach(y=>{const x=(y-CF_Y0)*bw;if(y-CF_Y0<n)s+=`<text x="${x+2}" y="${H-8}" fill="rgba(255,255,255,.75)" font-size="13" font-family="Inter,sans-serif">${y}</text>`});
+ $('cfchart').innerHTML=`<div class="h"><span><b>${CFD}</b> · ${L==='temp'?'warming stripes: one stripe per year':'rainfall stripes: one stripe per year'}</span><span>${L==='temp'?'Line: average temperature':'Line: yearly rainfall'}</span></div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${L==='temp'?'Yearly average temperature':'Yearly rainfall'} for ${CFD}, ${CF_Y0} to ${CF_Y0+n-1}">${s}</svg>`}
+function cfStop(){if(CFT){clearInterval(CFT);CFT=null;$('cfplay').innerHTML='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';$('cfplay').setAttribute('aria-label','Play through the years')}}
+function cfPlay(){if(CFT){cfStop();return}const yr=$('cfyr');if(+yr.value>=+yr.max){if(CFL==='flood')CFF=0;else CFY=CF_Y0}cfRender();
+ $('cfplay').innerHTML='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';$('cfplay').setAttribute('aria-label','Pause');
+ CFT=setInterval(()=>{if(CFL==='flood'){if(CFF>=FLOODS.length-1){cfStop();return}CFF++}else{if(CFY>=+$('cfyr').max){cfStop();return}CFY++}cfRender()},CFL==='flood'?1600:RM?600:260)}
+$('cf').addEventListener('click',e=>{let b;
+ if(b=e.target.closest('[data-cl]')){cfStop();CFL=b.dataset.cl;cfRender();return}
+ if(b=e.target.closest('[data-fe]')){cfStop();CFF=+b.dataset.fe;cfRender();return}
+ if(b=e.target.closest('[data-ce]')){CFC=+b.dataset.ce;cfRender();return}
+ if(b=e.target.closest('.cfd')){if(CFL==='temp'||CFL==='rain'){CFD=b.dataset.d;cfRender()}else if(CFL==='flood'){const k=FLOODS.map((f,i)=>f.d===b.dataset.d?i:-1).filter(i=>i>=0).pop();if(k!=null){cfStop();CFF=k;cfRender()}}else{const k=COAST.findIndex(c=>c.d===b.dataset.d);if(k>=0){CFC=k;cfRender()}}return}
+ if(e.target.closest('#cfplay'))cfPlay()});
+$('cf').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest('.cfd,.cfpt')){e.preventDefault();e.target.closest('.cfd,.cfpt').dispatchEvent(new MouseEvent('click',{bubbles:true}))}});
+$('cfyr').addEventListener('input',e=>{cfStop();const v=+e.target.value;if(CFL==='flood')CFF=v;else CFY=v;cfRender()});
+function cfKey(e){if(e.target.closest&&e.target.closest('input'))return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){const d=e.key==='ArrowRight'?1:-1;if(CFL==='temp'||CFL==='rain'){CFY=Math.max(CF_Y0,Math.min(+$('cfyr').max,CFY+d));cfRender()}else if(CFL==='flood'){CFF=Math.max(0,Math.min(FLOODS.length-1,CFF+d));cfRender()}}}
+/* ---------- extra full pages: Carbon Footprint and About ---------- */
+let PG=null;const PGS={footprint:'cf',about:'ab'};
+function openPg(c){if(PG===c)return;closePg();closeCorner();closeLearn();PG=c;closeBoard();if(XO)closeXV();document.body.classList.add('incorner');$(PGS[c]).hidden=false;syncTabs();if(c==='footprint')cfInit();$(PGS[c]).scrollTop=0}
+function closePg(){if(!PG)return;cfStop();$(PGS[PG]).hidden=true;PG=null;document.body.classList.remove('incorner')}
+
 /* ---------- controls ---------- */
 function enterFS(){document.body.classList.add('fs');$('fsui').setAttribute('aria-hidden','false');mini();try{const p=document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();if(p&&p.catch)p.catch(()=>{})}catch(e){}}
 function exitFS(){document.body.classList.remove('fs');$('fsui').setAttribute('aria-hidden','true');try{if(document.fullscreenElement){const p=document.exitFullscreen();if(p&&p.catch)p.catch(()=>{})}}catch(e){}}
@@ -1583,7 +1803,7 @@ $('prev').onclick=()=>step(-1);$('next').onclick=()=>step(1);$('fsp').onclick=()
 $('play').onclick=()=>setPlay(!AP);$('fsb').onclick=enterFS;$('fsx').onclick=exitFS;$('bdb').onclick=openBoard;$('bx').onclick=closeBoard;
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setCat(b.dataset.c));
 $('more').onclick=()=>{const o=$('card').classList.toggle('open');$('more').setAttribute('aria-expanded',o);$('more').textContent=o?'Hide climate details':'Show climate details'};
-document.addEventListener('keydown',e=>{if(LH){lhKeyH(e);return}if(CN){cnKeyH(e);return}if(XO){if(e.key==='Escape')closeXV();else if(e.key==='ArrowRight')step(1);else if(e.key==='ArrowLeft')step(-1);return}if(!$('board').hidden){if(e.key==='Escape')closeBoard();return}
+document.addEventListener('keydown',e=>{if(PG){if(PG==='footprint')cfKey(e);return}if(LH){lhKeyH(e);return}if(CN){cnKeyH(e);return}if(XO){if(e.key==='Escape')closeXV();else if(e.key==='ArrowRight')step(1);else if(e.key==='ArrowLeft')step(-1);return}if(!$('board').hidden){if(e.key==='Escape')closeBoard();return}
  if((e.key==='e'||e.key==='E')&&!e.ctrlKey&&!e.metaKey){openXV();return}
  if(e.key==='ArrowRight')step(1);else if(e.key==='ArrowLeft')step(-1);else if(e.key==='f'||e.key==='F')document.body.classList.contains('fs')?exitFS():enterFS();else if(e.key==='Escape')exitFS();else if(e.key===' '&&!(e.target.closest&&e.target.closest('button'))){e.preventDefault();setPlay(!AP)}});
 addEventListener('pointermove',e=>{if(e.pointerType==='mouse')mx=e.clientX/innerWidth*2-1});
