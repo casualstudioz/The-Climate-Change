@@ -453,10 +453,10 @@ body.incorner #wall{filter:saturate(1.1) brightness(.7)}
 .abcred{font-size:13.5px;line-height:1.6;color:rgba(255,255,255,.8);margin-top:12px}.abcred a{color:#fff}
 /* ---------- Learning Hub ---------- */
 .lh h2 em{white-space:nowrap}
-.lhtabs{display:inline-flex;flex-wrap:wrap;gap:4px;margin-top:20px;padding:4px;border-radius:999px;background:rgba(10,14,20,.38);border:1px solid rgba(255,255,255,.3);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-.lhtabs button{min-height:42px;padding:0 18px;border-radius:999px;border:0;background:none;color:#fff;font:700 14px Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
-.lhtabs button svg{width:17px;height:17px}
-.lhtabs button[aria-selected=true]{background:#ff5a3c}.lhtabs button:focus-visible,.gic:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.lhtabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:min(100%,660px);gap:8px;margin-top:24px;padding:8px;border-radius:26px;background:rgba(10,14,20,.6);border:2px solid rgba(255,255,255,.4);box-shadow:0 14px 34px -16px rgba(0,0,0,.7);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.lhtabs button{min-height:62px;padding:6px 16px;border-radius:18px;line-height:1.2;text-align:left;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:#fff;font:800 17px Sora,Inter,sans-serif;letter-spacing:.01em;cursor:pointer;display:inline-flex;align-items:center;gap:10px;transition:background .2s,transform .2s,box-shadow .2s}.lhtabs button:hover{background:rgba(255,255,255,.22)}
+.lhtabs button svg{width:24px;height:24px;flex:0 0 auto}
+.lhtabs button[aria-selected=true]{background:#ff5a3c;border-color:#ffb3a3;box-shadow:0 8px 22px -6px rgba(255,90,60,.75);transform:translateY(-1px)}.lhtabs button:focus-visible,.gic:focus-visible{outline:3px solid #fff;outline-offset:2px}
 .lhpg[hidden]{display:none}
 .gihead{margin-top:36px}.gihead p{max-width:62ch;color:rgba(255,255,255,.86);font-size:15.5px;line-height:1.55;margin:8px 0 0}
 .gibar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:18px 0 14px}
@@ -474,7 +474,7 @@ body.incorner #wall{filter:saturate(1.1) brightness(.7)}
 .gim ul{margin:6px 0 0;padding-left:20px;line-height:1.55;font-size:15px}.gim li{margin-bottom:6px}
 .gim h5 + p{margin:0;font-size:15.5px;line-height:1.6;color:rgba(255,255,255,.9)}
 .gisrc{margin-top:16px;font-size:13px;color:rgba(255,255,255,.7)}.gisrc a{color:#fff}
-@media(max-width:600px){.gic.big{grid-column:auto}.gigrid{grid-template-columns:minmax(0,1fr)}.lhtabs{display:flex;width:100%}.lhtabs button{flex:1 1 auto;justify-content:center;padding:0 10px;font-size:13px}}
+@media(max-width:600px){.gic.big{grid-column:auto}.gigrid{grid-template-columns:minmax(0,1fr)}.lhtabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;gap:6px;padding:6px;border-radius:22px}.lhtabs button{flex-direction:column;justify-content:center;gap:6px;min-height:78px;padding:8px 6px;font-size:14px;line-height:1.2;text-align:center;border-radius:16px}}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .lhbar{position:sticky;top:0;z-index:3;margin:36px calc(-1*max(3vw,14px)) 0;padding:12px max(3vw,14px);background:linear-gradient(180deg,rgba(10,14,22,.78),rgba(10,14,22,.55));-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.14);display:flex;flex-direction:column;gap:10px}
 .lhrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
