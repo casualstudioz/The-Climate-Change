@@ -538,9 +538,11 @@ body.incorner #wall{filter:saturate(1.1) brightness(.7)}
 .lbph img{display:block;border-radius:6px}
 .cnacts{display:flex;gap:8px;flex-wrap:wrap}
 .cnc .cnart img{object-position:center 35%}.cnsl{position:absolute;inset:0;overflow:hidden}.cnslt{display:flex;width:100%;height:100%;transition:transform .9s cubic-bezier(.4,0,.2,1)}.cnslt img{flex:0 0 100%;min-width:100%}.cnph b{font-weight:800}.lbpl{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:rgba(10,14,20,.6);color:#fff;display:inline-grid;place-items:center;cursor:pointer;flex:0 0 auto}.lbpl svg{width:14px;height:14px}.lbpl:focus-visible{outline:3px solid #fff;outline-offset:2px}.lbart img#lbimg{transition:opacity .35s}.lbart img#lbimg.fade{opacity:.15}@media(prefers-reduced-motion:reduce){.cnslt,.lbart img#lbimg{transition:none}}
+#boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:radial-gradient(120% 90% at 50% 0%,#1d3b5a,#0b1220 70%);color:#fff;font:600 16px Inter,system-ui,sans-serif;text-align:center;padding:24px;transition:opacity .4s}#boot.out{opacity:0;pointer-events:none}#boot i{width:46px;height:46px;border-radius:50%;border:4px solid rgba(255,255,255,.2);border-top-color:#ff5a3c;animation:bootspin 1s linear infinite}#boot b{font:800 22px Sora,Inter,sans-serif}#boot small{max-width:30ch;line-height:1.5;color:rgba(255,255,255,.75);opacity:0;animation:bootslow .4s 8s forwards}@keyframes bootspin{to{transform:rotate(360deg)}}@keyframes bootslow{to{opacity:1}}@media(prefers-reduced-motion:reduce){#boot i{animation-duration:3s}}
 </style>
 </head>
 <body>
+<div id="boot" role="status" aria-live="polite"><i aria-hidden="true"></i><b>The Climate Change</b><span>Loading…</span><small>Your connection seems slow. The page will appear as soon as it has finished loading.</small></div>
 <canvas id="wall" aria-label="Animated climate wallpaper"></canvas>
 
 <div class="ui">
@@ -2001,7 +2003,9 @@ function renderDists(){const el=$('dists');el.hidden=cat!=='brunei';el.innerHTML
 function setDist(d){if(d===DIST)return;DIST=d;renderDists();renderSlider();const L=list();if(!L.includes(cur))go(L[0]);layer();info()}
 $('dists').addEventListener('click',e=>{const b=e.target.closest('.dist');if(b)setDist(b.dataset.d)});
 renderDists();renderSlider();info();layer();requestAnimationFrame(frame);load();setInterval(load,600000);
+{const b=document.getElementById('boot');if(b){b.classList.add('out');setTimeout(()=>b.remove(),450)}}
 }
 </script>
+<script>addEventListener('load',()=>setTimeout(()=>{const b=document.getElementById('boot');if(b){b.classList.add('out');setTimeout(()=>b.remove(),450)}},1500))</script>
 </body>
 </html>
